@@ -1,0 +1,138 @@
+\documentclass{article}
+\usepackage{bbpsets}
+
+\lhead{Ben Burns}
+\chead{\textbf{Math 412}}
+\rhead{Due: February 6th, 2022}
+\pagestyle{fancy}
+
+\begin{document}
+\newpage\parskip=0em
+\begin{mdframed}[backgroundcolor=blue!20]
+\textbf{Problem 1}: Describe all homomorphisms from a given ring $R$ to a given ring $S$ explicitly, i.e. say where every element $r\in R$ goes to in $S$. Prove that your functions are indeed homomorphisms and that there are no other homomorphisms.
+\begin{itemize}
+    \item $R = \Z$, $S = \Z \times \Z$
+    \item $R = \Z_5, S = \Q$
+    \item $R = \Z_2 \times \Z_2, S = \Z_2$
+\end{itemize}
+\end{mdframed}
+\textbf{Solution}\parskip=1em\\
+\textbf{Preface}: A general strategy that I will be using in my solutions is using the fundamental theorem on homomorphisms: 
+(a)
+
+(b)
+
+(c) Define $\phi : \Z_2 \times \Z_2$ to be 
+\begin{align*}
+    (0, 0) &\to 0\\  
+    (0, 1) &\to 1\\
+    (1, 0) &\to 1\\
+    (1, 1) &\to 0
+\end{align*}
+Which looks a lot like an xor gate. In other words, $\phi((a, b)) = a + b \in \Z_2$.
+
+$\Z_2 \times \Z_2$ and $\Z_2$ are commutative rings (since both are abelian under both operations from 411), so both $+$ and $\cdot$ are associative and commutative in our ring (axiom)
+\begin{align*}
+    \phi((a, b) + (a', b')) &= \phi((a + a', b + b'))\\
+    &= (a + a') + (b + b')\\
+    &= a + (a' + b) + b'\\ 
+    &= a + (b + a') + b'\\ 
+    &= (a + b) + (a' + b')\\
+    &= \phi((a, b)) + \phi((a', b'))
+\end{align*}
+\begin{align*}
+    \phi((a, b)(a', b')) &= \phi((aa', bb'))\\
+    &= (aa')(bb')\\
+    &= a(a'b)b'\\
+    &= a(ba')b'\\
+    &= (ab)(a'b)'\\
+    &= \phi((a,b))\phi((a',b))'\\
+\end{align*}
+\newpage\parskip=0em
+\begin{mdframed}[backgroundcolor=blue!20]
+\textbf{Problem 2}: For a given subset $S$ if a given ring $R$, decide whether $S$ is a subring or not (with proof)
+\begin{itemize}
+    \item $S = \{ a + b\sqrt{2} | a, b \in\Z\}, R = \R$
+    \item $S = \{ f(x) | f'(3) = 0\}, R = \{f : \R \to \R\}$
+\end{itemize}
+\end{mdframed}
+\textbf{Solution}\parskip=1em\\
+
+\newpage\parskip=0em
+\begin{mdframed}[backgroundcolor=blue!20]
+\textbf{Problem 3}: Describe all units in a given ring $R$ explicitly
+\begin{itemize}
+    \item $R = \Z_4 \times \Z_4$
+    \item $R = Mat_2(Z_2)$
+\end{itemize}
+\end{mdframed}
+\textbf{Solution}\parskip=1em\\
+(a) the unity of $Z_4$ is $(1, 1)$, because 1 is the multiplicative identity of $\Z_4$. Therefore, the units of $R$ are the pairs with entries that are invertible in $\Z_4$, more specifically 1 and 3. There does not exist any element $x$ such that $2x = 1 \in \Z_4$, because $\gcd(2, 4) = 2$, so the Diophantine equation equivalent to this congruence cannot equal any positive number strictly less than 2. Therefore, the units in $R$ are $(1, 1), (1, 3), (3, 1), $ and $(3, 3)$.
+
+(b) %Todo
+
+\newpage\parskip=0em
+\begin{mdframed}[backgroundcolor=blue!20]
+\textbf{Problem 4}: Given an example of a ring with unit $1 \neq 0$ that has a subtring with a non-zero unity $e \neq 1$
+\end{mdframed}
+\textbf{Solution}\parskip=1em\\
+
+\newpage\parskip=0em
+\begin{mdframed}[backgroundcolor=blue!20]
+\textbf{Problem 5}: Let $U$ be a collection of all units in a ring $(R, + ,\cdot)$ with unity, Prove that $(U, \cdot)$ is a group
+\end{mdframed}
+\textbf{Solution}\parskip=1em\\
+
+\emph{Associa}$(R, +, \cdots)$ being a ring $\implies \cdot$ is associative for all elements in $R$. Therefore, because all elements in $U$ are also in $R$, they must all satisfy associativity under multiplication.
+
+Say $R$ has unity $1$. $1 \in U$ because $\forall a\in R: a\cdot 1 = a \implies 1 \cdot 1 = 1$, which is the definition of a unit. Hence, $1 \in U$. Because all other units in $U$ are also in $R$, the above property of unity (or identity for groups) is satisfied, and $1 \in R$ is the identity element of $U$. 
+
+
+
+\newpage\parskip=0em
+\begin{mdframed}[backgroundcolor=blue!20]
+\textbf{Problem 6}: Let $X$ be the collection of all rings. Prove that isomorphism of rings gives an equivalence relation on $X$
+\end{mdframed}
+\textbf{Solution}\parskip=1em\\
+
+\newpage\parskip=0em
+\begin{mdframed}[backgroundcolor=blue!20]
+\textbf{Problem 7}: An element $x$ of a ring $R$ is called nilpotent if $x^n = 0$ for osme $n>0.$
+\begin{itemize}
+    \item Find all nilpotents in $\Z_{2022}$
+    \item Give an example of a ring with 2 nilpotents
+    \item Let $R$ be a commutative ring with nilpotents $x, y$. Show that $x +y$ is also nilpotent
+\end{itemize}
+\end{mdframed}
+\textbf{Solution}\parskip=1em\\
+
+\newpage\parskip=0em
+\begin{mdframed}[backgroundcolor=blue!20]
+\textbf{Problem 8}: Find all solutions of the equation $x^2 + 2x + 2 = 0$ in a given ring $R$
+\begin{itemize}
+    \item $R = \Z_5$
+    \item $R = \Z_7$
+    \item $R = \Z_8$
+\end{itemize}
+\end{mdframed}
+\textbf{Solution}\parskip=1em\\
+
+\newpage\parskip=0em
+\begin{mdframed}[backgroundcolor=blue!20]
+\textbf{Problem 9}: Show that the characteristic of an integral domain is either 0 or a prime number $p$
+\end{mdframed}
+\textbf{Solution}\parskip=1em\\
+
+\newpage\parskip=0em
+\begin{mdframed}[backgroundcolor=blue!20]
+\textbf{Problem 10}: For each of the following rings $R$ decide (with proof) whether $R$ is a field of whether $R$ is an integral domain:
+\begin{itemize}
+    \item $R = \Z_{2021}$
+    \item $R = \{even integers\}$
+    \item $R = \{$polynomials with $x$ with coeffiecients in $\R\}$ ($\R[X]$)
+    \item $R = \C$
+\end{itemize}
+\end{mdframed}
+\textbf{Solution}\parskip=1em\\
+
+\end{document}

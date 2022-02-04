@@ -1,0 +1,14 @@
+materials
+materials/*
+*.aux
+*.bbl
+*.bcf
+*.blg
+*.fdb_latexmk
+*.fls
+*synctex.gz
+*.log
+*.out
+*.toc
+*.run.xml
+*.DS_Store

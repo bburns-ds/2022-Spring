@@ -1,0 +1,311 @@
+% ENORMOUS credit for the foundational formatting 
+%   of these notes goes to Patrick Lei. 
+% Check out his fantastic course notes
+%   here: https://git.snopyta.org/abstract/course-notes
+% and his website 
+%   here: https://www.math.columbia.edu/~plei/index.html
+
+\documentclass[twoside, 10pt]{article}
+\usepackage{bbnotes}
+\geometry{margin=2cm}
+
+\definecolor{darkblue}{RGB}{0,0,128}
+\definecolor{darkred}{RGB}{128,0,0}
+\definecolor{darkyellow}{RGB}{96,96,0}
+\definecolor{darkgreen}{RGB}{0,128,0}
+\definecolor{darkdarkred}{RGB}{64,0,0}
+    
+\lstset
+{
+    basicstyle=\ttfamily\scriptsize, 
+    breaklines=true,
+    postbreak=\mbox{\textcolor{darkdarkred}{$\hookrightarrow$}\space},
+    showstringspaces=false
+    keywordstyle = [1]\bfseries\color{darkred},
+    keywordstyle = [2]\itshape\color{darkgreen},
+    keywordstyle = [3]\sffamily\color{darkblue},
+    keywordstyle = [4]\color{darkyellow},
+}
+
+\fancypagestyle{firstpage}
+{
+   \fancyhf{}
+   \fancyfoot[R]{\itshape Page \thepage\ of \pageref{LastPage}}
+   \renewcommand{\headrulewidth}{0pt}
+}
+
+
+\fancypagestyle{pages}
+{
+    \fancyhead[C]{\scshape Math 412}
+    \fancyhead[L]{\scshape Ben Burns}
+    \fancyhead[R]{\scshape Spring 2022}
+    \renewcommand{\headrulewidth}{0.1pt}
+}
+
+\pagestyle{pages}
+
+\title{Math 412: Rings and Modules}
+\author{Taught by Jenia Tevelev \\ Scribed by Ben Burns}
+\affil{UMass Amherst}
+\date{Spring 2022}
+
+\begin{document}
+
+    \maketitle\thispagestyle{firstpage}
+
+\tableofcontents
+
+\section{Rings and Fields}
+
+\begin{defn}
+        A Ring $R$ is a set with 2 binary operations $+$ and $\cdot$ that satisfy the following axioms
+        \begin{enumerate}
+            \item $(R, +)$ is an abelian group: associative, commutative, existence of identity and inverses
+            \item Multiplication is associative 
+            \item $\forall a, b, c \in R : a\cdot (b + c) = a\cdot b + a\cdot c$ (left distributive) and $(a + b) \cdot c = a\cdot c + b\cdot c$ (right distributive)
+        \end{enumerate}
+\end{defn}
+
+\begin{defn}
+    A subset $S$ of a ring $R$ is called a subring if $S$ is a ring with respect to the binary operations of $R$
+\end{defn}
+
+\begin{defn}
+    A ring $R$ is commutative if multiplication is also commutative
+\end{defn}
+
+\begin{rmk}
+    $(R, \cdot)$ is almost never a ring since 0 (the general additive identity) is almost never invertible with respect to $\cdot$
+\end{rmk}
+
+\begin{exm}[Non-commutative rings] 
+    $Mat_n(\R)$ with generic element, addition, and multiplcation defined as\\
+    $A = \begin{pmatrix}
+            a_{11} & \ldots & a_{1n}\\
+            \vdots & \ddots & \vdots\\
+            a_{n1} & \ldots & a_{nn}\\
+        \end{pmatrix} \in Mat_n(\R)$\\
+    $(a_{ij}) + (b_{ij}) = a_{ij} + b_{ij}$\\
+    $\begin{pmatrix}
+        a_{i1}  & \ldots & a_{in}\\
+    \end{pmatrix} \cdot \begin{pmatrix}
+        b_{1j}\\
+        \vdots\\
+        b_{nj}\\
+    \end{pmatrix} = \begin{pmatrix}
+        a_{i1}b_{1j} + \ldots + a{in}b_{nj}\\
+    \end{pmatrix}$
+\end{exm}
+%Todo: find counterexample
+
+\begin{exm}[Rings of functions]
+    $F = \{f | f: \R \to \R\}$\\
+    $(f + g)(x) = f(x) + g(x)$\\
+    $(f\cdot g)(x) = f(x)g(x)$
+\end{exm}
+
+\begin{defn}
+    $R$ is a ring with unity 1 if $\forall a \in R: a\cdot 1 = 1\cdot a$
+\end{defn}
+
+Note that rings don't necessarily have unity. For example, $(2\Z, + , \cdot)$ has no unity, but satisfies all ring axioms
+
+\begin{rmk}
+    $(\Z_n, +)$ is  cyclic abelian group with generator 1. 1 is also unity for modular multiplication
+\end{rmk}
+
+\begin{defn}[Direct Product of Rings]
+    For $R, S$, rings, we define the direct product of $R$ and $S$\\
+    $R\times S = \{(r, s) | r\in R s\in S\}$. \\
+    $(r, s) + (r', s') = (r + r', s + s')$\\
+    $(r, s)(r', s') = (rr', ss')$
+\end{defn}
+
+\begin{defn}
+    For rings $R, S$ a function $\phi: R\to S$ is a homomorphism if $\forall a, b \in R$, $\phi(a + b) = \phi(a) + \phi(b)$ and $\phi(ab) = \phi(a)\phi(b)$. An isomorphism is a bijective homomorphism.
+\end{defn}
+
+\section{Fermat's and Euler's Theorems}
+\begin{defn}
+    Define $R$ as a ring with unit 1. $a \in R$ is called a unit if $ab = ba = 1$ for some $b \in R$. 
+\end{defn}
+
+For example, take $R = Mat_n(R)$. $R$'s unity is the identity matrix $Id$. \\ $A \in R$ is a unit $\iff AB = BA = Id$ for some $B\in Mat_n(R)$ \\ $\iff A$ is an invertible matrix \\ $\iff \det A \neq 0$
+
+
+If $R = \Z_p$, $p$ prime, $x \in \Z_p$ is a unit $\iff x \neq 0$ 
+
+\begin{exer}[HW] 
+    $R^* = \{ a \in R | a $ is a unit $\}$. $R^*$ is a group w/ respect to multiplication
+\end{exer}  
+
+For example, $\Z_p^*$ is a group of order $p-1$. In every finite group $G$, the order of every element divides the order of the group (Lagrange Corollary)\\
+$a^n = 1$ if $n= order(G)$
+
+
+\begin{cor}[Fermat's Little Theorem] 
+    $x\in \Z_p^* \implies x^{p-1} = 1 \in \Z_p^*$. 
+\end{cor}
+Equivalently, $x\in \Z, \gcd(x, p) = 1 \implies x^{p-1} \equiv 1 \pmod{p}$.
+
+
+Equivalently, $x\in \Z \implies x^p \equiv x\pmod{p}$.
+If $\gcd(p, x) = 1$, multiply both sides of the result of Fermat's Little Theorem by $p$. Otherwise, $\gcd(p, x) > 1$, $x \nmid p$ since $p$ prime, so $p | x \implies x \equiv 0 \pmod{p}$, therefore $x^p \equiv 0 \equiv x\pmod{p}$.
+
+\begin{exm}
+    Show that $n^{33} - n$ always divisible by 15 for all $n$.
+\end{exm}
+
+We want to show that $n^{33} - n$ is divisible by both 3 and 5 individually, which will then imply it is divisible by 15.
+
+
+If $3 | n$, then $n^{33} - n$ is trivially divisible by $n$. Else, $\gcd(n, 3) = 1$ since 3 is prime, so by FLT, 
+\begin{align*}
+    n^2 &\equiv 1 \pmod{3}\\
+    (n^2)^{16} &\equiv 1^{16} \pmod{3}\\
+    n^{32} &\equiv 1 \pmod{3}\\
+    n^{33} &\equiv n \pmod{3}\\
+    n^{33} - n &\equiv 0 \pmod{3}\\
+\end{align*}
+
+The proof is same for 5: if $5 | n$, then it is trivial, else we apply FLT to say that $n^4 \equiv 1 \pmod{5}$, raise both sides to the 8th power, multiply by $n$, and substract by $n$. 
+\begin{exm}
+    For $R = \Z_n$, $x\in \Z_n$ is a unit $\iff \gcd(x, n) = 1$. 
+\end{exm}
+%Todo: Justify me :D
+
+\begin{defn}
+    The order of $\Z_n^*$ is $\phi(n)$.
+\end{defn}
+
+Here, $\phi(n)$ is the Euler totient function, or the number of integers up to $n$ that are coprime to $n$. This goes with the preceeding example, since this will count exactly the number of elements $\in \Z_n$ such that $\gcd(x, n) = 1$, which are therefore exactly the number of units. 
+
+For $p$ prime, $\phi(p) = p - 1$, since no $d \in \{1, 2, \ldots p-1\}$ may divide $p$, since $p$ is prime. $\phi(p^k) = p^k - p^{k-1}$ since the elements that are not coprime to $p^k$ are $\{p, 2p,\ldots,p^{k-1}p\}$. There are $p^{k-1}$ such values, so the remaining $p^k - p^{k-1}$ values are coprime to $p^k$.
+
+
+\begin{thm}
+    $n = rs$, $r, s$ coprime, $\mathbb{Z} \cong \Z_r \times \Z_s$ (as rings). Implies Chinese Remainder Theorem
+\end{thm}
+%Todo: argue me :D
+
+\begin{thm}
+    $R$ and $S$ are rings with unity 1 $\implies (R\times S)^* \cong R^* \times S^*$
+\end{thm}
+
+$(a, b) \in R\times S$ is a unit $\iff (a, b) * (c, d) = (c, d) * (a, b) = (1, 1)$ unity in $R\times S$ for some ($c, d)$ \\
+$\iff ac = ca = 1$ and $bd = db = 1$ \\
+$\iff a\in R^*$ and $b \in S^*$\\
+$\iff (a, b) \in R^* \times S^*$
+
+\begin{cor}
+    $r, s$ coprime, $n = rs \implies \Z_n^* \cong \Z_r^* \times \Z_s^*$
+\end{cor}
+%Todo: argue me :D
+
+\begin{cor}
+    $r, s$ coprime $\phi(n) = \phi(r)\phi(s)$ (multiplicative function)
+\end{cor}
+
+If $r, s$ are coprime, then the multiples of $r$ and the multiples of $s$ cannot intersect until $rs$. Therefore, the numbers coprime to $rs$ will be products of numbers $1 \leq x \leq r$ coprime to $r$ and $1 \leq y \leq s$ coprime to $s$, and we can use a combinatorial argument to say that there are $\phi(r)\phi(s)$ such pairs. 
+\begin{cor}
+    Write $n = p_1^{k_1} \cdots p_r^{k_r}$. Then $\phi(n) = \phi(p_1^{k_1}) \cdots \phi(p_r^{k_r}) = (p_1^{k_1} - p^{k_1 - 1})\cdots (p_r^{k_r} - p_r^{k_r - 1})$
+\end{cor}
+
+This is simply leveraging the preceeding Corollary that $\phi(n)$ is multiplicative, and pairwise breaking up $n$ into seperate $\phi(p_i^{k_i})$ terms. 
+
+\begin{cor}[Euler's Theorem]
+    $x\in \Z_n^* \implies x^{\phi(n)} = 1 \in Z$
+\end{cor}
+
+Recall that  $\phi(n)$ is the order of $\Z_n^*$. For $A = order(x)$, by Corollary to Lagrange, $ o| \phi(n)$, so $\exists n : An = \phi(n)$, and $n^{\phi(n)} = n^{An} = (n^A)^n = 1^n = 1 \in \Z_n^*$.
+
+\begin{thm}
+    $\Z_p^*$ is a cyclic group
+\end{thm}
+
+The proof will come later. %Todo
+For now, we can use this to say $Z_p^*$ has a generator or that $Z_7^*$ has a generator
+
+\begin{exm}
+    Determine existence of solutions for, and determine solutions of an equation (congruence) $ax = b \in \Z_n$.
+\end{exm}
+MAGMA: Solution(a, b, n) returns sequence of solutions if they exist, and -1 if no solution.
+
+To determine $d := \gcd(a, n)$, $ax \equiv b\pmod{n} \implies d | b$. In other words, $ax + ny = b \implies ax + ny \equiv 0 \equiv b \pmod{d}$.
+
+
+If $d \nmid b$ then there are no solutions. Else, $a = a'd, b = b'd, n = n'd$. $ax \equiv b \pmod{n}$, so $a'd \equiv b'd \pmod{n'd}$. Divide the equivalent Diophantine equation by $d$ to obtain $a'x \equiv b' \pmod{n'}$. $\gcd(a', n') = 1$ (else $d < \gcd(a, n)$) so $a$ is invertible in $Z_{n'}$. $1 \equiv a'c'$ in $\mathbb{Z_{n'}}$
+
+
+Multiply both sides of $a'x \equiv b' \pmod{n'}$ by $c'$ to get $a'c'x \equiv x \equiv b'c' \pmod{n'}$. This allows us to conclude that $x$ is unique modulo $n'$, but not necessarily unique modulo $n = n'd$. Solutions modulo $n: x, x + n', x + 2n' \ldots, x + (d-1)n'$. Therefore, the congruence will either have there are either 0 or $d$ solutions.
+
+\section{Field of fractions}
+$\Z \subset \Q$. $\Z$ is an integral domain, $\Q$ is a field. There is a little bit more than an integral domain being imbedded in a field, since $\Z$ is also imbedded in $\R$ and $\C$. 
+
+\begin{rmk}
+    $\forall q\in \Q$ can be written as $\dfrac{n}{m}, n, m \in \Z$
+\end{rmk}
+We can call this "the most economical field including $\Z$.
+
+\begin{thm}
+    Let $R$ be an integral domain. Then there exists a field $K$, called is the field of fractions of $R$, such that 
+    \begin{enumerate}
+        \item $R$ contained in $K$
+        \item $\forall x\in K$ can be written as $x = \dfrac{r}{s}, r , s\in R$
+    \end{enumerate}
+\end{thm}
+Understand $R$ in terms of it's field of fractions. 
+
+Might be easier to solve Diophantine equations in terms of rationals, then make sense of integral solution.
+
+To prove, we need to 
+\begin{enumerate}
+    \item Construct $K$ 
+    \item Check that all conditions in the theorem are satisfied
+\end{enumerate}
+
+Let $S$ be the set of pairs $(r, s), r, s \in R, s\neq 0$
+
+Define an equivalence relation on $S$: $(r, s) \sim (r', s')$ if $rs' = r's$
+
+Define $K$ as set of equivalence classes of pairs $(r, s)$
+
+Check conditions of equivalence relation $\sim$: \\
+$(r, s) \sim (r, s)$ since $rs = rs$\\
+$(r, s) \sim (r' s') \iff (r', s') \sim (r, s)$ givens $rs' = r's$ and $r's = rs'$, which are obviously the same\\
+$(r, s) \sim (r', s')$ and $(r', s') \sim (r'', s'') \stackrel{?}{\implies} (r, s) \sim (r'', s'')$
+%todo: multiplications (commutativity from integral domain?)
+
+$R$ integral domain $\implies$ cancelation law
+%todo: why?
+
+Define $L$ as the set of equivalence classes of pairs $(r, s)$
+
+Let's define a fraction $\dfrac{r}{s}$ as the equivalence class of that contains a pair $(r, s)$
+
+Define binary operations on $K$
+\begin{itemize}
+    \item $\dfrac{rs' + r's}{ss'}$
+    \item $\dfrac{r}{s}\cdot \dfrac{r'}{s'} = \dfrac{rr'}{ss'}$
+\end{itemize}
+Need to check that these operations do not depend on which element of the equivalence classes that we select. 
+%todo
+
+Need to check that $K$ satsifies ring axioms\\
+check field axioms
+
+Need to imbedd $R$
+
+Every element of $K$ is written as a $rs^{-1}$, with $r,s \in R$
+
+%Check distributy
+
+%What are 0 and 1 in K
+
+%Field unit axiom
+
+%Embed into into using i(r) := r/1
+
+
+\end{document}
