@@ -9,6 +9,8 @@
 \usepackage{bbnotes}
 \geometry{margin=2cm}
 
+\newcommand{\Ker}{\text{Ker}}
+
 \definecolor{darkblue}{RGB}{0,0,128}
 \definecolor{darkred}{RGB}{128,0,0}
 \definecolor{darkyellow}{RGB}{96,96,0}
@@ -299,13 +301,171 @@ Need to imbedd $R$
 
 Every element of $K$ is written as a $rs^{-1}$, with $r,s \in R$
 
-%Check distributy
+Check distributivity, find what are 0 and 1 in K, check field unit axiom, Embed into into using i(r) := r/1
 
-%What are 0 and 1 in K
+\section{Polynomial Rings}
+\begin{defn}
+    $R$ is a ring, then $R[X] = \{$polynomials in $X$ with coefficients in $R\}$\\
+    = $\{a_0 + a_1x + a_2x^2 + \ldots | a_i \in R$, finitely many nonzero $a_i\}$
+\end{defn}
 
-%Field unit axiom
+Every $f\in R[X]$ determines a function $R\to R$, $r \to f(r) = a_0 + a_1r + a_2r^2 + \ldots$
 
-%Embed into into using i(r) := r/1
+\begin{rmk}
+    In algebra, two different polynomials can define the same function with coefficients in an arbitrary ring.
+\end{rmk}
 
+$x^p, x \in \Z_p[X]$, $p$ prime. different polynomials, but the functions are the same $\Z_p \to \Z_p$ beacuse $r^p = r$ because $\forall r \in \Z_p$ by FLT
 
+Suppose $R \subset S$ (subring). $f(x) \in R[X]$. We can also view $f$ as an element of $S[X] \implies $ we can evaluate $f(s), s\in S$. Therefore, we have to be careful to specify what ring we're working with for coefficients.
+
+\begin{defn}
+    $f(x) \in R[X]$. $r \in R$ is called a zero of $f(x)$ if $f(r) = 0$. Alternatively called a root.
+\end{defn}
+
+$x^2 + 1$ has no roots in $\R[X]$, but has two roots in $\C[X]$, $\pm i$
+
+$x^2 - 2 = 0$ has no solution in $\Q[X]$, but has two roots in $\R[X]$
+
+\begin{defn}[Rational Zeros Theorem]
+    $f(x) = a_0 + a_1x + \ldots + a_nx^n \in \Z[X]$. If $f(\dfrac{p}{q}) = 0$, $\gcd(p, q) = 1$, then $p | a_0$ and $q | a_n$.
+\end{defn}
+
+\begin{lem}
+    $R[X]$ is a ring
+\end{lem}
+$(a_0 + a_1x + \ldots) + (b_ + b_1x + \ldots) = (a_0 + b_0) + (a_1 + b_1)x + \ldots$\\
+$(R, +)$ is an abelian group $\implies (R[X], +)$ is an abelian group\\
+$(a_0 + a_1x + \ldots)(b_ + b_1x + \ldots) = (a_0 + b_0) = (\sum\limits_{i \geq 0} a_i x^i)(\sum\limits_{j \geq 0}b_jx^j) = \sum\limits_{i, j} = a_ib_jx^{ij}$
+
+\begin{rmk}
+    Fix $r \in R$. $R[X] \to R$ evalutation map, $f(x) \to f(r)$, is not always a homomorphism unless the ring is commutative
+\end{rmk}
+$f(x) \to f(r), g(x) \to g(r), f + g \to f(r) + g(r)$ okay since $+$ abelian, but $fg \to f(r)g(r)$ may not work if we don't know commutativity holds.
+$(a_0 + a_1r +\ldots)(b_0 + b_1x + \ldots) \iff (a_0 + a_1x + \ldots)(b_0 + b_1r + \ldots)$ with $r$ placed in for $X$ after multiplying polynomials, $a_1rb_1r \neq a_1b_1r^2$ unless $R$ is a commutative ring.
+
+\begin{defn}
+    A factorization of $f(x) \in R[X]$ is $f(x) = p_1(x) \cdots p_k(x), p_i \in R[X]$. Suppose $R$ is commutative $\implies p_i(r) = 0$ for some i $\implies f(r) = 0$ (b.c $fr) = p_1(r) \cdots p_k(r)$.
+
+    If $R$ is an integral domain $\implies$ if $f(r) = 0 \implies p_i(r) = 0$ for some $i$
+\end{defn}
+
+\begin{rmk}
+    Fields are the easiest rings. The next "easiest" ring is $F[X]$, where $F$ is a field
+\end{rmk}
+
+\begin{defn}[Long Division of Polynomials]
+    $F$ field, $f, g\in R[X], g\neq 0 \implies$ we can write $f = qg + r$, where $\deg(r) < \deg(g)$ or $r = 0$.
+\end{defn}
+
+$\Z_5[X]$ 
+
+\section{Group Work 2}
+\begin{rmk}
+    If $\phi_p(x)$ has a root in $\Z_q$, then $\phi_p(x)$ factors as a product of linear factors.
+\end{rmk}
+
+$x^p-1 = (x-1) \phi_p(x) \implies \phi_p(x)$ has root 1 or has root $\alpha \in \Z_q, \alpha\neq 1$.
+
+If $\phi_p(1) = 1 + 1 + \ldots + 1 = p = 0 \pmod{q}$, then $p = q$. $x^p - 1 \in \Z_p[x] = (x-1)^p \implies \phi_p(x) = (x-1)^{p-1}$
+
+$\phi_p(x)$ has root $\alpha \neq 1 \in \Z_q$. $\alpha^p = 1 \in \Z_q$. $\Z_q^*$ is a cyclic group of order $q-1$. $<\alpha> \subset \Z_q^*$, which has $p$ elements, so $p | q-1$. Has $\alpha, \alpha^2, \ldots, \alpha^{p-1}$, all of which have order $p$ by Corollary to Lagrange. So there are all roots of $x^p - 1 \implies$ they are all roots of $\phi_p(x) \implies \phi_p(x)$ factors as $(x-\alpha)(x-\alpha^2)\cdots (a-\alpha^{p-1})$, which is a product of linear factors.
+
+Start with $f(x) + x^d + \ldots \in \Z[x]$. Asusme $f(x)$ is irreducible $/\Q$. 
+\begin{thm*}[Chebotarev density Theorem]
+    Every type of the factorization is possible  over some $\Z_p$. This happens infinitely often.\\
+    $\lim\limits_{N\to \infty}\dfrac{\text{\# of all primes }\leq N \text{ with a specific factorization type}}{\text{\# all primes }\leq N}$
+\end{thm*}
+
+Irreducible polynomial $x^d + \ldots \in \Q[x] \to $ Galois group $\subset S_d$. Density of primes that give a complete factorization of $f(x)$ into linear factors$ = \dfrac{1}{|\text{Galois group}|}$.
+
+$G\subset S_5$ $|G|$ divides $|S_5| = 120$. $\dfrac{1}{|G|} \sim \dfrac{2}{95}\sim \dfrac{1}{47}$.
+
+$x^5 + 2z + 2 \to \dfrac{9}{1040} \sim \dfrac{1}{115} \sim \dfrac{1}{120}\implies G = S_5$
+
+\section{Homomorphisms, ideals, quotient rings}
+\begin{defn}
+    $\phi: R \to S$ is a homomorphism of rings iff \begin{itemize}
+        \item $\phi$ is a homomorphism of abelian groups with respect to addition: $\phi(a + b) + \phi(a) + \phi(b)$
+        \item $\phi(ab) = \phi(a)\phi(b)$
+    \end{itemize}
+\end{defn}
+
+\begin{defn}
+    All the set of all elements $r\in R$ such that $\phi(r) = 0$ is called the \textbf{kernel}, which will be an abelian subgroup of the ring $R$.
+\end{defn}
+
+Take $r\in R$, $s\in \Ker\phi$. Then $\phi(rs) = \phi(r)\phi(s) = \phi(r)0 = 0 = 0\phi(r) = \phi(s)\phi(r) = \phi(sr)$, so $rs, sr \in \Ker\phi$.
+
+\begin{defn}
+    A subset $I \subset R$ is called an \textbf{ideal} if \begin{itemize}
+        \item $I$ is an abelian subgroup with respect to addition
+        \item If $r\in R$ and $s\in R \implies rs, sr \in I$.
+    \end{itemize}
+\end{defn}
+
+\begin{cor}
+    For any homomorphism $\phi: R\to S$, $\Ker\phi$ is an ideal
+\end{cor}
+
+\begin{exm*}
+    The abelian subgroups of $\Z$ are $n\Z$. If you take $r \in \Z$ and $s \in n\Z$, then $s = nk$, and $rs = rnk = n(rk) \in n\Z$.
+\end{exm*}
+
+\begin{cor}
+    All ideals in $\Z$ are of the form $I = n\Z$.
+\end{cor}
+
+$n\Z$ is the kernel of the homomorphisms $\phi: \Z \to \Z_n$ where $\phi$ maps $m \to m\pmod{n}$
+
+\begin{exm*}
+    $R_1 \times \{0\}= R_1 \times R_2$ is an ideal as well. $(s, 0)\cdot (r_1, r_2) = (sr_1, 0)$, and $(r_1, r_2)\cdot (s, 0) = (r_1s, 0)$. This is the kernel of $\phi: R_1 \times R_2 \to R_2$, where $\phi$ maps $(r_1, r_2) \to r_2$. 
+\end{exm*}
+
+Let $R$ be any ring. Then $R$ always has at least two ideals: $R$ (improper ideal) and $\{0\}$ (trivial ideal).
+
+\begin{rmk}
+    Every ideal of a field $F$ is either $F$ or $\{0\}$.
+\end{rmk}
+Let $I \subset F$ be an ideal. If $I = \{0\}$, we're done. Suppose $I \neq \{0\}$. Then exists $x\in I$. So $x^{-1} \in F \implies x^{-1}x = 1 \in I$. Then take any $y \in F, y \cdot 1 = y \in I$. Therefore $F = I$.
+
+\begin{cor}
+    $I \subset R$ is an ideal in a ring with unity. $u\in I$ is a unit $\implies I = R$.
+\end{cor}
+
+\begin{exm*}
+    $R = R[x]$, $F$ is a field. $I = \{f \in R: f(1) = 0\}$. This is an ideal, because $f\in F$ and $g\in I$, then $f(1)g(1) = f(1)0 = 0 \in I$. Alternatively, $\phi: F[X] \to F$ where $\phi(f(x)) \to f(1)$.
+\end{exm*}
+$f(x) \in I \iff f(1) = 0 \iff f(x) = (x-1)g(x) \implies I = \{r(x) : f(x) = (x-1)g(x)\} = (x-1)F[x]$. This looks a \emph{lot} like $n\Z$. 
+
+\begin{defn}
+    $R$ is a commutative ring. Pick $r \in R$. Then the ideal $I = rR := \{rs: s \in R\}$ is called a \textbf{principle ideal}.
+\end{defn}
+
+$I$ is an abelian group since $rs + rs' = r(s + s') \in I$.
+
+Closure since $rsr' = r'rs = r(r's) \in I$
+
+\begin{defn}
+    An integral domain is called a principle ideal domain (PID) if every ideal is principle.
+\end{defn}
+Very good example here being $\Z$, where all ideals are $I = n\Z$.
+
+Take $F$ to be a field. Two ideals: $\{0\}$ (0$\cdot F$) and $F$ (1$\cdot F$), therefore both are principle.
+
+\begin{thm}
+    $R = F[x]$ is a PID for every field $F$.
+\end{thm}
+Take an ideal $I \subset R$. If $I = \{0\}$, then trivial. 
+
+Suppose $I\neq \{0\}$. What is the possible generator of $I$? Choose polynomial $f(x) \in I$ of the smallest possible degree.
+
+\textbf{Claim}: Every $g(x) \in I$ is a multiple of $f(x) \implies I = f(x)R[x]$ principle ideal.
+
+$g(x) = f(x)q(x) + r(x)$. Either $r(x) = 0$, and we are done, or $deg(r) < deg(f)$. Then $r(x)$ can be written as $g(x) - f(x)q(x) \implies r(x)$ is in the ideal, but this contradicts $r(x)$ having smaller degree than $f(x)$, which is a contradiction. Therefore, $deg(r) = 0 \implies g(x) = f(x)q(x)$.
+
+\begin{rmk}
+    $\phi$ is one to one $\iff \Ker\phi = \{0\}$
+\end{rmk}
+Because this is true for homomorphisms of abelian groups.
 \end{document}

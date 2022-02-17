@@ -1,0 +1,144 @@
+% ENORMOUS credit for the foundational formatting
+%   of these notes goes to Patrick Lei. 
+% Check out his fantastic course notes
+%   here: https://git.snopyta.org/abstract/course-notes
+% and his website 
+%   here: https://www.math.columbia.edu/~plei/index.html
+
+\documentclass[twoside, 10pt]{article}
+\usepackage{bbnotes}
+\geometry{margin=2cm}
+
+\definecolor{darkblue}{RGB}{0,0,128}
+\definecolor{darkred}{RGB}{128,0,0}
+\definecolor{darkyellow}{RGB}{96,96,0}
+\definecolor{darkgreen}{RGB}{0,128,0}
+\definecolor{darkdarkred}{RGB}{64,0,0}
+
+\lstset
+{
+basicstyle=\ttfamily\scriptsize, 
+breaklines=true,
+postbreak=\mbox{\textcolor{darkdarkred}{$\hookrightarrow$}\space},
+showstringspaces=false
+keywordstyle = [1]\bfseries\color{darkred},
+keywordstyle = [2]\itshape\color{darkgreen},
+keywordstyle = [3]\sffamily\color{darkblue},
+keywordstyle = [4]\color{darkyellow},
+}
+
+\fancypagestyle{firstpage}
+{
+   \fancyhf{}
+   \fancyfoot[R]{\itshape Page \thepage\ of \pageref{LastPage}}
+   \renewcommand{\headrulewidth}{0pt}
+}
+
+
+\fancypagestyle{pages}
+{
+\fancyhead[C]{\scshape Math 571}
+\fancyhead[L]{\scshape Ben Burns}
+\fancyhead[R]{\scshape Spring 2022}
+\renewcommand{\headrulewidth}{0.1pt}
+}
+
+\pagestyle{pages}
+
+\title{Math 571}
+\author{Taught by Tom Weston \\ Scribed by Ben Burns}
+\affil{UMass Amherst}
+\date{Spring 2022}
+
+\newcommand{\F}{\mathbb{F}}
+\usepackage{algorithmicx}
+
+\begin{document}
+
+\maketitle\thispagestyle{firstpage}
+
+\tableofcontents
+
+\section{First Exam}
+Covers through today
+\begin{itemize}
+    \item Discrete Logs
+    \item Diffie-Hellman Key Exchange
+    \item Shanks Algorithm
+    \item RSA
+    \item Factorization (p-1 method, trial division, difference of squares)
+\end{itemize}
+\begin{exm}
+    Fiven a few explicity congruences $c_i \equiv a_i^2\pmod{n}$ explain how you can find a factor of $n$
+\end{exm}
+
+Practice exam by Thursday
+
+Format of Exam: Around 4 questions, 2 proof, 2 computation, no calculator
+
+\section{Factorization by difference of squares}
+(1) Find lots of congruences $a_1^2 \equiv c_i \pmod{n}$ with $c_i$ product of small primes. Fix small number $B$, and require all prime factors $p \leq B$\\
+(2) Elimination: Find a subset of these congruences which multiply to give $x^2 \equiv y^2 \pmod{n}$ ($\F_2$ linear algebra)\\
+(3) Compute $\gcd(x\pm y, n)$, hope its a proper factors of $n$
+
+Review finding kernel, Gaussian Elimination $\F_2$, book of (2)
+
+\textbf{Algorithm}: Find numbers $a$ such that $a^2 \pmod{n$} is a product of small primes
+
+$m = \left\lfloor \sqrt{n}\right\rfloor + 1$. Try $a = m, m + 1, m+2, \cdots$, $a^2 \pmod{n} = a^2 - n$. 
+
+This is relatively small since $a \approx\sqrt n$, so has a better chance of factoring into small primes
+
+$Q(x) = x^2 - n$
+
+Looking at $x = m, m+1, m+2$, we find $x^2 \equiv Q(x) \pmod{n}$, where $x^2 = a_i$ and $Q(x) = c_i$.
+
+\textbf{Problem}: Given $n, a$, how do you determine if $Q(a) = a^2 - n$ is a product of small primes without factoring?
+
+%Todo: What is a KMatrixSpace
+
+\begin{rmk}
+    Roughly half of primes will never be factors of $Q(a)$
+\end{rmk}
+Why? Suppose $p | Q(a)$ for some $a$. Then $p | a^2 - n \implies a^2 \equiv n \pmod{p} \implies$ $n$ is a square mod $p$.
+
+Fix odd prime $p$
+
+\begin{defn}
+    Given $t\in \F_p$ such that $t\neq 0$, we say $t$ is a quadratic residue mod $p$ if $\exists s \in \F_p$ such that $s\equiv s^2 \pmod{p}$
+\end{defn}
+For example, $p=11$
+
+"Squares are always squares" - :D
+
+There are always exactly $\dfrac{p-1}{2}$ squares and $\dfrac{p-1}{2}$ non-squares 
+%Todo: prove the first half of the squares will be distinct
+
+\begin{defn}[Legendre Symbol]
+    $\left(\dfrac{t}{p}\right) = +1$ if $t$ square mod $p$, $-1$ if $t$ non-square, $0$ if $t = 0 \pmod{p}$.
+\end{defn}
+
+\begin{rmk}
+    The quadratic resides of $\F_p$ are the even powers of any generator $g$.
+\end{rmk}
+Fix a generator $g\in \F_p$. Fix $t\in \F_p$. Write $t = g^e$ for some $e$ s.t $0\leq e \leq p-1$. If $e$ is even then $t = (g^{e/2})^2 \implies \left(\dfrac{t}{p}\right) = 1$. Since this already gives $(p-1)/2$ squares for $e = 0, 2, 4, \ldots p-3$, so it follows that $e$ odd $\implies \left(\dfrac{t}{p}\right) = -1$.
+
+\begin{defn}[Properties of Legendre Symbol]
+    (1) $\left(\dfrac{t}{p}\right) \equiv t^{\dfrac{p-1}{2}} \pmod{p}$\\
+    (2) $\left(\dfrac{st}{p}\right) = \left(\dfrac{s}{p}\right)\left(\dfrac{t}{p}\right)$\\
+    (3) $\left(\dfrac{-1}{p}\right) = (-1)^{\dfrac{p-1}{2}} = 1$ if $p\equiv 1\pmod{4}$, $-1$ is $p\equiv 3\pmod{4}$
+\end{defn}
+Proof:\\ 
+%Todo: fill out
+(1) FLT for squares, polynomial counting argument for non-squares\\
+(2) right side of (1) is multplicative, so left side has to be as well\\
+(3) 
+
+\begin{defn}[Quadratic Reciprocity Law]
+    Let $p, q$ be distinct odd positive primes. Then $\left(\dfrac{p}{q}\right) = \dfrac{q}{p}(-1)^{\dfrac{p-1}{2}\dfrac{q-1}{2}}$.
+\end{defn}
+Equivalently, if either $p$ or $q$ is congruent to 1 mod 4, then the reciprocity holds. Else, they are negations.
+\begin{defn}[Quadratic Sieve] 
+    brr
+\end{defn}
+\end{document}
