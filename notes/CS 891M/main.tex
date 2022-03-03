@@ -1,0 +1,107 @@
+% ENORMOUS credit for the foundational formatting
+%   of these notes goes to Patrick Lei. 
+% Check out his fantastic course notes
+%   here: https://git.snopyta.org/abstract/course-notes
+% and his website 
+%   here: https://www.math.columbia.edu/~plei/index.html
+
+\documentclass[twoside, 10pt]{article}
+\usepackage{bbnotes}
+\geometry{margin=2cm}
+
+\definecolor{darkblue}{RGB}{0,0,128}
+\definecolor{darkred}{RGB}{128,0,0}
+\definecolor{darkyellow}{RGB}{96,96,0}
+\definecolor{darkgreen}{RGB}{0,128,0}
+\definecolor{darkdarkred}{RGB}{64,0,0}
+
+\lstset
+{
+basicstyle=\ttfamily\scriptsize, 
+breaklines=true,
+postbreak=\mbox{\textcolor{darkdarkred}{$\hookrightarrow$}\space},
+showstringspaces=false
+keywordstyle = [1]\bfseries\color{darkred},
+keywordstyle = [2]\itshape\color{darkgreen},
+keywordstyle = [3]\sffamily\color{darkblue},
+keywordstyle = [4]\color{darkyellow},
+}
+
+\fancypagestyle{firstpage}
+{
+   \fancyhf{}
+   \fancyfoot[R]{\itshape Page \thepage\ of \pageref{LastPage}}
+   \renewcommand{\headrulewidth}{0pt}
+}
+
+
+\fancypagestyle{pages}
+{
+\fancyhead[C]{\scshape Theory Seminar}
+\fancyhead[L]{\scshape Ben Burns}
+\fancyhead[R]{\scshape Spring 2022}
+\renewcommand{\headrulewidth}{0.1pt}
+}
+
+\pagestyle{pages}
+
+\title{UMass CS Theory Seminar}
+\author{Lectures by Various \\ Scribed by Ben Burns}
+\affil{UMass Amherst}
+\date{Spring 2022}
+
+\begin{document}
+
+\maketitle\thispagestyle{firstpage}
+
+\tableofcontents
+
+\section{Post Quantum Crypography - Katerina Sotiraki}
+
+Supersingular elliptic curve isogeny
+
+Lattices are geometric structures, represented using matrices
+
+Collision-Resistant Hashing: compressing functions where it is computationally hard to find collisions
+\begin{exm*}[Digital signatures]
+   How can we be sure that the document or application we are opening is that we are looking for, by verifying the signature. The hardness of finding collisions is important, because otherwise you can find other files that hash in the same way, and therefore are recognized as signed 
+\end{exm*}
+
+\begin{exm*}[Blockchains]
+   Each block contains a hash of the previous block. If it is not hard, a malicious agent can insert a malicious block that is recognized as valid
+\end{exm*}
+
+Is there an optimal collision-resistant hash function? i.e is there a best among factoring, RSA. 
+
+Start with a hard problem. What if we start an NP-complete problem like SAT
+%Todo: What is SAT again?
+
+Cryptographic hardness is different than computational hardness. In other words, average-case hardness is not the same as worst-case hardness. Hash functions always have collisions, but for NP problems, we don't know if there is a solution and are attempting to verify if there is one.
+
+Instead, start with lattices. Average-case hardness $\sim$ worst-case hardness. The second property is our result.
+
+Starting with all collision-resistent hash functions, we can recognize a family that is the hardest. 
+
+\begin{thm}[S Zirdelis FOCS '18]
+   There is an optimal construction for worst-case collision-resistant hash function family based on a lattice problem
+\end{thm}
+
+\begin{defn}[Total Search problem]
+   A search problem where a solution will always exist
+\end{defn}
+For example, integer factorization will always have a solution by the Fundamental Theorem of Arithmetic
+
+Funding collisions in compressing functions is total. Compressing function: $f(x_1, x_2) = x_1 \land x_2$, must have a collision by pigeonhole principle, since our output space has is strictly smaller than our input space.
+
+[Ajtai '94] Hash functions from lattices. Key is a rXm matrix of $\Z_q$ entries, input is a binary vector of size $m$, and the output is matrix vector multiplication mod $q$.
+
+Why is it hard? Short integer solution problem %Todo: research
+
+Binary inverible matrix
+
+Back propagation. Given vector $x$ and matrix $g$, find prepended matrix $y$ so that $yx$ in kernel of $g$. We can find $y$ because $g$ is binary invertible.
+
+PPAD complexity
+
+Finding Nash Equilibrium 
+\end{document}

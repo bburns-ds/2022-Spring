@@ -439,7 +439,7 @@ Let $I \subset F$ be an ideal. If $I = \{0\}$, we're done. Suppose $I \neq \{0\}
 $f(x) \in I \iff f(1) = 0 \iff f(x) = (x-1)g(x) \implies I = \{r(x) : f(x) = (x-1)g(x)\} = (x-1)F[x]$. This looks a \emph{lot} like $n\Z$. 
 
 \begin{defn}
-    $R$ is a commutative ring. Pick $r \in R$. Then the ideal $I = rR := \{rs: s \in R\}$ is called a \textbf{principle ideal}.
+    $R$ is a ring. Pick $r \in R$. Then the ideal $I = rR := \{rs: s \in R\}$ is called a \textbf{principle ideal}.
 \end{defn}
 
 $I$ is an abelian group since $rs + rs' = r(s + s') \in I$.
@@ -468,4 +468,126 @@ $g(x) = f(x)q(x) + r(x)$. Either $r(x) = 0$, and we are done, or $deg(r) < deg(f
     $\phi$ is one to one $\iff \Ker\phi = \{0\}$
 \end{rmk}
 Because this is true for homomorphisms of abelian groups.
+
+\begin{defn}
+    For ring $R$ and ideal $I \subset R$ such that $I \neq R$, $I$ is called maximal if every ideal $J$ such that $I \subset J \subset R$ is either $I$ or $R$.
+\end{defn}
+
+\begin{exm*}
+    $\{0\} \subset F$ field, $p\Z \subset \Z$ where $p$ prime.\\
+    $F[x]$, for $F$ field, is a principle ideal domain. Take $f(x)F[x] \subset F[x]$, where $f(x)$ is an irreducible polynomial $\implies f(x)F[x]$ is a maximal ideal
+\end{exm*}
+
+\begin{exm}
+    Compute $\Z_2[x]/(x^2 + x + 1)F[x]$. 
+\end{exm}
+What are the cosets? Take $g(x) \in \Z_2[x]$ and take its coset $g(x) + x^2 + x + 1$.
+
+Claim: there are only four cosets. The ideal itself $I$, $1 + I$, $x + I$, $(1 + x) + I$
+
+Take any coset $g(x) + I$. Perform long division $g(x) = (x^2 + x + 1)q(x) + r(x)$, where $deg(r) < 2$. All possible $r(x)$ are 0, 1, $x$, $x + 1$.
+
+$R$ an integral domain. 
+\begin{defn}
+    $p \in R$ irreducible if $p = ab \implies a$ or $b$ is a unit
+\end{defn}
+
+\begin{defn}
+    $p\in R$ prime if $(p) \subset R$ is a prime ideal.
+\end{defn}
+$p | ab \implies p | a$ or $p | b$ $\forall a, b \in R$
+
+\begin{rmk}
+    If $p$ is prime then $p$ is irreducible
+\end{rmk}
+
+\section{Unique Factorization Domains}
+
+\begin{defn}
+    An integral domain $R$ is called a unique factorization domain (UFD) if\\
+    1) Every element can be written as $r = up_1p_2\cdots p_r$ where $u$ is a unit and $p_i$ are irreducible elements\\
+    2) Suppose $up_1\cdots p_r = vq_1 \cdots q_s$, with $u, v$ unit, everything else irreducible, then $r = s$ and after reordering $q_1\ldots q_s$, $p_i = q_i \cdot u)i$ for some unit $u_i$
+\end{defn}
+
+\begin{rmk}
+    If $R$ is a UFD, then every irreducible element is prime
+\end{rmk}
+$r \in R$ irreducible. Suppose $r | ab$, then $ab = pc, c\in R$. Apply factorization to $a, b, c$: $(u p_1\ldots p_r)(vq_1\ldots q_s) = p(wl_1 \ldots l_k)$, $u, v, w$ are units
+
+Uniqueness of factorization $\implies p_i = \alpha p$ or $q_i = \alpha p$ for for some $i$, unit $\alpha$. 
+
+In the first case, then $a = up_1 \ldots p_{i-1}(\alpha p)p_{i + 1}\ldots p_r \implies p | a$
+
+\begin{rmk} %Todo: is this a Euclidean domain
+    Suppose $R$ is an an integral domain where factorization exists. $\implies$ one can conclude that, if every irreducible unit is prime, then $R$ is a UFD
+\end{rmk}
+Suppose $up_1\cdots p_r = vq_1 \cdots q_s$, with $u, v$ unit. Then $p_1 | vq_1\ldots q_s$. $p_1 \nmid u \implies p_1 | q_i$ for some $i$. (Because $p_1$ is irreducible, and here all irreducibles are prime). By rearranging, $p_1 | q_1$, so $p_1 \beta = q_1$. $q_1$ irreducible implies $\beta$ must be a unit. Cancel $p_1$ using integral domain cancelation law: $up_2\ldots p_r = (v\beta)q_2\ldots q_s$. By induction, we are done.
+
+\begin{exm*}
+    $K[X]$ is a UFD if $K$ is a field.
+\end{exm*}
+(1) $f(x) \in K[x]$ is irreducible. We already checked that $f(x)K[x]$ is maximal. But every maximal ideal is prime $\implies f(x)$ is a prime element.
+
+(2) Show existence of factorization: take polynomial $f(x) \in K[x]$. Argue by induction on $deg(f(x))$. If $f(x)$ is unit $\iff deg(f(x)) = 0$ $\implies$ factorization exists. If $f(x)$ is irreducible $\implies$ factorization exists. Else, $f(x) = g(x)h(x)$ for $0 < deg(g(x)), deg(h(x)) < deg(f(x))$. Both admit factorizations by induction, so combine then to get factorization.
+
+Suppose $r = r_1$ does not allow factorization $\implies r_1$ is not a unit, not irreducible $\implies r = ab$, where $a, b$ not units. One of them, say $a = r_2$ does not allow factorization. $r_1 = r_2b_2$, $b_2$ is not a unit. Can continue inducting, and get a sequence $r_i = r_{i+1}b_{i+1}$ where all $r_1, r_2, \ldots$ do not allow factorization and $b_1, b_2, \ldots$ are not units. 
+
+Take $(r_1)$ and $(r_2)$. $(r_1) \subset (r_2) \subset (r_3) \subset \ldots$. Can it be that $(r_1) = (r_{i +1})$? No. Then $r_i = r_{i +1}b_{i + 1}$ and $r_{i + 1} = r_ic_i \implies r_i = r_ib_{i + 1}c_i \implies 1 = b_{i+1}c_i \implies b_{i +1}$ is a unit, contradiction.
+
+$(r_1) \subsetneq (r_2) \subsetneq (r_3) \subsetneq \ldots$
+
+\begin{defn}
+    A commutative ring $R$ is called Noetherian if there are no infinite ascending chains of ideals $I_1 \subsetneq I_2 \subsetneq I_3 \subsetneq \ldots$
+\end{defn}
+
+\begin{cor}
+    If $R$ is Noetherian integral domain where irreducible elements are prime, then it's a UFD
+\end{cor}
+
+\section{Field Extensions}
+$K \subset F$, towers of fields: $K_1 \subset K_2 \subset K_3$
+
+$K$ field, $f(x) \in K[x]$ irreducible polynomial. Take $I = f(x)$ maximal ideal. $F = K[X]/I$ is a field.
+\begin{thm}
+    $K \to K[x] \to K[x]/I = F \implies K \to F$ by composition. $f(x)$ has a root $\alpha \in F$
+\end{thm}
+
+\begin{cor}
+    If you take any polynomial in $f(x) \in K[x]$, factors into linear factors in some field extension of $K \subset F$
+\end{cor}
+
+\textbf{Proof}: $K \stackrel{\phi}{\to} F$. Ker$\phi$ is an ideal of $K$, $K$ is a field, either Ker$\phi = \{0\}$ (and $\phi$ is injective) or Ker$\phi = K$. But that can't happen because $1 \in K \to 1 \in K[x] \to 1 + I$, a unity in $F$, which is certainly not zero, so $\phi(1) \neq 0$, and $I$ must be $\{0\} \implies K \to F$
+
+Claim: $x + I = \alpha \in F$ is going to be a root of $f(x)$ $f(x + I) = f(x) + I = I = 0 \in F$. If confused, try plugging in $x + I$ and doing it out.
+
+$x^2 + 1 \in \R[x]$, $I = (x^2 + 1)$. $\R[x]I = \{p(x) + I\} = \{p(x) = I : deg(p < 2)\}$. Indeed $p(x) = (x^2 + 1)q(x) + r(x) \implies p(x) + I = r(x) + I$ because $p(x) - r(x) = q(x)(x^2 + 1) \in I$. Morever, every coset can be written uniquely as $\{a + bx + I\}$ where $a, b \in \R$. 
+
+\begin{defn}
+    Let $K \subset K$ be a field extension. Choose some $\alpha \in F$. $\alpha$ is \textbf{algebraic} over $K$ if there exists $f(x) \in K[x]$ such that $f(\alpha) = 0$.
+\end{defn}
+
+\begin{defn}
+    Any element that is not algebraic is \textbf{transcendental} over $K$
+\end{defn}
+
+\begin{exm*}
+    Consider $\Q \subset \C$. Algebraic $\alpha \in \C$ over $\Q$ are called algebraic (transcendental) numbers.
+\end{exm*}
+
+\begin{thm}
+    $e, \pi$ are transcendental over $\Q$ 
+\end{thm}
+Very hard to prove. Much easier to prove numbers are algebraic
+
+\begin{rmk}
+    If you have a trivial field extension $F \subset F$, then all elements will be algebraic    
+\end{rmk}
+In a real analysis context, algebraic and transcendental are with rational coefficients, so $\pi$ and $e$ are transcendental. For the extension $\R \subset \R$ and $\R \subset \C$ both are now algebraic, since $x - \pi = 0$ has $\pi$ as a solution, and $x - e = 0$ has $e$ as a solution.
+
+\begin{lem}
+    Suppose $K \subset F$ field extension. Take $\alpha \in F$ algebraic $\implies$ there exists a unique minimal (aka irreducible) polynomial irr($\alpha$, $K$) which is \\
+    1) irreducible \\
+    2) has $\alpha$ as a root \\
+    3) and monic 
+\end{lem}
 \end{document}

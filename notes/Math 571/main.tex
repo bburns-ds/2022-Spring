@@ -51,6 +51,7 @@ keywordstyle = [4]\color{darkyellow},
 \date{Spring 2022}
 
 \newcommand{\F}{\mathbb{F}}
+\renewcommand{\O}{\mathbb{O}}
 \usepackage{algorithmicx}
 
 \begin{document}
@@ -59,86 +60,222 @@ keywordstyle = [4]\color{darkyellow},
 
 \tableofcontents
 
-\section{First Exam}
-Covers through today
-\begin{itemize}
-    \item Discrete Logs
-    \item Diffie-Hellman Key Exchange
-    \item Shanks Algorithm
-    \item RSA
-    \item Factorization (p-1 method, trial division, difference of squares)
-\end{itemize}
-\begin{exm}
-    Fiven a few explicity congruences $c_i \equiv a_i^2\pmod{n}$ explain how you can find a factor of $n$
-\end{exm}
-
-Practice exam by Thursday
-
-Format of Exam: Around 4 questions, 2 proof, 2 computation, no calculator
-
-\section{Factorization by difference of squares}
-(1) Find lots of congruences $a_1^2 \equiv c_i \pmod{n}$ with $c_i$ product of small primes. Fix small number $B$, and require all prime factors $p \leq B$\\
-(2) Elimination: Find a subset of these congruences which multiply to give $x^2 \equiv y^2 \pmod{n}$ ($\F_2$ linear algebra)\\
-(3) Compute $\gcd(x\pm y, n)$, hope its a proper factors of $n$
-
-Review finding kernel, Gaussian Elimination $\F_2$, book of (2)
-
-\textbf{Algorithm}: Find numbers $a$ such that $a^2 \pmod{n$} is a product of small primes
-
-$m = \left\lfloor \sqrt{n}\right\rfloor + 1$. Try $a = m, m + 1, m+2, \cdots$, $a^2 \pmod{n} = a^2 - n$. 
-
-This is relatively small since $a \approx\sqrt n$, so has a better chance of factoring into small primes
-
-$Q(x) = x^2 - n$
-
-Looking at $x = m, m+1, m+2$, we find $x^2 \equiv Q(x) \pmod{n}$, where $x^2 = a_i$ and $Q(x) = c_i$.
-
-\textbf{Problem}: Given $n, a$, how do you determine if $Q(a) = a^2 - n$ is a product of small primes without factoring?
-
-%Todo: What is a KMatrixSpace
-
-\begin{rmk}
-    Roughly half of primes will never be factors of $Q(a)$
-\end{rmk}
-Why? Suppose $p | Q(a)$ for some $a$. Then $p | a^2 - n \implies a^2 \equiv n \pmod{p} \implies$ $n$ is a square mod $p$.
-
-Fix odd prime $p$
+\section{Elliptic Curves}
+In the 1980s, Lenstra found a way to apply the very developed theory of elliptic curves to cryptography and factorization. 
 
 \begin{defn}
-    Given $t\in \F_p$ such that $t\neq 0$, we say $t$ is a quadratic residue mod $p$ if $\exists s \in \F_p$ such that $s\equiv s^2 \pmod{p}$
-\end{defn}
-For example, $p=11$
-
-"Squares are always squares" - :D
-
-There are always exactly $\dfrac{p-1}{2}$ squares and $\dfrac{p-1}{2}$ non-squares 
-%Todo: prove the first half of the squares will be distinct
-
-\begin{defn}[Legendre Symbol]
-    $\left(\dfrac{t}{p}\right) = +1$ if $t$ square mod $p$, $-1$ if $t$ non-square, $0$ if $t = 0 \pmod{p}$.
+    An elliptic curve is a plane cubic curves given by an equation $y^2 = x^3 + ax + b$ with $a, b \in \Q$ s.t $\Delta = 4a^3 + 27b^2 \neq 0$
 \end{defn}
 
 \begin{rmk}
-    The quadratic resides of $\F_p$ are the even powers of any generator $g$.
+    Most general equation, the Weierstrass equation: $y^2 = a_1xy + a_3y = x^3 + a_2x^2 + a_4x + a_6$
 \end{rmk}
-Fix a generator $g\in \F_p$. Fix $t\in \F_p$. Write $t = g^e$ for some $e$ s.t $0\leq e \leq p-1$. If $e$ is even then $t = (g^{e/2})^2 \implies \left(\dfrac{t}{p}\right) = 1$. Since this already gives $(p-1)/2$ squares for $e = 0, 2, 4, \ldots p-3$, so it follows that $e$ odd $\implies \left(\dfrac{t}{p}\right) = -1$.
 
-\begin{defn}[Properties of Legendre Symbol]
-    (1) $\left(\dfrac{t}{p}\right) \equiv t^{\dfrac{p-1}{2}} \pmod{p}$\\
-    (2) $\left(\dfrac{st}{p}\right) = \left(\dfrac{s}{p}\right)\left(\dfrac{t}{p}\right)$\\
-    (3) $\left(\dfrac{-1}{p}\right) = (-1)^{\dfrac{p-1}{2}} = 1$ if $p\equiv 1\pmod{4}$, $-1$ is $p\equiv 3\pmod{4}$
-\end{defn}
-Proof:\\ 
-%Todo: fill out
-(1) FLT for squares, polynomial counting argument for non-squares\\
-(2) right side of (1) is multplicative, so left side has to be as well\\
-(3) 
+\subsection{Point addition}
+Define $E := y^2 = x^3 + ax + b$. The key thing is the addition law. Given $P, Q$ points on $E$, construct a third point $P \oplus Q$
 
-\begin{defn}[Quadratic Reciprocity Law]
-    Let $p, q$ be distinct odd positive primes. Then $\left(\dfrac{p}{q}\right) = \dfrac{q}{p}(-1)^{\dfrac{p-1}{2}\dfrac{q-1}{2}}$.
+\begin{thm}[Bezout's Theorem]
+    A curve of degree $d$ and a curve of degree $d'$ have $dd'$ points of intersection
+\end{thm}
+Two cocentric circles won't have any intersections $\to$ requires complex numbers. 
+
+Take elliptic curve of degree 3, and a line of degree one. By Bezout's Theorem, there will be two points of intersection. Two of which are $P$ and $Q$, and call the third $R$. Set $P \oplus Q$ to be the reflection of $R$ across the $x$-axis. With a few other conditions, we get a group law.
+
+\begin{exm*}
+    $y^2 = x^3 - 15x + 18$. $P$ = (7, 16) $Q$ = (1, 2)
+\end{exm*}
+$y - 2 = \dfrac{7}{3}(x-1) \implies y = \dfrac{7}{3}x - \dfrac{1}{3}$. Insert into elliptic curve $(\dfrac{7}{3}x - \dfrac{1}{3}) = x^3 - 15x + 18 \implies \dfrac{49}{9}x^2 - \dfrac{14}{9}x + \dfrac{1}{9} = x^3 - 15x + 18 \implies x^3 - \dfrac{49}{9}x^2 + \ldots = 0$. Move all terms to one side, and solve the cubic. 
+
+Don't need the cubic equation, because we know that $P$ and $Q$ are on the intersection, or $x = 7$ and $x = 1$ are two zeros. $(x - 1)(x - 7)(x - x_0) \implies x^3 - (8 + x_0)x^2 + \ldots$, equate the quadratic coefficients $\dfrac{-49}{9}$ = $-(8 + x_0) \implies x_0 = \dfrac{-23}{9}$. Therefore $R$ has an $x$ value of $\dfrac{-23}{9}$. 
+
+Caveats: if we take the same point twice, take the tangent line rather than a secant line. If you take two points on a vertical line, your third is the projective point at infinity.
+
+$E(\R) = \{(x, y) \in \R^2 | y^2 = x^3 + ax + b\} \cup \{\O\}$, where $\O$ is the point at infinity.
+
+Assuming we have the two points $P = (x_1, y_1)$ and $Q = (x_2, y_2)$, where $x_1 \neq x_2$.
+
+1) (Secant) Line PQ\\
+$Y = y_1 + \lambda(X - x_1), \lambda = \dfrac{y_2 - y}{x_2 - x}$
+
+2) Insert into cubic\\
+$(y_1 + \lambda(X - x_1))^2 = X^3 + aX + b$\\
+$0 = X^3 + (-\lambda)X^2 + \ldots$
+
+We know this must factor into $(X-x_1)(X-x_2)(X-x_3)$ since $P$ and $Q$ are on the line and on $E$.
+
+3) Equate coefficient of $X^2$\\
+$-\lambda^2 = -(x_1 + x_2 + x_3)$\\
+$x^3 = \lambda^2 - x_1 - x_2$
+
+4) Plug $X = x_3$ into line\\
+$y_3 = t_1 + \lambda(x_3 - x_1)$
+
+5) $P\oplus Q = (x_3, -y_3)$
+
+\begin{rmk}
+    This exercise is not to suggest memorizing this algorithm, just to demonstrate that there is a general solution method for two points with distinct $x$ values on $E$.
+\end{rmk}
+
+\subsection{Special Cases} Now we address more special cases of point addition
+
+1) $\O \oplus Q = Q$, $P \oplus \O = P$.
+
+2) $P = (x, y)$\\
+$-P = (x, -y)$ (reflection across $x$-axis)\\
+$P \oplus -P = \O$\\
+
+3) $P \oplus P$: The only difference from the general case is that, here, $\lambda$ is the slope of the tangent line of $E$ at $P$, which can be determined by implicit differentiation $\implies 2YY' = 3X^2 + a \implies Y'  = \dfrac{3X + a}{2Y} \implies \lambda = \dfrac{3x_1^2 + a}{2y_1}$. 
+
+\begin{rmk}
+    In this 3rd case, if $y_1$ is zero, this obviously doesn't work. However, that is just where $P$ is on the $x$-axis, and is therefore its own reflection, so $P \oplus P = P \oplus -P = \O$
+\end{rmk}
+
+\begin{prop}
+    $E(\R) = \{(x, y) \in \R^2 | y^2 = x^3 + ax + b\} \cup \{\O\}$, where $\O$ is the point at infinity, is an abelian group under the operation $\oplus$ with identity $\O$. 
+\end{prop}
+\textbf{Proof}\\
+Binary operation $\oplus$ which preserves $E(\R)$. Check axioms.
+
+1) Identity: $P \oplus \O = \O\oplus P = P$ for all $P$.
+
+2) Inverses: $P \oplus -P = \O$
+
+3) Abelian: Computing secant lines with different order of endpoints gives the same line, so $\oplus$ commutes
+
+4) Associativity: In principle, this can be done by algebra with exhaustive case study. Alternatively, \\
+$\to$ 4.1) do this in projective geometry, use Pascal's theorem\\
+$\to$ 4.2) Develop theory of algebraic curves enough, it becomes obvious (tensor product with Picard group, that is a group and is associative, so this is associative)
+
+\subsection{Introducing other fields}
+\begin{rmk}
+    We don't actually care about $E(\R)$, but variations are useful in cryptography
+\end{rmk}
+
+\begin{defn}
+    $E(\Q) = \{(x, y) \in \R^2 | y^2 = x^3 + ax + b\} \cup \{\O\} \subset E(\R)$
 \end{defn}
-Equivalently, if either $p$ or $q$ is congruent to 1 mod 4, then the reciprocity holds. Else, they are negations.
-\begin{defn}[Quadratic Sieve] 
-    brr
+
+\begin{rmk}
+    It is possible for there to be no rational points and $E(\Q)$ is just $\O$
+\end{rmk}
+
+\textbf{Claim}: $E(\Q)$ is a subgroup of $E(\R)$ under $\oplus$
+
+1) $\O \in E(\Q)$ (either by definition of $E(\Q)$ or since $\O$ is (0, 0, 1) in projective geometry
+
+2) $P \in E(\Q) \implies -P \in E(\Q)$, obvious since $-P = (x_1, -y_1)$
+
+3) $P, Q \in E(\Q) \implies P\oplus Q \in E(\Q)$. All special cases are obvious. For the general case, all of the suboperations are closed under rational numbers, so the entire operation is a rational operation.
+
+\begin{rmk}
+    A field is a set $K$ with operations $+, \cdot$ satisfying a collection of axioms that satisfy all the expected axioms as under real numbers ($+, -, \cdot, /$)
+\end{rmk}
+
+\begin{exm*}
+    $R, \Q, \C, \F_p = \Z/p$ where $p$ prime.
+\end{exm*}
+
+\begin{rmk}
+    Modulus has to be prime since $\Z/n$ can have elements without an inverse (not even integral domain)
+\end{rmk}
+
+\begin{defn}
+    For field $K$, an elliptic curve over $K$ is $Y^2 = X^3 + aX + b$ where $a, b \in K$ s.t $\Delta_E = 4a^3 + 27b^2 \neq 0$.
 \end{defn}
+
+$E(K) = \{(x, y) \in K \times K | Y^2 = X^3 + aX^2 + b \in K\} \cup \{\O\}$ is an abelian group under $\oplus$. 
+
+\begin{exm*}
+    $E(\F_p) = \{(x, y) \in \F_p^2 | Y^2 = X^3 + aX^2 + b\pmod{p}\} \cup \{\O\}$\\
+    $E = y^2 = x^3 + x + 1, K = \F_p$
+\end{exm*}
+
+\begin{tabular}{c|c|c}
+    $x$ & $x^3 + x + 1$ & $y$ s.t $y^2 = x^3 + x + 1$\\
+    \hline
+    0 & 1 & $\pm$ 1\\
+    1 & 3 & $X$\\
+    2 & 4 & $\pm$2\\
+    3 & 3 & $X$\\
+    4 & 6 & $X$\\
+    5 & 5 & $X$\\
+    6 & 6 & $X$\\
+\end{tabular}
+
+$E(\F_7) = \{\O, (0, 1), (0, -1), (2, 2), (2, -2)\}$
+
+$(0, 1) \oplus (2, 2)$
+
+$\lambda = \dfrac{2-1}{2-0} = \dfrac{1}{2} = 4$\\
+$\implies x_3 = \lambda^2 - x_1 - x_2 = 16 - 0 - 2 = 14 = 0$\\
+$\implies y_3 = 1 + 4(0 - 0) = 1$\\
+$\implies (0, 1) \oplus (2, 2) = -(0, 1) = (0, -1)$
+
+\subsection{Classifying E} What kind of groups are we getting?
+
+\begin{exm*}
+    $E(\F_p)$ is a finite abelian group. $|E(F_p)| \leq p^2 + 1$, but we can do far better, since for each $x$ coordinate can give us at most 2 $y$ coordinates, so $|E(F_p)| \leq 2p + 1$.
+\end{exm*}
+This bound still isn't best, but it's better
+
+\begin{exm*}
+    $E(\R)$ is either $S^1$ or $S^1 \times \Z/2$, where $S^1$ is the circle group under addition of angles.
+\end{exm*}
+Which one it is is detectable based on how many roots $E$ has. Only 1 compact lie group of dimension 1, which is $S^1$.
+
+\begin{exm*}
+    $E(\C)$ is the torus, $S^1 \times S^1$
+\end{exm*}
+
+\begin{thm}[Mordell-Weil Theorem]
+    $E(\Q)$ is a finitely generated abelian group $\implies E(\Q) \cong \Z^r \times T$, where $r \geq 0$, and $T$ is the torsion group. (which is finite) %Todo: research this
+\end{thm}
+
+
+\begin{exm*}
+    $E(\Q) \cong \Z$, there is a point $P_0 \in E(\Q)$ s.t every point in $E(\Q)$ is $nP_o$ for some $n\in \Z$
+\end{exm*}
+$nP_o$ := $P_o \oplus P_o \oplus \cdots \oplus P_o$ for $n > 0$, or $-P_o \oplus -P_o \oplus \ldots \oplus -P_o$ for $n < 0$.
+
+\begin{thm}[Mazar, 1977]
+    $T \cong \Z/n$ for $n = 1, 2, \ldots, 10, 12$ or $\Z/2 \times \Z/n$ for $n = 2, 4, 6, 8$
+\end{thm}
+
+"Mazar is the best number theorist of the 20th century, but I'm a bit biased" - man advised by Mazar.
+
+What about $r$? Called the rank. $r$ is 0, 50\% of the time, and $r = 1$ 50\%. $r \geq 2$ occurs but rarely. Record $r$ is probably around 30, hypothesis is that $r$ is unbounded.
+
+There are certain algorithms to compute $r$ and $E(\Q)$
+
+\begin{rmk}
+    There is a conjectural analytic formula for $r$. Bircht and Swinaton-Dyer %Todo: research
+\end{rmk}
+
+% \begin{rmk}
+%     Silverman + Tate: Rational Points on Elliptic Curves. Should be at the level we can understand, at the cost of using less effective algebraic arguments at times
+% \end{rmk}
+
+\section{Elliptic Curves over Finite Fields}
+$E : y^2 = x^3 + ax^2 + b$, where $a, b \in \F_p$
+
+How big can $E(\F_p)$? 
+
+How to compute?
+
+First approach: for each $x = x_0$, look at $x_0^3 + ax_0 + b$.$= \left(\dfrac{x_0^3 + ax_0^2 + b}{p}\right) + 1$ (Legandre symbol)\\$\implies$ if this is a nonzero square, 2 points. For nonsquare, 0 points. zero, 1 point. 
+
+$|E(\F_p)| = \sum\limits_{x_0=0}^{p-1}\left(\dfrac{x_0^3 + ax_0^2 + b}{p}\right) + 1 + 1 = p + 1 + \sum\limits_{x_0=0}^{p-1}\left(\dfrac{x_0^3 + ax_0^2 + b}{p}\right)+ 1$ 
+
+Since $\left(\dfrac{a}{p}\right)$ is 1 or -1 equally often, expect sum to be fairly small.
+\begin{thm}[Riemann Hypothesis for elliptic curves over finite fields]
+    $|\sum\limits_{x_0=0}^{p-1}\left(\dfrac{x_0^3 + ax_0^2 + b}{p}\right)| \leq 2\sqrt p$, 
+\end{thm}
+Really called the Hasse Theorem, but Hasse applied to the Nazi party, and Weston doesn't cite Nazis
+
+$N_p = \#E(\F_p)$\\
+$a_p = p + 1 - \#E(\F_p)$\\
+$|a_p| \leq 2\sqrt{p}$\\
+$|\#E(\F_p)| - p - 1 \leq 2\sqrt p$
 \end{document}
+
+

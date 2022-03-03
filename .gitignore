@@ -1,5 +1,7 @@
 materials
 materials/*
+psets
+psets/*
 *.aux
 *.bbl
 *.bcf
@@ -12,3 +14,4 @@ materials/*
 *.toc
 *.run.xml
 *.DS_Store
+*.txt
