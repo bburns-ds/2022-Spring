@@ -238,7 +238,10 @@ Which one it is is detectable based on how many roots $E$ has. Only 1 compact li
 $nP_o$ := $P_o \oplus P_o \oplus \cdots \oplus P_o$ for $n > 0$, or $-P_o \oplus -P_o \oplus \ldots \oplus -P_o$ for $n < 0$.
 
 \begin{thm}[Mazar, 1977]
-    $T \cong \Z/n$ for $n = 1, 2, \ldots, 10, 12$ or $\Z/2 \times \Z/n$ for $n = 2, 4, 6, 8$
+    $\begin{cases}
+        T \cong \Z/n & n = 1, 2, \ldots, 10, 12\\
+        T \cong \Z/2 \times \Z/n & n = 2, 4, 6, 8\\
+    \end{cases}$
 \end{thm}
 
 "Mazar is the best number theorist of the 20th century, but I'm a bit biased" - man advised by Mazar.
@@ -248,7 +251,7 @@ What about $r$? Called the rank. $r$ is 0, 50\% of the time, and $r = 1$ 50\%. $
 There are certain algorithms to compute $r$ and $E(\Q)$
 
 \begin{rmk}
-    There is a conjectural analytic formula for $r$. Bircht and Swinaton-Dyer %Todo: research
+    There is a conjectural analytic formula for $r$. Birch and Swinnerton-Dyer %Todo: research https://scholar.rose-hulman.edu/cgi/viewcontent.cgi?article=1028&context=rhumj
 \end{rmk}
 
 % \begin{rmk}
@@ -258,7 +261,7 @@ There are certain algorithms to compute $r$ and $E(\Q)$
 \section{Elliptic Curves over Finite Fields}
 $E : y^2 = x^3 + ax^2 + b$, where $a, b \in \F_p$
 
-How big can $E(\F_p)$? 
+How big can $E(\F_p)$ be? 
 
 How to compute?
 
@@ -275,7 +278,156 @@ Really called the Hasse Theorem, but Hasse applied to the Nazi party, and Weston
 $N_p = \#E(\F_p)$\\
 $a_p = p + 1 - \#E(\F_p)$\\
 $|a_p| \leq 2\sqrt{p}$\\
-$|\#E(\F_p)| - p - 1 \leq 2\sqrt p$
+$|\#E(\F_p) - p - 1| \leq 2\sqrt p$
+
+\begin{rmk}
+    \# $E(\F_p) = p + 1$, where everything cancels out, is the supersingular case.
+    \# $E(\F_p) = p \to$ "anomolous primes", discrete log problem is really easy to solve %Todo: why
+\end{rmk}
+
+\subsection{Algorithms to compute \#E(F)}
+Given $E/\F_{101}$, suppose we have $P \in E/\F_{101}$ of order 47. This directly implies that \#$E(\F_p) = 94$.
+
+Why? Riemann hypothesis tells us that the number of points must be within $|\#E(\F_p) - 102| \leq 20 \implies 82 \# \leq \#E(\F_p) \leq 122$. Lagrange's theorem tells us that, since $E/\F_{101}$ is finite, then order of $P$ must divide $\#E(\F_p)$. The only number that satisfies both of these properties is 94.
+
+To compute $\#E(\F_p)$: find orders of elements until Lagrange forces a unique possible field order via Riemann Hypothesis.
+
+How to find orders?\\
+1) Shanks Baby Step -- Giant Step (Collision): take big powers and find collision. Going to take $O(\sqrt{p})$, might need to make multiple tries before you get a useful collision
+
+2) Schoof (Elkies + Atkin). Using division polynomials, runs in $O(\log^6 p)$. The constants were originally huge, so you need lots of digits for it to be useful/practical.
+
+\begin{rmk}
+    Any finite abelian group can be expressed as the product of finite cyclic groups. $E(\F_p)$ can be a product of at most two cyclic groups: $E(\F_p) \cong \Z/st \times \Z/s$, where $t$ is large and $s$ is small. For example, prime $l | s \approx \dfrac{1}{l^4}$
+\end{rmk}
+
+\begin{exm*}
+    Another way to look at RH. Take $y^2 = x^3 - 7x - 6$. Vary $p$, count $\#E(F_p)$ for each $p$, and compare to Riemann hypothesis
+\end{exm*}
+
+\begin{tabular}{c|c|c}
+    $p$ & $\#E(\F_p)$ & $p + 1 - \#E(\F_p) \leq 2\sqrt{p}$\\
+    \hline
+    2 & - & -\\
+    3 & 4 & 0\\
+    5 & - & -\\
+    7 & 12 & -4\\
+    11 & 8 & 4\\
+    13 & 16 & -2\\
+    17 & 16 & 2\\
+    19 & 16 & 4\\
+\end{tabular}
+
+Middle columns are all multiples of four, the third column will therefore all be even.
+
+\begin{rmk}
+    Wiles (in proving Fermat's Last Theorem) the $a_p$ are the Fourier coefficients of a modular form %Todo: what
+\end{rmk}
+\begin{rmk}
+    $E(\Q)$ infinite $\iff \prod\limits_p \dfrac{p}{\#E(\F_p)} = 0$
+\end{rmk}
+
+\subsection{Elliptic Curve Discrete Log Problem (ECDLP)}
+\begin{defn}
+    Take $P, Q \in E(\F_p)$. Find $n$ such that $Q = n\cdot P$, where $n$ is an additive power using the addition law of $E/F_p$
+\end{defn}
+
+\begin{exm*}
+    $E/\F_{101}$, $y^2 = x^3 + x + 3$. $P = (46, 83)$, $Q = (31, 63)$
+\end{exm*}
+How do we find $n$ such that $Q = nP$? $n = 37$ works. In other words, $\log_p Q = 37$
+
+We need a basic algorithm to compute $n \cdot P$ quickly for $P \in E(\F_p), n > 0$. "double and add"
+
+\begin{exm*}
+    $E: y^2 = x^3 + 31x + 1000$ over $\F_{32003}$ %"My wife's favorite finite field"
+\end{exm*}
+
+Find $P$ on $E(\F_p)$. Try $x = 1 \implies y^2 = 1032$. Compute $\left(\dfrac{1032}{32003}\right) = +1 \implies y$ exists. $y = \pm 21953$. Take $P = (1, 21953)$.
+
+Compute $1297 \cdot P$. Decompose it as a power of 2: 1297 = 1024 + 256 + 16 + 1.
+
+$P = (1, 21953)$. $P + P = (10821, 20322), 4P = 2P + 2P = (\ldots)$
+
+$16P = 8P + 8P = (8878, 16557)$\\
+$256P = (19325, 10689)$\\
+$1024P = (13434, 22968)$\\
+$1297P = 1024P + 256P + 16P + P = (544, 26812)$
+
+\begin{rmk}
+    Similar to fast powering, this algorithm can also be adapted to minimize storage requirements.
+\end{rmk}
+
+\begin{rmk}
+    There is no Fermat's Little Theorem here, because we don't know the order of the group
+\end{rmk}
+
+ECDLP: Recover 1297 from (544, 26812) and (1, 21953).
+
+Best known algorithms are collision algorithms taking $O(\sqrt{p})$ steps. These are slow, which are good for cryptographic reasons.
+
+\begin{rmk}
+    For regular discrete log problem, there exist subexponential algorithms for general prime $p$. Additionally, there exist this idea of bad primes $p$. Here, the best algorithm is obviously exponential.
+\end{rmk}
+
+\begin{rmk}
+    In essence, Shor's algorithm is really good at computing orders of elements mod $p$ very quickly
+\end{rmk}
+
+\subsection{Collision Algorithms} These are essentially an adaptation of Baby Step -- Giant Step
+
+$S$ finite set, $\#S = N$. Define $f : S \to S$ that is "sufficiently random".
+
+\begin{exm*}
+    $S  = \Z/n, f(x) = x^2 + 1$.
+\end{exm*}
+
+We are more interested in $S = E(\F_p)$
+
+Given $P, Q \in E(\F_p)$
+
+$F(A) = \begin{cases}
+    A + P & x \equiv 1\pmod{3}\\
+    2A & x \equiv 2\pmod{3}\\
+    A + Q & x \equiv 0\pmod{3}\\
+\end{cases}$ \hspace{1em} for $A \in E(\F_p) = (x, y), 0 \leq x \leq p-1$
+%If you've taken differential equations, first of all my condolences
+
+\textbf{Idea}: Fix $x_0 \in S$. $x_1 = f(x_0)$, $x_2 = f(x_1), \cdots$
+
+Mapping points to points, and eventually you will have a cycle because we are dealing with a finite set. Call the first point in the cycle you see $x_T$, the last point in the cycle $x_{T + M - 1}$, and then $x_T$ repeats as $x_{T + M}$, where $T$ and $M$ are minimum
+
+\begin{rmk}
+    In Chapter 5, How large to you expect T to be? $O(\sqrt{N})$
+\end{rmk}
+
+\subsection{Pollard's factorization algorithm} Assume we have $n = pq$, $S = \Z /n$, $f(x) = x^2 + 1$. $x_0 = 1$
+
+Suppose $x_{T_n} = x_{T_n + M_n}$ is the first repeat mod $n$, $T_n = O(\sqrt{n})$. Probably, we get a repeat mod $p$ (or $q$) much much sooner: $x_{T_p} = x_{T_p + M_p}, T_p = O(\sqrt{p}) = O(n^{1/4})$. Take $\gcd(x_{T_p} - x_{T_p + M_p}, n) = p$, and we can probably recover something.
+
+\textbf{Implementation Problems}: You need to compute $\gcd(x_i - x_j, n)$ for every pair $i, j$, because we have no idea where this repeat is going to be. This becomes a huge number as $i$ increases. Additionally, you have to store every point, which is infeasible.
+
+\begin{defn}[Pollard $\rho$--method]
+    Traverse twice. Start with $x_0 = y_0$, and compute $x_i = f(x_i - 1)$, $y_i = f(f(y_{i + 1}))$. At each step, compute $\gcd(x_i - y_i, n)$. If it fails, throw it away. If it works, we have $x_T = x_{M + T}$.
+\end{defn}
+
+\begin{exm*}
+    $n = 31861$, $f = x^2 + 1, x_0 = 1$
+\end{exm*}
+
+\begin{tabular}{c|c|c|c}
+    $i$ & $x_i$ & $y_i$ & $\gcd(x_i - y_i, n)$\\
+    \hline
+    0 & 1 & 1 & $n$\\
+    1 & 2 & 5 & 1\\
+    2 & 5 & 677 & 1\\
+    3 & 26 & 29508& 1\\
+    4 & 677 &  27909 & 151\\
+\end{tabular}
+
+Unless we get unlucky, and $q$ hits at the exact same moment, we have that 151 is a factor of $n$.
+
+Running time depends on the smallest prime factor $O(\sqrt{p}) \stackrel{?}{=} O(n^{1/4})$. If $p$ is much smaller, then it runs much better
 \end{document}
 
 

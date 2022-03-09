@@ -242,7 +242,7 @@ If $d \nmid b$ then there are no solutions. Else, $a = a'd, b = b'd, n = n'd$. $
 
 Multiply both sides of $a'x \equiv b' \pmod{n'}$ by $c'$ to get $a'c'x \equiv x \equiv b'c' \pmod{n'}$. This allows us to conclude that $x$ is unique modulo $n'$, but not necessarily unique modulo $n = n'd$. Solutions modulo $n: x, x + n', x + 2n' \ldots, x + (d-1)n'$. Therefore, the congruence will either have there are either 0 or $d$ solutions.
 
-\section{Field of fractions}
+\section{Field of Fractions}
 $\Z \subset \Q$. $\Z$ is an integral domain, $\Q$ is a field. There is a little bit more than an integral domain being imbedded in a field, since $\Z$ is also imbedded in $\R$ and $\C$. 
 
 \begin{rmk}
@@ -383,7 +383,8 @@ $G\subset S_5$ $|G|$ divides $|S_5| = 120$. $\dfrac{1}{|G|} \sim \dfrac{2}{95}\s
 
 $x^5 + 2z + 2 \to \dfrac{9}{1040} \sim \dfrac{1}{115} \sim \dfrac{1}{120}\implies G = S_5$
 
-\section{Homomorphisms, ideals, quotient rings}
+\section{Homomorphisms, Ideals, and Quotient Rings}
+\subsection{Homomorphisms}
 \begin{defn}
     $\phi: R \to S$ is a homomorphism of rings iff \begin{itemize}
         \item $\phi$ is a homomorphism of abelian groups with respect to addition: $\phi(a + b) + \phi(a) + \phi(b)$
@@ -397,6 +398,7 @@ $x^5 + 2z + 2 \to \dfrac{9}{1040} \sim \dfrac{1}{115} \sim \dfrac{1}{120}\implie
 
 Take $r\in R$, $s\in \Ker\phi$. Then $\phi(rs) = \phi(r)\phi(s) = \phi(r)0 = 0 = 0\phi(r) = \phi(s)\phi(r) = \phi(sr)$, so $rs, sr \in \Ker\phi$.
 
+\subsection{Ideals}
 \begin{defn}
     A subset $I \subset R$ is called an \textbf{ideal} if \begin{itemize}
         \item $I$ is an abelian subgroup with respect to addition
@@ -447,7 +449,7 @@ $I$ is an abelian group since $rs + rs' = r(s + s') \in I$.
 Closure since $rsr' = r'rs = r(r's) \in I$
 
 \begin{defn}
-    An integral domain is called a principle ideal domain (PID) if every ideal is principle.
+    An integral domain is called a \textbf{principle ideal domain} a(PID) if every ideal is principle.
 \end{defn}
 Very good example here being $\Z$, where all ideals are $I = n\Z$.
 
@@ -470,7 +472,7 @@ $g(x) = f(x)q(x) + r(x)$. Either $r(x) = 0$, and we are done, or $deg(r) < deg(f
 Because this is true for homomorphisms of abelian groups.
 
 \begin{defn}
-    For ring $R$ and ideal $I \subset R$ such that $I \neq R$, $I$ is called maximal if every ideal $J$ such that $I \subset J \subset R$ is either $I$ or $R$.
+    For ring $R$ and ideal $I \subset R$ such that $I \neq R$, $I$ is called \textbf{maximal} if every ideal $J$ such that $I \subset J \subset R$ is either $I$ or $R$.
 \end{defn}
 
 \begin{exm*}
@@ -487,21 +489,20 @@ Claim: there are only four cosets. The ideal itself $I$, $1 + I$, $x + I$, $(1 +
 
 Take any coset $g(x) + I$. Perform long division $g(x) = (x^2 + x + 1)q(x) + r(x)$, where $deg(r) < 2$. All possible $r(x)$ are 0, 1, $x$, $x + 1$.
 
-$R$ an integral domain. 
+\section{Unique Factorization Domains}
+Define $R$ to be an integral domain. 
 \begin{defn}
-    $p \in R$ irreducible if $p = ab \implies a$ or $b$ is a unit
+    For $p \in R$ irreducible, if $p = ab \implies a$ or $b$ is a unit
 \end{defn}
 
 \begin{defn}
-    $p\in R$ prime if $(p) \subset R$ is a prime ideal.
+    If $(p) \subset R$ is a prime ideal, then $p\in R$ prime.
 \end{defn}
-$p | ab \implies p | a$ or $p | b$ $\forall a, b \in R$
+Recall Euclid's Lemma: $p | ab \implies p | a$ or $p | b$ $\forall a, b \in R$
 
 \begin{rmk}
     If $p$ is prime then $p$ is irreducible
 \end{rmk}
-
-\section{Unique Factorization Domains}
 
 \begin{defn}
     An integral domain $R$ is called a unique factorization domain (UFD) if\\
@@ -586,8 +587,131 @@ In a real analysis context, algebraic and transcendental are with rational coeff
 
 \begin{lem}
     Suppose $K \subset F$ field extension. Take $\alpha \in F$ algebraic $\implies$ there exists a unique minimal (aka irreducible) polynomial irr($\alpha$, $K$) which is \\
-    1) irreducible \\
+    1) irreducible and nonzero \\
     2) has $\alpha$ as a root \\
     3) and monic 
 \end{lem}
+$irr(\alpha, K)$ is the minimal polynomial of $\alpha$ over $K$.
+
+The main tool to prove this is the evalutation homomorphism. $\phi: K[x] \to F$ which sends $f(x) \to f(\alpha)$.
+
+$I = \Ker(\phi) \subset K[x]$ ideal. By definition, it is $= \{ f\in K[x] : f(\alpha) = 0\}$. $I \neq 0 \iff \alpha$ is algebraic /$K$, and $I = 0 \iff \alpha$ is transcendental /$K$.
+
+\textbf{Case 1}: $I \neq 0 \iff \alpha$ is algebraic.
+The ideal I is principle: $I = (f)$. Rescale $f$ by a constant to make it monic. Why is it irreducible? If $f(x) = a(x)b(x)$ with $deg (a), deg(b) < deg(f)$. $f(\alpha) = a(\alpha)b(\alpha) = 0$, but then at least one of them has to be in the ideal, but they can't be since they have degree less than $f$ (because we selected $f$ to be the generating polynomial). Therefore $irr(\alpha, K)$ exists.
+
+Why is it unique? Suppose $g(x)$ also satisfies the three conditions. Therefore, $g(\alpha) = 0$, so $g(x)$ is in the ideal $I = (f)$. But then $g(x) = f(x)q(x)$. But $g(x)$ is irreducible, so $q(x)$ has to be a constant, else $g(x)$ has a nontrivial factorization, and must be 1 else one of $f(x)$ or $g(x)$ isn't monic.
+
+\begin{exm*}
+    $irr(\sqrt{2}, \Q) = x^2 - 2$, $irr(\sqrt{2}, \R) = x - \sqrt2$.
+\end{exm*}
+
+\begin{defn}
+    Suppose $K \subset F$ fields, $\alpha \in F$. A \textbf{simple field extension} $K(\alpha)$ is the smallest subfield of F that contains $K$ and $\alpha$. Generalization: $K(\alpha, \beta)$ contains $K$, $\alpha$, and $\beta$.
+\end{defn}
+
+$\phi : K[x] \to F$, $I = \Ker\phi$. $I \neq 0 \iff \alpha$ algebraic/$K$\\
+$\implies I = (f)$, where $f = irr(\alpha, K)$
+
+Apply the first isomorphism theorem:
+
+\begin{tikzcd}
+    K[x] \arrow[r, "\phi"] \arrow[d]
+    & F \\
+    K[x]/I  \arrow[r, "\simeq"]
+    & Im\phi \arrow[u, "\cup"]\\
+\end{tikzcd}
+
+$\implies Im\phi$ is a subfield, isomorphic to $K[x]/I$, contains $J$, $\alpha = \phi(x)$. 
+
+\textbf{Claim}: $Im(\phi) = K(\alpha)$. Why is it the smallest?
+Suppose $N$ is a subfield of $F$ that contains $K$ and $\alpha$. Is $Im(\phi) \in N$? Yes, $\phi(a_0 + \ldots + a_nx^n) = a_0 + \ldots a_na^n \in N$
+
+\textbf{Case 2}: $\phi: K[x] \to F$ which sends $p(x) \to p(\alpha)$. $I = \Ker\phi = 0 \implies \phi$ is injective. 
+
+$K[x] \stackrel{\phi}{\to} F \implies K(x) = \{ \dfrac{p(x)}{q(x)}: p, q \in K[x]\}$ is also contained in $F \implies K(\alpha) \cong K[x]$
+
+\section{Linear algebra over a field K}
+Vector space of column vectors $\begin{bmatrix}
+    a_1\\
+    \vdots\\
+    a_n
+\end{bmatrix}$, $a_i \in K$
+
+Two operations: $\begin{bmatrix}
+    a_1\\
+    \vdots\\
+    a_n
+\end{bmatrix} + \begin{bmatrix}
+    b_1\\
+    \vdots\\
+    b_n
+\end{bmatrix} = \begin{bmatrix}
+    a_1+b_1\\
+    \vdots\\
+    a_n+b_n
+\end{bmatrix}$\\
+and $k \begin{bmatrix}
+    a_1\\
+    \vdots\\
+    a_n
+\end{bmatrix} = \begin{bmatrix}
+    ka_1\\
+    \vdots\\
+    ka_n
+\end{bmatrix}$
+
+These operations satisfy axioms of vector space /$K$. 
+
+Set $V$ with 2 operations: \\
+$V\times V \to V$, sends $u, v \to u + v$, and $K \times V \to V$ sending $k, v \to ku$ subject to axioms:
+\begin{itemize}
+    \item $(V, +)$ is an abelian group, in particular we have a zero vector $0 \in V$
+    \item distributivity $k(u + v) = ku + kv$ and $(k + k')u = ku + k'u$
+    \item "action" or "associativity" $l(ku) = (lk)u$, and $1 \cdot v = v$
+\end{itemize}
+
+\begin{exm*}
+    Suppose we have a field extension $K \subset F$. Then we have $f_1 + f_2$, $f_1, f_2 \in F$, and can compute $kf$, for $k \in K$ and $f\in F$. Therefore, as a consequence of ring axioms, $F$ satisfies the axioms of a vector space over a field $K$. 
+\end{exm*}
+
+\begin{exm*}
+    $R \subset C$
+\end{exm*}
+View $\C$ as a vector space over $\R$, with basis vectors $1$ and $i$.
+
+\begin{rmk}
+    We can imbed field $K$ into a ring $R$ and this still holds since we used ring axioms only.
+\end{rmk}
+
+\begin{defn}
+    Suppose we have $V$ vector space/$K$, with $v_1, \ldots, v_k \in V$. We say $v_1, \ldots, v_k$ \textbf{span} $V$ if $\forall v \in V$ can be written $v = \sum a_iv_i$ for $a_i \in K$.
+\end{defn}
+
+\begin{defn}
+    $v_1, \ldots v_k$ are \textbf{linearly independent} if $\sum a_1 v_1 = 0 \implies \forall a_i = 0$.
+\end{defn}
+
+\begin{defn}
+    $\{v_1, \ldots, v_k\}$ is a \textbf{basis} if they span and are linearly independent.
+\end{defn}
+
+\begin{lem}
+    $v_1, \ldots, v_n$ span $V$ and $u_1, \ldots, u_k$ are linearly independent, then $k \leq n$.
+\end{lem}
+
+\begin{cor}
+    If $V$ has a finite basis with $n$ vectors, then every other basis also has $n$ vectors. This $n$ is called the \textbf{dimension} of $V$ over $K$ (otherwise $dim V = \infty$)
+\end{cor}
+
+\begin{exm*}
+    dim $\C$ over $\R$ is 2 with basis 1 and $i$
+\end{exm*}
+$\alpha \in \C$, $\alpha = a \cdot 1 + b \cdot i, a, b \in \R \implies 1, i$ span $\C$
+
+$a, b\in \R, a + bi = 0\implies a = b = 0 \implies 1$ and $i$ are linearly independent. 
+
+\begin{defn}
+    $K \subset F$ a field extension $\implies F$ vector space/$K$. Then the dimension of $F$ over $K$ is called the \textbf{degree} of the field extension, notated $\left[F : K\right]$
+\end{defn}
 \end{document}

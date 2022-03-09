@@ -55,9 +55,9 @@ keywordstyle = [4]\color{darkyellow},
 
 \begin{document}
 
-% \maketitle\thispagestyle{firstpage}
-% 
-% \tableofcontents
+\maketitle\thispagestyle{firstpage}
+ 
+\tableofcontents
 
 \section{Singularities}
 \begin{thm}[Riemann's Theorem on removeable singularities]
@@ -312,4 +312,11 @@ $|f(yn)| \leq \dfrac{C}{(yn)^2} = \dfrac{C}{y^2n^2}$
 
 $\sum |f(yn)| \leq \dfrac{C}{y^2}\sum\dfrac{1}{n^2}$. Absolute convergence
 
+$\left| \int_a^b f(t, z) dt\right| \underset{a, b \to \infty} {\to}0$ uniformly for $z \in K \subset \Omega$
+
+Basic case: prove absolute convergence along with uniform convergence. Need bound $|f(t, z)| \leq g(t)$ continuous for $z\in K$ and $\int_1^{\infty} g(t) dt < \infty$.
+
+Given $g(t)$, $\left|\int_a^b f(t, z) dt\right| \leq \int_a^b g(t) dt \underset{a, b \to \infty}{\to} 0$
+
+Warning: one of the hw problems, convergence of improper integral is uniform but not absolute. Play with $\int_a^b f(t, z) dt$ before 
 \end{document}
