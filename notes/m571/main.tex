@@ -1,46 +1,19 @@
-% ENORMOUS credit for the foundational formatting
-%   of these notes goes to Patrick Lei. 
-% Check out his fantastic course notes
-%   here: https://git.snopyta.org/abstract/course-notes
-% and his website 
-%   here: https://www.math.columbia.edu/~plei/index.html
-
-\documentclass[twoside, 10pt]{article}
+\documentclass[10pt]{article}
 \usepackage{bbnotes}
 \geometry{margin=2cm}
-
-\definecolor{darkblue}{RGB}{0,0,128}
-\definecolor{darkred}{RGB}{128,0,0}
-\definecolor{darkyellow}{RGB}{96,96,0}
-\definecolor{darkgreen}{RGB}{0,128,0}
-\definecolor{darkdarkred}{RGB}{64,0,0}
-
-\lstset
-{
-basicstyle=\ttfamily\scriptsize, 
-breaklines=true,
-postbreak=\mbox{\textcolor{darkdarkred}{$\hookrightarrow$}\space},
-showstringspaces=false
-keywordstyle = [1]\bfseries\color{darkred},
-keywordstyle = [2]\itshape\color{darkgreen},
-keywordstyle = [3]\sffamily\color{darkblue},
-keywordstyle = [4]\color{darkyellow},
-}
 
 \fancypagestyle{firstpage}
 {
    \fancyhf{}
-   \fancyfoot[R]{\itshape Page \thepage\ of \pageref{LastPage}}
    \renewcommand{\headrulewidth}{0pt}
 }
 
-
 \fancypagestyle{pages}
 {
-\fancyhead[C]{\scshape Math 571}
-\fancyhead[L]{\scshape Ben Burns}
-\fancyhead[R]{\scshape Spring 2022}
-\renewcommand{\headrulewidth}{0.1pt}
+    \fancyhead[C]{\scshape Math 571}
+    \fancyhead[L]{\scshape Ben Burns}
+    \fancyhead[R]{\scshape Spring 2022}
+    \renewcommand{\headrulewidth}{0.1pt}
 }
 
 \pagestyle{pages}
@@ -52,7 +25,6 @@ keywordstyle = [4]\color{darkyellow},
 
 \newcommand{\F}{\mathbb{F}}
 \renewcommand{\O}{\mathbb{O}}
-\usepackage{algorithmicx}
 
 \begin{document}
 
@@ -130,8 +102,7 @@ Fix a generator $g\in \F_p$. Fix $t\in \F_p$. Write $t = g^e$ for some $e$ s.t $
 Proof:\\ 
 %Todo: fill out
 (1) FLT for squares, polynomial counting argument for non-squares\\
-(2) right side of (1) is multplicative, so left side has to be as well\\
-(3) 
+(2) right side of (1) is multplicative, so left side has to be as well
 
 \begin{defn}[Quadratic Reciprocity Law]
     Let $p, q$ be distinct odd positive primes. Then $\left(\dfrac{p}{q}\right) = \dfrac{q}{p}(-1)^{\dfrac{p-1}{2}\dfrac{q-1}{2}}$.
