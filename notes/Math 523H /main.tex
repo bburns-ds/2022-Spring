@@ -1,59 +1,365 @@
-% ENORMOUS credit for the foundational formatting
-%   of these notes goes to Patrick Lei. 
-% Check out his fantastic course notes
-%   here: https://git.snopyta.org/abstract/course-notes
-% and his website 
-%   here: https://www.math.columbia.edu/~plei/index.html
-
 \documentclass[twoside, 10pt]{article}
 \usepackage{bbnotes}
 \geometry{margin=2cm}
 
-\definecolor{darkblue}{RGB}{0,0,128}
-\definecolor{darkred}{RGB}{128,0,0}
-\definecolor{darkyellow}{RGB}{96,96,0}
-\definecolor{darkgreen}{RGB}{0,128,0}
-\definecolor{darkdarkred}{RGB}{64,0,0}
-
-\lstset
-{
-basicstyle=\ttfamily\scriptsize, 
-breaklines=true,
-postbreak=\mbox{\textcolor{darkdarkred}{$\hookrightarrow$}\space},
-showstringspaces=false
-keywordstyle = [1]\bfseries\color{darkred},
-keywordstyle = [2]\itshape\color{darkgreen},
-keywordstyle = [3]\sffamily\color{darkblue},
-keywordstyle = [4]\color{darkyellow},
-}
-
-\fancypagestyle{firstpage}
-{
-   \fancyhf{}
-   \fancyfoot[R]{\itshape Page \thepage\ of \pageref{LastPage}}
-   \renewcommand{\headrulewidth}{0pt}
-}
-
-
 \fancypagestyle{pages}
 {
 \fancyhead[C]{\scshape Math 523H}
-\fancyhead[L]{\scshape Ben Burns}
+\fancyhead[L]{\scshape Burns, Wei}
 \fancyhead[R]{\scshape Spring 2022}
 \renewcommand{\headrulewidth}{0.1pt}
 }
 
+\newcommand{\dom}{\text{dom }}
+
 \pagestyle{pages}
 
-\title{Math 523H}
-\author{Taught by Noriyuki Hamada \ Scribed by Ben Burns}
-\affil{UMass Amherst}
-\date{Spring 2022}
-
 \begin{document}
+\section*{Chapter 4: Completeness Axiom}
+\begin{defn}[Max and Min]
+Let $S$ be a nonemtpy subset of $\R$.
+\begin{enumerate}
+    \item If $S$ contains a largest element $s_0$ (that is, $s_0$ belongs to $S$ and $s\le s_0$ for all $s\in S$, then we call $s_0$ the \emph{maximum} of $S$ and write $s_0=\max S$.
+    \item If $S$ contains a smallest element, then we call the smallest element the \emph{minimum} of $S$ and write it as $\min S$
+\end{enumerate}
+\end{defn}
 
-\maketitle\thispagestyle{firstpage}
+\begin{defn}[Bounds]
+Let $S$ be a nonempty subset of $\R$.
+\begin{enumerate}
+    \item If a real number $M$ satisfies $s\le M$ for all $s\in S$, then $M$ is called an \emph{upper bound of $S$} and the set $S$ is said to be \emph{bounded above}
+    \item If a real number $m$ satisfies $m\le s$ for all $s\in S$, then $m$ is called an \emph{lower bound of $S$} and the set $S$ is said to be \emph{bounded below}
+    \item The set $S$ is said to be \emph{bounded} if it is bounded above and below. Thus $S$ is bounded if there exist real numbers $m$ and $M$ such that $S\subseteq [m, M]$.
+\end{enumerate}
+\end{defn}
 
-\tableofcontents
+\begin{defn}[sup and inf]
+Let $S$ be a nonempty subset of $\R$.
+\begin{enumerate}
+    \item If $S$ is bounded above and $S$ has a least upper bound, then we will call it the \emph{supremum of} $S$ and denote it by $\sup S$.
+    \item if $S$ is bounded below and $S$ has a greatest lower bound, then we will call it the \emph{infimum of} $S$ and denote it by $\inf S$.
+\end{enumerate}
+\end{defn}
 
+\begin{thm} [Completeness Axiom]
+Every nonempty subset $S$ of $\R$ that is bounded above has a least upper bound. In other words, $\sup S$ exists and is a real number.
+\end{thm}
+
+\begin{cor}
+Every nonempty subset $S$ of $\R$ that is bounded below has a greatest lower bound $\inf S$.
+\end{cor}
+
+\begin{thm} [Archimedean Property]
+If $a > 0$ and $b > 0$, then for some positive integer $n$, we have $na > b$
+\end{thm}
+
+\begin{thm} [Density of $\Q$]
+If $a,b \in \R$ and $a < b$, then there is a rational $r\in\Q$ such that $a < r < b$.
+\end{thm}
+
+\section*{Chapter 7: Limits of Sequences}
+\begin{defn}[Convergence]
+A sequence $(s_n)$ of real numbers is said to converge to the real number $s$ provided that for each $\epsilon > 0$ there exists a number $N$ such that $n > N$ implies $|s_n - s| \leq \epsilon$. A sequence that does not converge to some real number is said to diverge.
+\end{defn}
+
+\section*{Chapter 8: Proofs}
+All that you need to know here is the idea of computationally deriving your epsilon to use in your proof.
+
+\section*{Chapter 9: Limit Theorems}
+\begin{thm}
+Convergent sequences are bounded
+\end{thm}
+
+\begin{thm}
+If the sequence $(s_n)$ converges to $s$ and $k$ is in $\R$, then the sequence $(ks_n)$ converges to $ks$. That is, $\lim(ks_n) = k\cdot\lim(s_n)$
+\end{thm}
+
+\begin{thm}
+If $(s_n)$ converges to $s$ and $(t_n)$ converges to $t$, then $\lim(s_n + t_n)$ converges to $s + t$. That is, $\lim(s_n + t_n) = \lim s_n + \lim t_n$
+\end{thm}
+
+\begin{lem}
+If $(s_n)$ converges to $s$, if $s_n \neq 0$ for all $n$, and if $s \neq 0$, then $(1/s_n)$ converges to $1/s$. 
+\end{lem}
+
+\begin{thm}
+Suppose $(s_n)$ converges to $s$ and $(t_n)$ converges to $t$. If $s \neq 0$ and $s_n \neq 0$ for all $n$, then $(t_n/s_n$ converges to $t/s$/
+\end{thm}
+
+\begin{thm} Basic Examples\\
+(a) $\lim_{n \to \infty} (\dfrac{1}{n^p}) = 0$ for $p > 0$\\
+(b) $\lim_{n \to \infty} a^n = 0$ if $|a| < 1$.\\
+(c) $\lim(n^{1/n}) = 1$.\\
+(d) $\lim_{n \to \infty}(a^{1/n}) = 1$ for $a > 0$
+\end{thm}
+
+\begin{defn}
+For a sequence $(s_n)$, we write $\lim s_n = + \infty$ provided for each $M > 0$ there is a number N such that $n > N$ implies $s_n > M$.
+\end{defn}
+
+\begin{thm}
+Let $(s_n)$ and $(t_n)$ be sequences such that $\lim s_n = +\infty$ and $\lim t_n > 0$ [$\lim t_n$ can be finite or $+\infty$]. Then $\lim s_nt_n = +\infty$.
+\end{thm}
+
+\begin{thm}
+For a sequence $(s_n)$ of positive real numbers, we have $\lim s_n = +\infty$ if and only if $\lim(\dfrac{1}{s_n} = 0$
+\end{thm}
+
+\section*{Chapter 10: Monotonic \& Cauchy Sequences}
+\begin{defn}
+A sequence $(s_n)$ of real numbers is called an \textbf{increasing sequence} if $s_n \leq s_{n+1}$ for all $n$, and is called a \textbf{decreasing sequence} if $s_n \geq s_{n+1}$ for all $n$
+\end{defn}
+
+\begin{thm}
+All bounded monotone sequences converge
+\end{thm}
+
+\begin{thm}
+Unbounded increasing sequences have a limit of $s_n = +\infty$, and unbounded decreasing has $\lim s_n = -\infty$
+\end{thm}
+
+\begin{cor}
+If $(s_n)$ is a monotone sequence, then the sequence either converges, diverges to $+\infty$, or diverges to $-\infty$. Thus $\lim s_n$ is always meaningful for monotone sequences.
+\end{cor}
+
+\begin{defn}
+Let $(s_n)$ be any sequence of real numbers. We define \begin{equation*}
+    \limsup{s_n} = \lim\limits{N \to \infty} \sup \{s_n: n > N\} = \sup S
+\end{equation*}
+and 
+\begin{equation*}
+    \liminf{s_n} = \lim\limits{N \to \infty} \inf\{s_n : n > N\} = \inf S
+\end{equation*}
+\end{defn}
+
+\begin{thm}
+Let $(s_n)$ be a sequence in $\R$.\\
+(i) If $\lim s_n$ is defined [as a real number, $+\infty$, or $-\infty$], then $\liminf s_n = \lim s_n = \limsup s_n$\\
+(ii) If $\lim inf s_n = \limsup s_n$, then $\lim s_n$ is defined and $\lim s_n = \lim inf s_n = \limsup s_n$
+\end{thm}
+
+\begin{defn}
+A sequence $(s_n)$ or real numbers is called a Cauchy sequence if for each $\epsilon > 0$ there exists a number $N$ such that $m, n > N$ implies $|s_n - s_m| < \epsilon$
+\end{defn}
+
+\begin{lem}
+Convergent sequences are Cauchy sequences.
+\end{lem}
+
+\begin{lem}
+Cauchy sequences are bounded
+\end{lem}
+
+\begin{thm}
+A sequence is a convergent sequence if and only if it is a Cauchy sequence.
+\end{thm}
+
+\section*{Chapter 11: Subsequences}
+\begin{defn}
+A sequence $(s_n)$ of real numbers is called an \emph{increasing sequence} if $s_n\le s_{n+1}$ for all $n$, and $(s_n)$ is called \emph{decreasing sequence} if $s_n\ge s_{n+1}$ for all $n$. Note that if $(s_n)$ is increasing, then $s_n\le s_m$ whenever $n< m$. A sequence that is increasing or decreasing will be called a \emph{monotone sequence} or a \emph{monotonic sequence}.
+\end{defn}
+
+\begin{thm}
+All bounded monotone sequence converge.
+\end{thm}
+
+\begin{thm}
+(i) If $(s_n)$ is an unbounded increasing sequence, then $\lim s_n = +\infty$\\
+(ii) If $(s_n)$ is an unbounded decreasing sequence, then $\lim s_n = -\infty$
+\end{thm}
+
+\begin{cor}
+If $(s_n)$ is a monotone sequence, then the sequence either converges, diverges to $+\infty$, or diverges to $-\infty$. Thus $\lim s_n$ is always meaningful for monotone sequences.
+\end{cor}
+
+\begin{defn}
+Let $(s_n)$ be a sequence in $\R$. We define
+$$ \limsup s_n = \lim_{N\to\infty} \sup\{s_n : n > N\} $$
+and
+$$ \liminf s_n = \lim_{N\to\infty} \inf\{s_n : n > N\} $$
+\end{defn}
+
+\begin{thm}
+Let $(s_n)$ be a sequence in $\R$.\\
+(i) If $\lim s_n$ is defined [as a real number, $+\infty$ or $-\infty$], then $\liminf s_n = \lim s_n = \limsup s_n$.\\
+(ii) If $\liminf s_n = \limsup s_n$, then $\lim s_n$ is defined and $\lim s_n = \liminf s_n = \limsup s_n$.
+\end{thm}
+
+\begin{defn}
+A sequence $(s_n)$ of real numbers i called a \emph{Cauchy sequence} if\\
+for each $\epsilon > 0$ there exists a number $N$ such that $m,n>N$ implies $|s_n - s_m| < \epsilon$.
+\end{defn}
+
+\begin{lem}
+Convergent sequences are Cauchy sequences.
+\end{lem}
+
+\begin{lem}
+Cauchy sequences are bounded.
+\end{lem}
+
+\begin{thm}
+A sequence is a convergent sequence if and only if it is a Cauchy sequence.
+\end{thm}
+
+\section*{Chapter 12: $\limsup$ and $\liminf$}
+\begin{defn}
+Let $(s_n)$ be any sequence of real numbers, and let $S$ be the set of subsequential limits of $(s_n)$. Recall \begin{equation*}
+    \limsup{s_n} = \lim\limits{N \to \infty} \sup \{s_n: n > N\} = \sup S
+\end{equation*}
+and 
+\begin{equation*}
+    \liminf{s_n} = \lim\limits{N \to \infty} \inf\{s_n : n > N\} = \inf S
+\end{equation*}
+\end{defn}
+
+\begin{thm}
+If $(s_n)$ converges to a positive real number $s$ and $(t_n)$ is any sequence, then \begin{equation*}
+    \limsup s_nt_n = s\cdot \limsup t_n
+\end{equation*}
+Here we allow the conventions $s \cdot (+\infty) = +\infty$ and $s\cdot(-\infty) = -\infty$ for $s > 0$.
+\end{thm}
+Proof sketch: handle the three cases separately using subsequences, doing the inequality left to right, then right to left using $\lim\dfrac{1}{s_n} = \dfrac{1}{s}$
+
+\begin{thm}
+Let $(s_n)$ be any sequence of nonzero real numbers. Then we have $\liminf\left|\dfrac{s_{n+1}}{s_n}\right| \leq \liminf |s_n|^{1/n}\leq \limsup |s_n|^{1/n} \leq \limsup\left|\dfrac{s_{n+1}}{s_n}\right|$
+\end{thm}
+Middle is obvious, first and third have similar proofs
+
+\begin{cor}
+If $\lim\left|\dfrac{s_{n+1}}{s_n}\right|$ exists [and equals L], then $\lim\left|s_n\right|^{1/n}$ exists [and equals $L$].
+\end{cor}
+
+\section*{Chapter 14: Series}
+\begin{defn}
+We say a series $\sum a_n$ satisfies the \textbf{Cauchy criterion} if its sequence $(s_n)$ of partial sums is a Cauchy sequence.
+\end{defn}
+
+\begin{thm}
+A series converges if and only if it satisfies the Cauchy criterion.
+\end{thm}
+
+\begin{cor}
+If a series $\sum a_n$ converges, then $\lim a_n = 0$
+\end{cor}
+
+\begin{defn}[Comparison Test]
+Let $\sum a_n$ be a series where $a_n geq 0$ for all $n$.\\
+(i) If $\sum a_n$ converges and $|b_n| \leq a_n$ for all $n$, then $\sum b_n$ converges.\\
+(ii) If $\sum a_n$ = $+ \infty$ and $b_n \geq a_n$ for all $n$, then $\sum b_n = +\infty$.
+\end{defn}
+
+\begin{cor}
+Absolutely convergent series are absolutely convergent
+\end{cor}
+
+\begin{defn}[Ratio Test]
+A series $\sum a_n$ of nonzero terms\\
+(i) converges absolutely if $\limsup\left|\dfrac{a_{n+1}}{a_n}\right| < 1$\\
+(ii) diverges if $\liminf\left|\dfrac{a_{n+1}}{a_n}\right|$\\
+(iii) Otherwise $\liminf\left|\dfrac{a_{n+1}}{a_n}\right| \leq 1 \leq \limsup\left|\dfrac{a_{n+1}}{a_n}\right|$ and the test gives no information.
+\end{defn}
+
+\begin{defn}[Root Test]
+Let $\sum a_n$ be a series and let $\alpha = \limsup |a_n|^{1/n}$. The series $\sum a_n$\\
+(i) converges absolutely if $\alpha < 1$,\\
+(ii) diverges if $\alpha >1$.\\
+(iii) Otherwise $\alpha = 1$ and the test gives no information.
+\end{defn}
+
+\section*{Chapter 15: Alternating Series and Integral Test}
+\begin{thm}
+$\sum \dfrac{1}{n^p}$ converges if and only if $p > 1$
+\end{thm}
+
+\begin{thm}[Alternating Series]
+If $a_1 \geq a_2 \geq \ldots a_n \leq \ldots \leq 0$ and $\lim a_n = 0$, then the alternating series $\sum (-1)^n+1a_n$ converges. Moreoever, the partial sums $s_n$ from $k = 1$ to $n$ satisfy $|s-s_n| \leq a_n$ for all $n$.
+
+\end{thm}
+\section*{Chapter 17: Continuity}
+\begin{defn}
+Let $f$ be a real-valued function whose domain is a subset of $\R$. The function $f$ is \emph{continuous at $x_0$} if, for every sequence $(x_n)$ in dom($f$) converging to $x_0$, we have $\lim_nf(x_n)=f(x_0)$. If $f$ is continuous at each point of a set $S\subseteq $ dom($f$), then $f$ is said to be \emph{continuous on $S$}. THen function $f$ is said to be \emph{continuous} if it is continuous on dom($f$).
+\end{defn}
+
+\begin{thm}
+Let $f$ be a real-valued function whose domain is a subset of $\R$. Then $f$ is continuous at $x_0\in\dom(f)$ if and only if:
+
+for each $\epsilon > 0$ there exists $\delta > 0$ such that $x\in\dom(f)$ and $|x-x_0|<\delta$ imply $|f(x)-f(x_0)| < \epsilon$.
+\end{thm}
+
+\begin{thm}
+Let $f$ be a real-valued function with $\dom(f) \subseteq \R$. If $f$ is continuous at $x_0$ in $\dom(f)$, then $|f|$ and $kf, k\in\R$, are continuous at $x_0$.
+\end{thm}
+
+\begin{thm}
+Let $f$ and $g$ be real-valued functions that are continuous at $x_0$ in $\R$.\\
+Then\\
+    (i) $f+g$ is continuous at $x_0$\\
+    (ii) $fg$ is continouos at $x_0$\\
+    (iii) $f/g$ is continuous at $x_0$ if $g(x_0)\neq 0$
+\end{thm}
+
+\begin{thm}
+If $f$ is continuous at $x_0$ and $g$ is continuous at $f(x_0)$, then the composite function $g\circ f$ is continuous at $x_0$.
+\end{thm}
+
+\section*{Chapter 20: Limits of Functions}
+\begin{defn}
+Let $S$ be a subset of $\R$, let $a$ be a real number or symbol $\infty$ or $-\infty$ that is the limit of some sequence in $S$, and let $L$ be a real number or symbol $+\infty$ or $-\infty$. We write $\lim_{x\to a^s}f(x)=L$ if 
+\begin{equation*}
+    \text{$f$ is a function defined on $S$,}
+\end{equation*}
+and
+\begin{equation*}
+    \text{for every sequence $(x_n)$ in $S$ with limit $a$, we have $\lim_{n\to\infty}f(x_n) = L$.}
+\end{equation*}
+\end{defn}
+
+\begin{rmk}\ \\
+(a) From the first definition of the continuity chapter, we see that a function $f$ is continuous at $a$ in $\dom(f) = S$ if and only if $\lim_{x\to a^S} = f(a)$.\\
+(b) Observe that limits, when they exist, are unique. This follows from the second statement in the previous definition, since limits of sequences are unique.
+\end{rmk}
+
+\begin{defn}.
+\begin{enumerate}
+    \item For $a\in\R$ and a function $f$ we write $\lim_{x\to a}f(x)=L$ provided $\lim_{x\to a^S}f(x)=L$ for some set $S= J\setminus \{a\}$ where $J$ is an open interval containing $a$. $\lim_{x\to a}f(x)$ is called the [\emph{two-sided}] \emph{limit of $f$ at $a$}. Note $f$ need not be defined at $a$ and, even if $f$ is defined at $a$, the value $f(a)$ need not equal $\lim_{x\to a}f(x)$. In fact, $f(a) = \lim_{x\to a}f(x)$ iff $f$ is defined on an open interval containing $a$ and $f$ is continuous at $a$.
+    
+    \item For $a\in\R$ and a function $f$ we write $\lim_{x\to a^+}f(x) = L$ provided $\lim_{x\to a^S}f(x) = L$ for some open interval $S= (a,b)$. $\lim_{x\to a^+}f(x)$ is the \emph{right-hand limit of $f$ at $a$}. Again $f$ need not be defined at $a$.
+    
+    \item For $a\in\R$ and a function $f$ we write $\lim_{x\to a^-}f(x) = L$ provided $\lim_{x\to a^S}f(x) = L$ for some open interval $S= (c, a)$. $\lim_{x\to a^-}f(x)$ is the \emph{right-hand limit of $f$ at $a$}.
+    
+    \item For a function $f$ we write $\lim_{x\to\infty}f(x) = L$ provided $\lim_{x\to\infty^S} f(x) = L$ for some interval $S = (c, \infty)$. Likewise, we write $\lim_{x\to-\infty}f(x) = L$ provided $\lim_{x\to-\infty^S}f(x) = L$ for some interval $S=(-\infty, b)$
+\end{enumerate}
+\end{defn}
+
+\begin{thm}
+Let $f_1$ and $f_2$ be functions for which the limits $L_1 = \lim_{x\to a^S}f_1(x)$ and $L_2=\lim_{x\to a^S}f_2(x)$ exist and are finite. Then
+\begin{enumerate}
+    \item $\lim_{x\to a^S}(f_1+f_2)(x)$ exists and equals $L_1 + L_2$
+    \item $\lim_{x\to a^S}(f_1f_2)(x)$ exists and equals $L_1L_2$
+    \item $\lim_{x\to a^S}(f_1/f_2)(x)$ exists and equals $L_1/L_2$ provided $L_2\neq 0$ and $f_2(x)\neq 0$ for $x\in S$
+\end{enumerate}
+\end{thm}
+
+\begin{thm}
+Let $f$ be a function for which the limit $L=\lim_{x\to a^S}f(x)$ exists and is finite. If $g$ is a function defined on $\{f(x): x\in S\}\cup\{L\}$ that is continuous at $L$, then $\lim_{x\to a^S}g\circ f(x)$ exists and equals $g(L)$.
+\end{thm}
+
+\begin{cor}
+Let $f$ be a function defined on $J\setminus \{a\}$ for some open interval $J$ containing $a$, and let $L$ be a real number. Then $\lim_{x\to a}f(x) = L$ if and only if
+\begin{equation*}
+    \text{for each $\epsilon > 0$ there exists $\delta > 0 $ such that $0<|x-a|<\delta$ implies $|f(x)-L|<\epsilon$}
+\end{equation*}
+\end{cor}
+
+\begin{cor}
+Let $f$ be a function defined on some interval $(a, b)$, and let $L$ be a real number. Then $\lim_{x\to a^+}f(x) = L$ if and only if
+\begin{equation*}
+    \text{for each $\epsilon > 0$ there exists $\delta >0$ such that $a < x < a + \delta$ implies $|f(x) - L| < \epsilon$}
+\end{equation*}
+\end{cor}
+
+\begin{thm}
+Let $f$ be a function defined on $J \setminus {a}$ for some open interval $J$ containing $a$. Then $\lim_{x \to a}f(x)$ exists if and only if the limits $\lim_{x \to a^+} f(x)$ and $\lim_{x \to a^-}f(x)$ both exist and are equal, in which case all three limits are equal.
+\end{thm}
 \end{document}

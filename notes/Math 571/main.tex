@@ -68,7 +68,7 @@ In the 1980s, Lenstra found a way to apply the very developed theory of elliptic
 \end{defn}
 
 \begin{rmk}
-    Most general equation, the Weierstrass equation: $y^2 = a_1xy + a_3y = x^3 + a_2x^2 + a_4x + a_6$
+    Most general equation, the Weierstrass equation: $y^2 + a_1xy + a_3y = x^3 + a_2x^2 + a_4x + a_6$
 \end{rmk}
 
 \subsection{Point addition}
@@ -367,7 +367,7 @@ ECDLP: Recover 1297 from (544, 26812) and (1, 21953).
 Best known algorithms are collision algorithms taking $O(\sqrt{p})$ steps. These are slow, which are good for cryptographic reasons.
 
 \begin{rmk}
-    For regular discrete log problem, there exist subexponential algorithms for general prime $p$. Additionally, there exist this idea of bad primes $p$. Here, the best algorithm is obviously exponential.
+    For regular discrete log problem, there exist subexponential algorithms for general prime $p$. Additionally, there exist this idea of "bad primes" $p$, which we are able to break even faster. Here, the best algorithm is obviously exponential.
 \end{rmk}
 
 \begin{rmk}
@@ -393,17 +393,19 @@ $F(A) = \begin{cases}
 \end{cases}$ \hspace{1em} for $A \in E(\F_p) = (x, y), 0 \leq x \leq p-1$
 %If you've taken differential equations, first of all my condolences
 
-\textbf{Idea}: Fix $x_0 \in S$. $x_1 = f(x_0)$, $x_2 = f(x_1), \cdots$
+\textbf{Idea}: Fix $x_0 \in S$. $x_1 = f(x_0)$, $x_2 = f(x_1), \cdots$, discrete dynamical system
 
-Mapping points to points, and eventually you will have a cycle because we are dealing with a finite set. Call the first point in the cycle you see $x_T$, the last point in the cycle $x_{T + M - 1}$, and then $x_T$ repeats as $x_{T + M}$, where $T$ and $M$ are minimum
+After repeatitively nesting $f$, you must eventually see some element repeat (because we are dealing with a finite set). Call the first point in the cycle you see $x_T$, the last point in the cycle $x_{T + M - 1}$, and then $x_T$ repeats as $x_{T + M}$, where $T$ and $M$ are minimum
 
 \begin{rmk}
-    In Chapter 5, How large to you expect T to be? $O(\sqrt{N})$
+    In Chapter 5, How large to you expect T to be? $M + T \approx O(\sqrt{N})$
 \end{rmk}
 
 \subsection{Pollard's factorization algorithm} Assume we have $n = pq$, $S = \Z /n$, $f(x) = x^2 + 1$. $x_0 = 1$
 
-Suppose $x_{T_n} = x_{T_n + M_n}$ is the first repeat mod $n$, $T_n = O(\sqrt{n})$. Probably, we get a repeat mod $p$ (or $q$) much much sooner: $x_{T_p} = x_{T_p + M_p}, T_p = O(\sqrt{p}) = O(n^{1/4})$. Take $\gcd(x_{T_p} - x_{T_p + M_p}, n) = p$, and we can probably recover something.
+Suppose $x_{T_n} = x_{T_n + M_n}$ is the first repeat mod $n$, $T_n = O(\sqrt{n})$. Probably, we get a repeat mod $p$ (or $q$) much much sooner: $x_{T_p} = x_{T_p + M_p}, T_p = O(\sqrt{p}) = O(n^{1/4})$. Take $\gcd(x_{T_p} - x_{T_p + M_p}, n) = p$, and we can probably recover something. 
+
+There are really three pictures here, your $\rho$ mod $n$, mod $p$, and mod $q$.
 
 \textbf{Implementation Problems}: You need to compute $\gcd(x_i - x_j, n)$ for every pair $i, j$, because we have no idea where this repeat is going to be. This becomes a huge number as $i$ increases. Additionally, you have to store every point, which is infeasible.
 
@@ -428,6 +430,313 @@ Suppose $x_{T_n} = x_{T_n + M_n}$ is the first repeat mod $n$, $T_n = O(\sqrt{n}
 Unless we get unlucky, and $q$ hits at the exact same moment, we have that 151 is a factor of $n$.
 
 Running time depends on the smallest prime factor $O(\sqrt{p}) \stackrel{?}{=} O(n^{1/4})$. If $p$ is much smaller, then it runs much better
+
+\begin{rmk}
+    This assumes $n$ exists. This is very bad at deciding if $n$ exists, so we're only going to apply it if we know there is one.
+\end{rmk}
+
+In practice with our elliptic curve, we calculate\\
+$\begin{matrix}
+    A_0 = P & B_0 = P\\
+    A_1 = f(A_0) & B_1 = F(F(B_0))\\
+    A_2 = f(A_1) & B_2 = F(F(B_1))\\
+    \vdots & \vdots\\
+\end{matrix}$\\
+where at each step we check if $A_i = B_i$
+
+\begin{rmk}
+    $A_i = a_i P + a_i'Q$, $B_i = b_iP + b_i'Q$
+\end{rmk}
+
+Once we have our collision, we can regroup terms: $A_i = B_i \implies a_i P + a_i'Q = b_iP + b_i'Q \implies (a_i - b_i)P = (a_i' - b_i')Q$.
+
+\begin{rmk}
+    You need to know the order of $P \in E(\F_p)$, denoted $R$. Note that there is a separate algorithm for that, which we do not have yet. What we have done is, using order of $P$ and RH, determine $\#E(\F_p)$
+\end{rmk}
+
+Reduce $a_i, b_i \pmod{R}$
+
+If $\gcd(b_i' -a_i', R) = 1$ then set $c \equiv (b_i' - a_i')^{-1}\pmod{R}$, so $c(a_i-b_i)P = Q$
+
+Expected running time: $O(\sqrt{\# E(\F_p)}) = O(\sqrt{p})$
+
+\begin{rmk}
+    This is the best known general algorithm. Again, there are some cases which can be done quite fast (anomolous and supersingular), which we want to avoid.
+\end{rmk}
+
+\subsection{Elliptic Curve Diffie-Hellman (ECDHP)} Recall that the goal of Diffie-Hellman is for two parties to agree on a secret key over a public channel
+
+\textbf{Public}: prime $p$, elliptic curve $E/\F_p$, and point $P \in E(\F_p)$
+
+Alice and Bob want to agree on some sort of secret key. They each choose some large integer $n_A$ and $n_B$. Then compute $Q_A = n_A \cdot P$ and $Q_A = n_B \cdot P$. Alice sents $Q_A$ to Bob, and Bob sends $Q_A$ to Alice. Alice computes the left hand side, $n_AQ_B = n_An_BP = n_BQ_A$, and Bob computes the right hand side, which are of course equal.
+
+\begin{rmk}
+    In some cases you will want your key to be a point. In some contexts you want it to be a certain value, in which case you can just pick a coordinate or the sum.
+\end{rmk}
+
+If Eve can solve $ECDLP$, she recovers $n_A$ and $n_B$ from $Q_A, Q_B$ (and knowing $p, E, P$) can compute $n_AQ_B = n_BQ_A$. Therefore ECDLP solves ECDHP. There is no known way to approach ECDHP without ECDLP.
+
+\begin{exm*}
+    $p = 2411$. $E: y^2 = x^3 + 83x + 1137$. $P = (10, 571)$
+\end{exm*}
+
+Alice chose $n_A = 1211$, Bob chose $n_B = 693$. Using fast powering, they compute $n_AP = (401, 1439)$ and $n_BP = (1312, 802)$, and then they each compute $n_AQ_B =  n_BQ_A = n_An_BP = (116, 988)$
+
+\subsection{Elliptic Curve El Gamal} Again, we're just going to adapt ECDHP to be a cryptosystem.
+
+Choose prime $p$, elliptic curve $E/\F_p$, and point $P \in E(\F_p)$
+
+Alice chooses $n_A$ and computes $Q = n_A P$
+
+\textbf{Public}: prime $p$, elliptic curve $E/\F_p$, and point $P \in E(\F_p)$, $Q$
+
+Bob wants to send message $M \in E(\F_p)$. (It is a lot harder to coerce the message into the curve than a message into an integer). Bob picks $k$, and sends $C_1 = kP$ and $C_2 = M + kQ$.
+
+Alice receives them, and computes $C_2 - n_AC_1 = M + kQ- nA(kP) = M + kn_AP - n_AkP = M$
+
+Once again, if you can solve ECDLP, then you can braek EC El Gamal (which is equivalent to ECDHP)
+
+\section{Lensta's Elliptic Curve Factorization}
+Analogue to Pollard's $p-1$ algorithm
+
+Factor $n = pq$. Find $L$ such that (for $\gcd(a, N) = 1$)$a^L \equiv 1 \pmod{p}$, $a^Q \not\equiv 1\pmod{q}$, so $p = gcd(n, a^L - 1)$.
+Try $L = k!$, $k = 1, 2, 3, \ldots$. Works well if $p-1$ has only smallish prime factors.
+
+\textbf{Goal}: Factor $n = pq$
+
+\begin{exm*}
+    $n = 187$, $E: y^2 = x^3 + 3x + 7$, $P = (38, 112)$
+\end{exm*}
+Our curve is over $\Z/n$, which is a problem because it's not a field, and division doesn't work. Things break, but that's what we want.
+
+Start computing $2P, 3P, 4P, \ldots$, using the normal formulas. $\lambda = \dfrac{3x^2 + A}{2y} \equiv \dfrac{338^2 + 3}{2\cdot 112} \pmod{n}$. $\gcd(224, n) = 1$, so we're safe.
+
+$x_{2P} = \lambda^2 - 2x_P$, $y_{2P} = \lambda(x_{2P}-x_P) + y_P$, $2P = (43, 126)$.
+
+Then use secant method for $3P = 2P + P = (54, 105)$, $4P = 3P + P = (93, 64)$
+
+Why is this useful? Well, when we compute $5P$, things break.
+
+$5P = 3P + 2P$. $\lambda = \dfrac{y(3P) - y(2P)}{x(3P) - x(2P)} = \dfrac{105-126}{54-43} = \dfrac{-21}{11} \pmod{n}$. We cannot compute the inverse of $11$ mod $n$, meaning that $\gcd(11, 187) \neq 1$. The computation fails, but more importantly we have a factor of $n$, which is $\gcd(11, 187) = 11$
+
+\textbf{Explanation} $P \in E(\Z/187)$ can be reduced into both $P \in E(\Z/11)$ and $P \in E(\Z/17)$. $P \mod{11} = (5, 2)$ on $E(\F_{11})$. Turns out $5P = \O$. Our computation failed because a different formula is required to get $\O$. We don't need to know 11 is a factor to get their, much less know the order in $E(\F_11)$
+
+\begin{rmk}
+    We don't want to compute additively, because if the orders are huge, then this will take a while. However, we can use factorial like Pollard's $p-1$
+\end{rmk}
+
+Fix $P = (a, b)$, $a, b \in \Z/n$. Fix $A \in \Z/n$. Set $B = b^2 - a^3 -Aa$. Then $P$ is a point on $E: y^2 = x^3 + Ax + B$.
+
+For $j = 2, 3, 4, \ldots$, let $Q_1 = P$, and $Q_j = j\cdot Q_{j-1} = j!P$. We still don't have to compute $j!$, since we only multiply once at each step, rather than recomputing $j!$ everytime, just like $p-1$ method.
+
+If at step $j$ the computation fails (because the denominator in $\lambda$ is \underline{not} relatively prime to $n$), then recover a factor as $\gcd(n,$ denominator of $\lambda)$. 
+
+\begin{rmk}
+    If the gcd is $n$, pick a new $P$, $A$, and start over.
+\end{rmk}
+
+\begin{exm*}
+    $n = 15811$
+\end{exm*}
+Pick $P = (11, 13)$, and $A =1 \implies B = 14638, E: y^2 = x^3 + x + 14638$
+
+$P = (11, 13), Q_2 = 2P = (174, 13516)$
+
+$3Q_2 = 2Q_2 + Q_2: \lambda = \dfrac{3516 - 13}{174 -11}$. 174 -11 = 163, $\gcd(n, 163) = 163$. Therefore 163 is a factor.s
+
+Why did this work? 15811 = 163$\cdot$97. $P \in E(\Z/n) \implies E(\F_{163})$, order of 3.
+
+\textbf{Running time}: Recall the quadratic sieve was $O(e^{\sqrt{\log n \log\log n}})$. Elliptic curve was $O(e^{\sqrt{2\log p \log\log p}})$. If $p \approx q$, then the 2 goes away and they are roughly the same. However, if $p$ is much smaller, then we will find it much quicker.
+
+\section{Finite Fields}
+\textbf{Recall}: A field $F$ is a set with binary operations $+, \cdot$ satisfying all usual algebraic axioms, including that all non-zero elements are units (meaning they have multiplicative inverses)
+
+A finite field is a field with a finite number of elements. 
+
+\begin{exm*}
+    $\Z/n$
+\end{exm*}
+The units in here are the numbers relatively prime to the modulus $n$. If we want all nonzero elements to be units, then we obviously want $n$ to be prime, which we typically denote $\F_p = \Z/p$. 
+
+\subsection{Preliminaries} Are there other finite fields? Yes there are, there are infinitely many, but there aren't that many.
+
+\begin{thm}
+    There exists a field of size $n$ if and only if $n = p^k$ for a prime $p$ and $k \geq 1$
+\end{thm}
+\begin{thm}
+    If $F$ and $F'$ are two finite fields with the same order, then they are isomorphic
+\end{thm}
+
+Write $\F_p^n$ for "the" field of $p^n$ elements
+
+\textbf{Why are we doing this?} It is very easy for a computer to play with $\Z/2$, but it's not very big. However, if you can pass it $F_2^{100}$, that's a lot bigger and a lot more complicated. Also when we get to torsion points, it's a lot easier to fixed $p$ and vary $n$.
+
+\begin{exm*}
+    Build using polynomial rings 
+\end{exm*}
+$\F_p[X]=$ ring of polynomials in $X$ with coefficients in $\F_p$. Elements look like $a_nX^n + a_{n-1}X^{n-1} + \ldots + a_0 \in \F_p[X], a_i \in \F_p$
+
+We have a theory of divisibility: $f | g \iff fg = g$ for some $h \in \F_p[X]$. 
+
+If we have $f, g \in \F_p[X], g\neq 0$. Then there exist a pair of polynomials $q$ and $r$ with deg$r$ < deg$g$ such that $f = gq + r$. This directly implies unique factorization into irreducible polynomials in $\F_p[X]$. 
+
+\begin{defn}
+    $f\in \F_p[X]$ is irreducible if $f$ has no non-constant divisors of smaller degree
+\end{defn}
+My note: this definition is for $\F_p$ since it is a field, this is weaker than general irreducibility.
+
+\begin{exm*}
+    $p = 2$, irreducible polynomials
+\end{exm*}
+Degree 0, none. Degree 1, $X$, $X+1$.
+
+Degree 2 has four polynomials: $x^2 = x\cdot x$, $x^2 + x = x(x + 1)$, $x^2 + 1 = (x+1)^2$, and $x^2 + x + 1$, which is irreducible. 
+
+We want to look for polynomials with a non-zero constant term, and an odd amount of terms. Degree 3 has two such: $x^3 + x^2 + 1$ and $x^3 + x + 1$.
+
+Now with degree 4, we don't need to have a root to reduce. The four without roots are $x^4 + x^3 + 1$, $x^4 + x^2 + 1$, $x^4 + x + 1$, and $x^4 + x^3 + x^2 + x + 1$. However, the only way to get a degree 4 as a product of irreducible quadratics is to square our only irreducible quadratic, getting $(x^2 + x + 1)^1 = x^4 + x^2 + 1$
+
+You can use induction and unique factorization to get a precise formular for the number of irreducible polynomials of any degree.
+
+\subsection{Constructing a finite field of prime power size} Find irreducible polynomial $f\in \F_p[X]$ with deg$f = n$.
+
+Quotient rings $\F_p[X]/f(x)$ are polynomials modulo $f$. For $g, h\in \F_p[X]$: $g + h$ is still degree $< n$, so it's already in here. $g\cdot h$, apply division to $gh$ and $f$ to get $r$'s degree down below $f$'s. Set $g\cdot h = r$. Then this is "the" finite field $\F_{p^n}$
+
+\begin{exm*}
+    $\F_4 = \F_2[X]/(x^2 + x + 1)$
+\end{exm*}
+elements are $\{0, 1, X, X+1\}$. Most are obvious except $x\cdot x = x^2 = 1(x^2 + x + 1) + x + 1$, so $x^2 = x + 1$. $(x + 1)^2 + (x^2 + x + 1) + x$, and $x(x+1) = (x^2 + x + 1) + 1 = 1$
+
+\begin{exm*}
+    $\F_{27} = \F_3[x]/(x^3 + 2x + 1)$
+\end{exm*}
+The elements will be quadratic polynomials with coefficients in $\F_3$
+
+\begin{rmk}
+    Finite fields are cyclic, so $\F_{27}$ will have an element with order 26.
+\end{rmk}
+
+\begin{rmk}
+    Fix $n \geq 1$, and take $x^{p^n}-x$, this factors exactly as a product of every irreducible polynomial of degree dividing $n$
+\end{rmk}
+
+\begin{rmk}
+    $\F_{p^2}$. If $p\equiv 3\pmod{4}$ then $\left(\dfrac{-1}{p}\right) = -1$ (-1 is not a square $\mod{p}$) It follows that $x^2 + 1$ is irreducible in $\F_p[X]$.
+\end{rmk}
+$p \equiv 3\pmod{4}$, $\F_{p^2} = \F_p[X]/x^2 + 1 = \F_p[i] = \{a + bi | a, b \in \F_p\}, i^2 = -1$.
+
+\section{Elliptic Curves over Finite Fields (again)}
+$E: y^2 = x^3 + ax + b$, with $a, b \in \F_{p^n}$. We always assume $a, b \in \F_p$. $\Delta = -4a^3-27b^2$, $\Delta \neq 0$
+
+This is where the book concedes that this formulata for $\Delta$ is incomplete. $\Delta = 16(-4a^3 - 27b^2)$ so if $p = 2, \Delta = 0$ automatically.
+
+Generalized Weierstrass equations $y^2 + a_1xy + a_3y = x^3 + a_2x^2 + a_4x + a_6$, $a_i \in \F_p$. Equation for $\Delta$ is really complicated in terms of $a$'s, but we need it to not be zero.
+
+The group law still works, formaulas are just more complicated.
+
+Look at $E(\F_{p^n})$ as $n$ varies
+
+\begin{exm*}
+    $p = 3$, $E: y^2 = x^3 + x + 1$
+\end{exm*}
+\begin{tabular}{c|c}
+    $n$ & $\#E(\F_{3^n})$\\
+    \hline
+    1 & 4\\
+    2 & 16 \\
+    3 & 28\\
+    4 & 64\\
+    5 & 244\\
+    6 & 784\\
+\end{tabular}
+
+We still have the Riemann hypothesis, but for $|\#E(\F_{p^n}) - p^n - 1 | \leq 2p^{n/2}$
+
+\textbf{More precise statement}: $t = p + 1 - \#E(\F_p)$ so $|t| \leq 2\sqrt{p}$. Consider $x^2 - tz + p$. 
+
+Let $\alpha, \beta\in \C$ be the complex roots $x^2 - tz + p = (z - \alpha)(z - \beta)$. Note this means $\alpha + \beta = t$, and $\alpha\beta = p$. 
+
+Then $\#E(\F_{p^n}) = p^n + 1 - \alpha^n - \beta^n$
+
+\begin{exm*}
+    $p = 3$
+\end{exm*}
+$z^2 + 3 = (z + \sqrt{3}i)(z - \sqrt{3}i)$, $\alpha = \sqrt{3}i$, $\beta = -\sqrt{3}i$
+
+$\#E(\F_{3^n}) = 3^n + 1 - (\sqrt{3})^n - (-\sqrt{3})^n = \begin{cases}
+    3n + 1 & n\equiv 1 \pmod{2}\\
+    3^n - 2\cdot3^{n/2}+1 & n \equiv 0 \pmod{4}\\
+    3^n + 2\cdot3^{n/2}+1 & n\equiv 2 \pmod{4}\\
+\end{cases}$
+First case is easy because the negative remains, and $\alpha$ and $\beta$ powers cancel. For the second and third, it is a matter of what value $i$ takes on.
+
+\begin{exm*}
+    $p = 3$, $y^2 = x^3 + x + 1$
+\end{exm*}
+$E(\F_{3^{1000}})$. $1000 \equiv 0 \pmod{4}$, $\# = 3^{1000}-2\cdot3^{500} + 1$. This says nothing about the group structure, but we know size.
+
+\begin{rmk}
+Consider $\alpha$ and $\beta$. The Riemann hypothesis that $|t| \leq 2\sqrt{p} \iff a, b \not\in \R$. 
+\end{rmk}
+The key fact to this is that $\alpha \beta = p$, so if they are not real, they must be complex conjugates with modulus $\sqrt{p}$, and must add up to $t$
+
+\subsection{Frobenius Map} No one ever seems to know his first name, he's just Frobenius, since his last name is cool.
+
+\begin{defn}[Frobenius Map]
+    $\tau : \F_{p^n} \to \F_{p^n}$, where $\tau(\alpha) = (\alpha^n)$. 
+\end{defn}
+
+\begin{lem}
+    This is a ring homomorphism
+\end{lem}
+$\tau(\alpha\beta) = (\alpha\beta)^p = \alpha^p\beta^p = \tau(\alpha)\tau(\beta)$
+
+$\tau(\alpha + \beta) = (\alpha + \beta)^p = \alpha^p + \ldots + \beta^p = \alpha^p + \beta^p$ since all of the middle terms are divisible by $p$.
+
+This is an automorphism, is an element of the Galois group of this extension and so on :D.
+
+\begin{rmk}
+    $\tau(\alpha)=\alpha^p = \alpha$. $\alpha$ is a root of $x^p - x= x(x - 1)(x -2)\ldots(x - (p-1))$, so $\alpha \in \{0, 1, \ldots, p-1\} \implies \alpha \in \F_p$
+\end{rmk}
+
+\section{Weil Pairing} 
+$E/\F_p$, Fix $m \geq 2$. Find $k$ such that $E(\F_p)[m] \cong \Z/m \times \Z/m$. Then pairing $e_m : E(\F_p)[m] \times E(\F_p)[m] \to \F_{p^k}^k$
+
+\subsection{Key Properties}
+$P, Q \in E(\F_{p^k})[m]$
+
+\begin{itemize}
+    \item $e_m(P, Q)^m = 1$
+    \item $e_m(P, P) = 1$
+    \item $e_m(P_1 + P_2, Q) = e_m(P_1, Q) \cdot e_m(P_2, Q)$, same for $Q$
+    \item Non-degeneracy $e_m(P, Q) = 1$ for all $Q \in E[m] \implies P = \O$
+\end{itemize}
+
+$e_m(P, Q) = \dfrac{f_p(Q + S)}{f_p(S)}\dfrac{f_Q(-S)}{f_Q(P-S)}$ Where $S$ is a random point on $E(\F_{p^k})$, $f_P$ and $f_Q$ are rational functions on $E$ such that $div(f_P) = n[P] - n[\O]$ and $div(f_Q) = n[Q] - n[\O]$
+
+\subsection{MOV Algorithm}
+\textbf{ECDLOP}: Given $P, Q$ find (if it exists) $n \leq 1$ such that $Q = nP$.
+
+\textbf{DLP in $\F_{p^k}$} Given $\alpha, \beta \in \F_{p^k}^k$ find (if it exists) $n \leq 1$ such that $\beta = \alpha^n$ "Index calculus" method subexponential.
+
+To compute $e_m$, need a fast algorithm to find $f_P, f_Q$
+
+1) $P, Q \in E(\F_{p^k})$, $\lambda =$ slope of line $\overline{PQ}$
+
+$\lambda = \begin{cases}
+    \dfrac{y_Q - y_P}{x_Q - x_P} & x_Q \neq x_P\\
+    \dfrac{3x_P^2 + 1}{2y_P} & P = Q\\
+    \infty & P = -Q\\
+\end{cases}$
+
+Define a rational function $f_n$ on $E$.
+
+$g_{P, Q} = \begin{cases}
+        \dfrac{y - y_P - \lambda(x - x_P)}{x + x_P = x_Q - \lambda^2} & \lambda \neq \infty\\
+        x- x_p & \lambda = \infty
+\end{cases}$
+
+\textbf{Claim} $div(g_{P, Q}) = [P] + [Q] - [P + Q] - [\O]$
 \end{document}
 
 

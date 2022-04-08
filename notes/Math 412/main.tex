@@ -17,17 +17,17 @@
 \definecolor{darkgreen}{RGB}{0,128,0}
 \definecolor{darkdarkred}{RGB}{64,0,0}
     
-\lstset
-{
-    basicstyle=\ttfamily\scriptsize, 
-    breaklines=true,
-    postbreak=\mbox{\textcolor{darkdarkred}{$\hookrightarrow$}\space},
-    showstringspaces=false
-    keywordstyle = [1]\bfseries\color{darkred},
-    keywordstyle = [2]\itshape\color{darkgreen},
-    keywordstyle = [3]\sffamily\color{darkblue},
-    keywordstyle = [4]\color{darkyellow},
-}
+% \lstset
+% {
+%     basicstyle=\ttfamily\scriptsize, 
+%     breaklines=true,
+%     postbreak=\mbox{\textcolor{darkdarkred}{$\hookrightarrow$}\space},
+%     showstringspaces=false
+%     keywordstyle = [1]\bfseries\color{darkred},
+%     keywordstyle = [2]\itshape\color{darkgreen},
+%     keywordstyle = [3]\sffamily\color{darkblue},
+%     keywordstyle = [4]\color{darkyellow},
+% }
 
 \fancypagestyle{firstpage}
 {
@@ -44,6 +44,8 @@
     \fancyhead[R]{\scshape Spring 2022}
     \renewcommand{\headrulewidth}{0.1pt}
 }
+
+\newcommand{\F}{\mathbb{F}}
 
 \pagestyle{pages}
 
@@ -449,7 +451,7 @@ $I$ is an abelian group since $rs + rs' = r(s + s') \in I$.
 Closure since $rsr' = r'rs = r(r's) \in I$
 
 \begin{defn}
-    An integral domain is called a \textbf{principle ideal domain} a(PID) if every ideal is principle.
+    An integral domain is called a \textbf{principle ideal domain} (PID) if every ideal is principle.
 \end{defn}
 Very good example here being $\Z$, where all ideals are $I = n\Z$.
 
@@ -699,7 +701,13 @@ View $\C$ as a vector space over $\R$, with basis vectors $1$ and $i$.
 \begin{lem}
     $v_1, \ldots, v_n$ span $V$ and $u_1, \ldots, u_k$ are linearly independent, then $k \leq n$.
 \end{lem}
+$u_i = \sum\limits_{j = 1}^n a_{ij}v_j$. Argue by contradiction. Suppose $k > n$. Leters try to find a nontrivial linear combination (all terms nonzero) $x_1u_1 + \ldots x_ku_k = 0$ $x_i \in K$.\\
+$\implies \sum\limits_{i=1}^k x_iu_i = 0$\\
+$\implies \sum\limits_{i=1}^k x_i\sum\limits_{j = 1}^n a_{ij}v_j = 0$\\
+$\implies \sum\limits_{i=1}^k\sum\limits_{j = 1}^n x_ia_{ij}v_j = 0$\\
+Certainly true if $\sum\limits_{i = 1}^k x_ia_{ij} = 0$ $\forall j = 1,\ldots, n$. We have a system of $n$ homogeneous linear equations in $k$ variables $x_1, \ldots, x_k$, and $k > n$. Therefore, it has a nontrivial solution.
 
+Run row reduction, we have $> 0$ independent variables, which can take arbitrary values.
 \begin{cor}
     If $V$ has a finite basis with $n$ vectors, then every other basis also has $n$ vectors. This $n$ is called the \textbf{dimension} of $V$ over $K$ (otherwise $dim V = \infty$)
 \end{cor}
@@ -714,4 +722,374 @@ $a, b\in \R, a + bi = 0\implies a = b = 0 \implies 1$ and $i$ are linearly indep
 \begin{defn}
     $K \subset F$ a field extension $\implies F$ vector space/$K$. Then the dimension of $F$ over $K$ is called the \textbf{degree} of the field extension, notated $\left[F : K\right]$
 \end{defn}
+
+\begin{lem}
+    $f(x) \in K[x]$ irreducible of degree $n$. $I = (f) \subset K[x]$, $F = K[x]/I$. Then $[F : K] = n$, easy to write a basis as well.
+\end{lem}
+$\alpha = X + I \in F$. Claim: 1, $\alpha, \alpha^2, \alpha^3, \ldots, \alpha^{n-1}$ is a basis of $F$ over $K$, with dimension $n$.
+
+$F = K[x]/I \implies$ elements of $F$ are cosets $p(x) + I$, $p(x) \in K[x]$. Recall $p(x) =f(x)q(x) + r(x)$, degree of $r <$ degree $f$. $I = (f(x))$, $f(x)q(x) \in I$, $p(x) + I = r(x) + I$. 
+
+If $r(x)$ and $r'(x)$ give the same coset, then $r(x)$ must be equal to $r'(x)$, since $r(x) - r'(x) \in I \implies r(x) - r'(x) = f(x)s(x) \implies \deg(r - r') < \deg(f) \implies r = r' \implies$ we can write every element of $F$ as $a_0 + a_1x + \ldots + a_{n-1}x^{n-1} + I, a_i \in K$ uniquely. $a_0 + a_1\alpha + \ldots + a_{n-1}\alpha^{n-1} = a_0(1 + I) + a_1(x + I) + \ldots + a_{n-1}(x + I)^{n-1} =$ above.
+
+Therefore, $\{1, \alpha, \ldots, \alpha^{n-1}$ is a basis, since every element of $F$ is a unique linear combination of $1, \ldots, \alpha^{n-1}$ with coefficients in $K$.
+
+\begin{cor}
+    $K \subset F$ field extension, $\alpha \in F$ algebraic over $K$ with minimal polynomial of degree $n \implies[K(\alpha), K] = n$, with basis $\{1, \alpha, \ldots, \alpha^{n-1}$.
+\end{cor}
+
+$f(x) = irr(\alpha, K)$. Last time: $K(\alpha) \cong F/(f)$ with $\alpha$ matched with $x + I$.
+
+\begin{exm*}
+    $K = \Q, \alpha \in \C$, study $K(\alpha)$?
+\end{exm*}
+$\Q(\sqrt{2}), irr(\sqrt{2}) = x^2 - 2 \implies [Q(\sqrt{2}), \Q] = 2$, with basis 1, $\sqrt{2}$.
+
+Therefore, $\forall x \in \Q(\sqrt{2})$ can be written uniquely as $a + b\sqrt{2}, a, b\in \Q$.
+
+\begin{exm*}
+    $\Q(\sqrt{1 + \sqrt{3}})$
+\end{exm*}
+$\alpha^2 = 1 + \sqrt{3} \implies \alpha^2 - 1 = \sqrt{3} \implies (\alpha^2 - 1)^2 = 3 \implies \alpha^4 - 2 \alpha^2 - 2 = 0$. Is irreducible by Eisenstein with $p = 2$.
+
+Therefore, $[\Q(\alpha), \Q] = 4$, basis is $1, \alpha, \alpha^2, \alpha^3$
+
+How to write $\dfrac{1}{1 + \alpha + \alpha^2}$ as linear combination?
+
+$x_0 + x_1 \alpha + x_2 \alpha^2 + x_3 \alpha^3$, solve for $x_0,\ldots x_4$. 1 = $(1 + \alpha + \alpha^2)(x_0 + x_1 \alpha + x_2 \alpha^2 + x_3 \alpha^3)$. $\alpha^4 = 2\alpha^2 + 2$. Multiply out, and substitute in for $\alpha^4$ at each step to only use powers of $\alpha < 4$. Gives a system of 4 equations in four variables.
+
+\section{Algebraic Extensions}
+
+\begin{defn}
+    A field extension $K \subset F$ is called \textbf{algebraic} if every element $\alpha \in F$ is algebraic/$K$.
+\end{defn}
+
+\begin{thm}
+    Every finite extension is algebraic
+\end{thm}
+
+$[F : K] = n, \alpha \in F$. Basis $e_1, e_2, \ldots, e_n \in F$. Take $1, \alpha, \ldots, \alpha^n$. Are linearly dependent $\implies x_0 + x_1\alpha + \ldots + x_n\alpha^n = 0$ for some $x_i \in K$, not all 0, so $P(\alpha) = 0$.
+
+\begin{exm*}
+    $\Q(2^{a/3})$
+\end{exm*}
+$[\Q(2^{a/3}) : \Q] = 3$ since $x^3 - 2 = 0$, irr by Eisenstein\\
+$\implies \forall p \in \Q(2^{1/3})$ is algebraic over $\Q$
+
+Take $\beta = 1 + 2^{1/3} + 2^(2/3)$. Basis of $\Q(2^{1/3})$ is $\{1, 2^{1/3}, 2^{2/3}\}$. Compute $1, \beta, \beta^2, \beta^3$ as linear combinations of 1, $2^{1/3}, 2^{2/3} \implies$ set-up a linear combination with unknown coefficients $x_0 + x_1\beta + x_2\beta^2 + x_3\beta^3$ in terms of the basis. Solve a SLE with 4 variables and 3 equations.
+
+\begin{rmk}
+    Suppose $\alpha$ is algebraic over $F$. Then $F(\alpha) \cong F[x]/(f)$ where $f(x)$ is the irreducible polynomial.
+    We have a basis of $F(\alpha)$ over $F$ given by $1, \alpha, \alpha^2, \ldots, \alpha^{n-1}$, where $n$ is the degree of $f(x) = [F(\alpha) : F]$
+\end{rmk}
+
+\begin{thm}[Transitivity of degree]
+    $F \subset K \subset L$ fields. Suppose $L$ is a finite extension of $F$. Then $[L : F] = [L : K][K : F]$
+\end{thm}
+\textbf{Proof}: Choose a basis $\alpha_1, \ldots, \alpha_n$ of $K$ as a vector space over $F$. Choose $\beta_1, \ldots, \beta_m$ of $L$ as a vector space over $K$. Claim $\alpha_i\beta_j$ for $i = 1, \ldots, n$ and $j = 1, \ldots, m$ is a basis of $L$ over $F$.
+
+Have to check that \\
+(1) every element $\gamma \in L$ can be written as a linear combination of $\alpha_i\beta_j$ with coefficients in $F$\\
+(2) These vectors are linearly independent over $F$.
+
+Well, the $\beta$ terms being a basis of $L$ over $K$ means that $\gamma = \sum\limits_{j = 1}^m k_j \beta_j$. But the $\alpha$ terms form a basis of $K$ over $F$, so each $k_j = \sum\limits_{i = 1}^n f_{ij}\alpha_i$. Therefore, you can substitute in the summations to get $\gamma = \sum\limits_{j=1}^m \sum\limits_{i = 1}^n f_{ij}a_ib_j$. so we have part (1).
+
+(2) Claim: $\alpha_i\beta_j$ are linearly independent over $F$.
+Write $\sum_{i, j}f_{ij}\alpha_i\beta_{j} = 0$. To show linear, independence, we must show that all $f_{ij}$ are 0.
+
+Well, this implies that $\sum\limits_{j = 1}^m (\sum\limits_{i = 1}^n f_{ij} \alpha _i)\beta_j = 0$, but the $\beta$ terms form a basis, so are linearly independent with each summation term being in $K$, so each summation w.r.t $j$ equals 0. Well, by the same logic, since $\alpha$ are all linearly independent, all $f_{ij}$ must be zero, and we are done.
+
+\begin{cor}
+    If $[L : F]$ is prime, then either $[L : K] = 1 \implies L = K$ or $[K : F] = 1 \implies K = F$
+\end{cor}
+
+\begin{exm*}
+    $[\Q(2^(a/3)) : \Q] = 3$
+\end{exm*}
+$\beta = 1 + 2^{1/3} + 2^{2/3}$. Then, take $\Q \subset \Q(\beta) \subset \Q(\alpha)$. Then either $\Q = \Q(\beta)$ or $\Q(\beta) = \Q(2^{1/3})$. The latter must be true, since $\beta$ is not rational $\implies \deg(irr(\beta, \Q)) = [\Q(\beta): \Q] = [\Q(2^{1/3}): \Q] = 3$
+
+\begin{exm*}
+    $\Q[\sqrt{2}]$
+\end{exm*}
+Has degree 2, since irreducible polynomial is $x^2 - 2$. Take $\Q[\sqrt{2}, \sqrt{3}]$ over $\Q[\sqrt{2}]$ has degree two because the irreducible polynomial is $x^2 - 3$ 
+
+Is this irreducible? Well if not, then there is a root, namely $\sqrt3$ so then $\sqrt{3} \in \Q[\sqrt{2}]$, so $\sqrt3 = a + b\sqrt2$ for $a, b \in \Q$. Square both sides, get 3 = $a^2 + 2b^2 + 2ab\sqrt{2}$, which can't be true unless $a$ is zero or $b$ is zero.
+
+If $b$ is zero, then $\sqrt{3} = a$, but we know it's irrational. If $a$ is zero, then we have $\sqrt{3} = b\sqrt{2}$, or $2b^2 - 3 = 0$, which is irreducible by Eisenstein, so $b$ is irrational if the two sides are indeed equal. 
+
+Therefore, $[\Q(\sqrt2, \sqrt3)]$ has degree 4, with basis $1, \sqrt{2}, \sqrt{3}, \sqrt{6}$. This is a simple field extension, since we've already checked that $x^4 - 10x^2 + 1$ is an irreducible polynommial with degree 4 with $\sqrt{2} + \sqrt{3}$ as a root. 
+
+Therefore, we have $\Q \subset \Q(\sqrt2 + \sqrt3) \subset \Q(\sqrt2, \sqrt3)$, where the the first extension has degree 4, and the whole extension has degree 4, so the right two must be equal, and the last field must have degree 4 over $\Q$
+
+\begin{exm*}
+    $\Q(\sqrt{2}, \sqrt[3]{2})$
+\end{exm*}
+
+$F \subset K$ field extension. Consider $L = \{ \alpha \in L : \alpha$ is algebraic over $F \}$ If $F\subset K$ i algebraic $\implies L = K$. 
+
+\begin{lem}
+    $L$ is a subfield of $K$, called an \textbf{algebraic closure} of $F$ in $K$
+\end{lem}
+
+\begin{exm*}
+    $\Q \subset \C$. Algebraic closure of $\Q \in \C$ is denoted $\overline{\Q}$, field of algebraic numbers
+\end{exm*}
+Proof of lemma: $\forall, \alpha, \beta \in L$, check that $\alpha\beta$, $\alpha - \beta$, and $\alpha/\beta$ is in $L$. Meaning, these three should also algebraic over $K$.
+
+Consider extension $K \subset K(\alpha)$, which is finite. Then extension $K(\alpha) \subset K(\alpha, \beta)$, which is also finite since $\beta$ is algebraic over $K$. Therefore $K \subset K(\alpha, \beta)$ is also finite with degree of product of the subdegrees. Because this extension is finite, it must be algebraic $\implies \alpha \pm \beta, \alpha\beta, \alpha/\beta$ are algebraic over $K$
+
+\begin{rmk}
+    How can we find a 
+\end{rmk}
+
+\begin{exm*}
+    $\overline{Q} = \{ \alpha \in \C : \alpha$ is algebraic over $\Q\}$ is an algebraic closure, and is therefore automatically a field without having to prove it specifically
+\end{exm*}
+
+\begin{defn}
+    An algebraic closure $\overline{K}$ of a field $K$ is a field extension of $K$ such that \begin{enumerate}
+        \item $\forall\alpha \in \overline{K}$ is algebraic over $K$
+        \item $\overline{K}$ is algebraically closed, which means that every polynomial in $\overline{K}[x]$ has a root in $\overline{K}$
+    \end{enumerate}
+\end{defn}
+(2) $\iff$ every polynomial in $\overline{K}[x]$ factors into linear factors in $\overline{K}[x]$
+
+\begin{exm*}
+    $\C$ is algebraically closed$\implies \C$ is an algebraic closure of $\R$
+\end{exm*}
+(1) $\C$ is algebraically closed\\
+(2) $a + bi \in C$ is algebraic over $\R$? $(x - a - bi)(x - a + bi) = x^2 - 2ax + (a^2 + b^2)$
+
+\begin{exm*}
+    $\overline{\Q}$ is algebraically closed
+\end{exm*}
+
+\begin{exm*}
+    $c = \sum\limits_{n \geq 1} \dfrac{1}{10^{n!}}$
+\end{exm*}
+Last time: $c$ is a Liouville number, which means that $c\not\in\Q$, and $\forall n \geq 1, \exists \dfrac{p}{q} \in \Q$ such that $\left| c - \dfrac{p}{q}\right| \leq \dfrac{1}{q^n}$
+
+\begin{lem}
+    Liouville numbers are transcendental $(\not\in \Q)$
+\end{lem}
+Argue by contradiction> Suppose that a Liouville number $\alpha$ is algebraic/$\Q$. Well, then there exists an irreducible polynomial $f(x) \in \Q[x]$ such that $f(\alpha) = 0$. Rescale the polynomial by the lcm of the denominators such that $f(x) \in \Z[x]$
+
+$f(\alpha) = 0$, but $f(\dfrac{p}{q}) \neq 0$ because $f(x)$ is irreducible/$\Q$
+
+$f(x) = a_0x^m + a_1 x^{m-1} + \ldots + a_m$ with $a_i \in \Z$.
+
+$\left|f(\dfrac{p}{q})\right| = |a_0 \dfrac{p^m}{q^m} + \ldots a_m| \geq \dfrac{1}{q^m}$ because = $\left|\dfrac{a_0p^m + a_1p^{m-1}q + \ldots + a_mq_m}{q^m}\right|$
+
+Choose $\dfrac{p}{q}$ such that $\left| \alpha - \dfrac{p}{q}\right| < \dfrac{1}{q^n}$. Then $f(\alpha) - f(\dfrac{p}{q}) = f'(x)(\alpha - \dfrac{p}{q})$ $x$ between $\alpha$ and $\dfrac{p}{q}$
+
+$\left|f(\alpha) - f(\dfrac{p}{q})\right|  = \left|f'(x)\right|\left|\alpha - \dfrac{p}{q}\right|$ 
+
+$|x - \alpha| \leq 1$ because $\left| \dfrac{p}{q} - \alpha\right| < \dfrac{1}{q^n} \leq 1$. Let $M$ be the $\sup\limits_{|x - \alpha| \leq 1}\left|f'(x)\right|$, so $$\dfrac{1}{q^m} \leq \left|f(\dfrac{p}{q})\right| = \left|f(\alpha) - f(\dfrac{p}{q})\right| \leq M\left| \alpha - \dfrac{p}{q}\right| \leq M\dfrac{1}{q^n}$$
+$\implies \dfrac{1}{q^m} \leq \dfrac{M}{q^n} \implies q^n \leq Mq_a^m \implies 2^{n-m } \leq q^{n-m} \leq M$. This obviously can't be true for all $n$
+
+\section{Geometric Constructions}
+What can be constructed with a straightedge and a compass
+
+Classical problems
+\begin{enumerate}
+    \item Doubling the cube (basically, can we construct cube root of 3)
+    \item Trisect angle
+    \item Squaring the circle (circle with area $A$ to square with area $A$)
+\end{enumerate}
+
+Algebraic interpretation: Let's define field $K \subset \R$ to be a field of all numbers $x$ such that the segment of length $x$ can be constructed with straightedge and compass starting with a segment of length 1.
+
+You can take $\alpha$ and $\beta$ and get $\alpha + \beta$
+
+Start with $1 \to \Q$. Easy.
+
+Take $a + 1$, then half circle, then get altitude, which has length $\sqrt{a}$. Then we can adjoin $\Q$ with any square root.
+
+Let's call $\alpha \in \R$ constructible if it can be constructed using straightedge and compass. 
+
+\begin{thm}
+    $\alpha \in \R$ is constructible $\iff$ there exists $\Q = K_0 \subset K_1 \subset K_r$ such that $K_r = K_{r-1}(\sqrt[]{\beta_r})$, where $\beta_r \in K_{r-1}$
+\end{thm}
+We already just proved one direction.
+
+For the other way, we can formalize "straightedge and compass" as we can create a series of points $(x_n, y_n) \in \R^2$ with starting points $(x_1, y_1) = (0, 0)$ and $(x_2, y_2) = (1, 0)$.
+
+What can $(x_n, y_n)$ be? Either $(x_n, y_n)$ is an intersection point of a line passing through $(x_i, y_i), (x_j, y_j)$ and a line through $(x_k, y_k)$ and $(x_l, y_l)$ for $i, j, k, l < n$, or we can use circles with center $(x_i, y_i)$ and passint through $(x_j, y_j), i, j < n$.
+
+Claim: we can compute $(x_n, y_n)$ using $x_i, y_i$ for $i < n$ using $+, -, \cdot, /$ and $\sqrt[]{}$
+
+$y - y_i = \dfrac{y_j - y_i}{x_j - x_i}(x - x_i)$ or $x = x_i$ if $x_i = x_j$, so a line $y = kx + b$ or vertical lines.
+
+To intersect two lines $y = kx + b$ and $y = k'x + b'$, we just have to solve the linear system of two equations in two variables, and we can find $(x, y)$ using arithimetic operations $+, -, \cdot, /$.
+
+From circle, have $(x - x_i)^2 + (y - y_i)^2 = R^2 = (x_j - x_i)^2 + (y_j - y_i)^2$ and compute using $+, -, \cdot$
+
+Intersecting a line and $(x - x_i)^2 + (y - y_i)^2 = R^2$, solve for $x, y$ by substituting the linear equation in for $y$, and solving the quadratic using the quadratic formula, which requires a square root
+
+Finally, we can intersect two circles $\begin{cases}
+    (x - x_i)^2 + (y - y_i)^2 = R^2\\
+    (x - x_j)^2 + (y - y_j)^2 = \overline{R}^2
+\end{cases}$
+If we subtract, the degree terms go away, and we are left with a linear equation in $x$ and $y$
+\begin{cor}
+    If $\alpha$ is constructable $\implies \alpha$ is algebraic / $\Q$, and its degree is a power of 2.
+\end{cor}
+\textbf{Proof}: $\alpha \in K_r$ like in theorem. Then $[K_r : Q] = [K_r:K_{r-1}][K_{r-1}:\Q] = 2[K_{r-1}:\Q] = 2^r$ by induction
+
+On the other hand, we have $\Q \subset \Q(\alpha) \subset K_r$. So again, by transitivity, $2^r = [K_r : \Q] = [K_r: \Q(\alpha)][\Q(\alpha) : \Q]$\\
+$\implies [\Q(\alpha):\Q] = 2^s$, which is the degree of the minimal polynomial of $\alpha$.
+
+\begin{cor}
+    We can't double the cube.
+\end{cor}
+\textbf{Proof}: well if we can, then its side, $\sqrt[3]{2}$, is constructable. Therefore, $\sqrt[3]{2}$ has degree $2^s$. But it has degree 3, since the minimal polynomial is $x^3 - 2$. Therefore, the cube can't be doubled.
+
+\begin{cor}
+    We can't trisect a general angle.
+\end{cor}
+$\cos(\alpha + \beta) = \cos(\alpha)\cos(\beta) -\sin(\alpha)\sin(beta)$. So $\cos(3\phi) = \cos(2\phi)\cos(\phi) - \sin(2\phi)\sin(\phi)$ =\\ $[2\cos^2(\phi)-1]\cos(\phi) - 2\sin^2(\phi)\cos(\phi) = 2\cos^3\phi - \cos\phi - 2(1 - \cos^2\phi)\cos\phi = 4\cos^3\phi - 3\cos\phi$
+
+Claim: $\cos(60 \deg) = \dfrac{1}{2}$ is constructable, but $\cos(20\deg)$ is not. $\cos(20 \deg$) is a root of $8x^3 - 6x - 1$, which is irreducible. Therefore, the degree of $\cos(20\deg)$ is 3, which is not a power of 2.
+
+Why irreducible? Well, degree 3, so it has to have a root, and by rational roots theorem it has none in $\{\pm1, \pm 1/2, \pm 1/4, \pm 1/8\}$, therefore it is irreducible.
+
+\begin{cor}
+    You cannot square a circle
+\end{cor}
+If you want to create create a square with area $\pi$, then you need to construct $\sqrt{\pi}$, which is transcendental / $\Q$. Suppose $\sqrt[]{\pi}$ is algebraic / $\Q$. Then $\sqrt[]{\pi} \sqrt[]{\pi}$ must also be algebraic, but in fact $\pi$ is transcendental (by a difficult theorem proved by Lindemann $\sim1890$)
+
+\section{Finite Fields}
+$F$ is a field $\implies F$ contains the smallest possible subfield. This field, known as a prime field, is either $\Q$ or $\Z_p = \F_p$ for prime $p$
+
+$F$ a finite field $\implies F \supset \F_p$ for $p = char F \implies F$ is a vector space over $\F_p \implies |F| = p^n$, where $n = [F: \F_p]$
+
+\begin{thm}
+    There exists a field with $p^n$ elements $\forall$ prime $p, n \geq 1$
+\end{thm}
+Idea 1: prove existence of an irreducible polynomial $f(x) \in \F_p[x]$ of degree $n \implies \F_p[x]/(f) = F$ field with $p^n$ elements. Counting gets harder for $n \geq 2$
+
+Idea 2: let $F$ be a finite field with $p^n$ elements. Then $F^* = F\setminus\{0\}$ is a group with respect to multiplcation with $p^n - 1$ elements.\\
+$\implies \forall x \in F^*$, ord$(x) | p^n - 1$ (Cauchy theorem)\\
+$\implies x^{p^n - 1} = 1$ in $F^*$\\
+$\implies x^{p^n} = x \forall x \in F$ (a generalization of Little Fermat Theorem)
+
+Very special polynomial $x^{p^n} - x \in \F_p[x]$ with degree $p^n$. It's roots are exactly elements of $F$, $|F| = p^n$
+
+\begin{thm}
+    Every field $F$ has an algebraic closure, $\overline{F}$: a field containing $F$, algebraic over $F$, and algebraically closed
+\end{thm}
+
+\begin{cor}
+    $\F_p \subset \overline{F}$ algebraically closed and algebraic over $\F_p$
+\end{cor}
+
+$x^{p^n} - x \in \F_p[x] = \prod\limits_{i = 1}^{p^n}(x - \alpha_i), \alpha_i \in \overline{F_p}$
+
+Claim: all of these roots are different.\\
+Suppose we can factor $x^{p^n} - x = (x - \alpha_1)^2g(x) \in \overline{F_p}[x]$. Then take a derivative, $(x^{p^n} - x)' = 2(x - \alpha_1)g(x) + (x -\alpha)^2g'(x)$. But the right side is divisible by $x-\alpha_1$. Well, the left side is $p^nx^{p^n - 1} - 1 = -1$. If we plug in $x = \alpha_1$, we're left with $-1 = 0$, which is obviously a contradiction
+
+Claim: $F = \{a_1, a_2, \ldots, a_{p^n}\}$ is a field, so then we have a field with $p^n$ elements.
+
+$F \subset \overline{\F_p}$. Now we just have to check closures. Take $x, y \in F$. Then $(xy)^{p^n} = x^{p^n}y^{p^n} \implies xy \in F$
+
+$(-x)^{p^n} = (-1)^{p^n}x^{p^n} = -x \implies -x \in F$
+
+$(x + y)^p = x^p + y^p$, $(x + y)^{p^2} = [(x + y)^p]^p = (x^p)^p + (y^p)^p = x^{p^2} + y^{p^2}$. By induction, $(x + p)^{p^n} = [(x + y)^{p^{n-1}}]^p = x^{p^n} + y^{p^n}$
+
+Summary $\F_p \subset F \subset \overline{\F_p}$. $F = \F_{p^n} = \F_q$ where $q = p^n$. Is exactly the set of roots of $x^{p^n} - x \in \F_p[x]$
+
+\begin{thm}
+    Let $F$ be a field with $p^n$ elements $\implies F = \F_p(\alpha)$ for some $\alpha \in F$
+\end{thm}
+
+\begin{cor}
+    $F$ is isomorphic to $\F_p[x]/(f)$, where $(f)$ is the minimal polynomial of $\alpha$. In particular, we see that there exists an irreducible polynomial of degree $n$ in $\F_p[x]$
+\end{cor}
+
+In fact $F^*$ is cyclic. Take $\alpha \in F^*$ any generator, then $F^* = \{1, \alpha, \alpha^2, \ldots, \alpha^{p^n - 1}\} \implies F$ is the smallest field that contains $\alpha \implies F = \F(\alpha)$
+
+The proof that $\Z_p^*$ works, because all we used was that the field is finite. If we assume $F^*$ not cyclic, then all elements have order strictly less than $p^n - 1$, but that can't happen since we have $p^n - 1$ roots
+
+\begin{thm}
+    If $E$ and $F$ are finite fields with $p^n$ elements, then they are isomorphic
+\end{thm}
+\textbf{Proof} Write $E = \F_p(\alpha)$ for $\alpha \in F$. $f(x) = irr(\alpha, \F_p$) irreducible of degree $n$. But we know that $\alpha^{p^n} = \alpha \implies \alpha$ is a root of $x^{p^n} - x =  0$, therefore $f(x)$ dividies $x^{p^n} - x$. 
+
+Now consider $F$, $|F| = p^n$. $\forall x \in F \implies x^{p^n} - x = 0$. Well, this factors as $f(x)g(x)$. Has $p^n$ roots (all elements of $F$ are roots). So, there exists some element $\beta$ such that $f(\beta) = 0$ since $f$ has degree $n$
+
+$\F_p \subset \F_p(\beta) \subset F$. deg$(\beta) = deg(f) = n \implies [F: \F_p] = [\F(\beta) : \F_p] \implies F = \F_p(\beta)$. So $E = \F_p(\alpha)$ and $F = \F_p(\beta)$, both of which have $f$ as their minimal polynomial. Therefore, $E \cong \F_p(\alpha) \cong \F_p[x]/(f) \cong \F_p(\beta) \cong F$
+
+\begin{rmk}
+    Can it happen that $\F_{p^n} \subset \F_{p^m}$?
+\end{rmk}
+Let's consider $F_{p^n}* \subset \F_{p^m}^*$, well the left is a cyclic group of order $p^n - 1$ and the right is a cyclic group of order $p^m - 1$. So we have $p^n - 1|p^m - 1$
+
+Let's try long division. $p^m - 1 = p^{m-n}(p^n - 1) + p^{m-n} - 1$. Then we need $p^n - 1 | p^{m-n} - 1$
+
+\begin{thm}
+    $p^n - 1$ divides $p^m - 1$ if and only if $n | m$
+\end{thm}
+$n | m \iff n | m - n \implies$ Induction on $m \implies p^n - 1 | p^{m-n} - 1 \iff n | m$
+\begin{cor}
+    If $\F_{p^n} \subset \F_{p^m} \iff n | m$
+\end{cor}
+
+\section{Group Work 6}
+\textbf{Group 2}
+Let $ax^2 + bx + c$ be a quadratic equation ($a \neq 0)$ with coefficients in a field $K$ with characteristic $\neq 2$. 
+
+(1) Show that the usual quadratic formula gives roots of the equation either in $K$ or in some field extension $F$ of $K$ such that $[F : K] = 2$
+
+\textbf{Proof} $x = \dfrac{- b \pm \sqrt[]{b^2 - 4ac}}{2a}$. Because $a\neq 0, char(K) \neq 0$, we know that $2a \neq 0$
+
+Case 1: $b^2 - 4ac = d^2, (d \in K)$ $x = - \dfrac{- b \pm d}{2a}$, so $x$ is in $K$
+
+Case 2: $b^2 - 4ac \neq d^2$, take $x^2 - D$ where $D = b^2 - 4ac \in K$, then take the field extension $F(\alpha)$ where $\alpha^2 - D$. Then this is obviously degree two.
+
+(2) Let $F$ be a field extension of $K$ such that $[F: K] = 2$ and $charK \neq 2$. Show that there exists $D \in K$ such that $F = K(\sqrt{D})$
+
+\textbf{Proof} Let $\beta \in F, \beta \not \in K$. We now that $[F : K] = 2$, and $[K(\beta), K] > 1$. Then $[F: K] = [F : K(\beta)][K(\beta): K] = 2$, so $[F : K(\beta)]$ must be 1, and $F = K(\beta)$
+
+$\beta$ is the solution to $ax^2 + bx + c = 0$, and $\beta = \dfrac{-b \pm \sqrt[]{b^2 - 4ac}}{2a} = \dfrac{-b \pm \sqrt[]{D}}{2a}$. Therefore, $\sqrt[]{D} \in K(\beta)$ and $K(\sqrt[]{D}) \subset K(\beta)$, therefore $K(\beta) = K(\sqrt[]{D})$. Therefore $F = K(\sqrt[]{D})$, and we are done.
+
+(3) Show that (1) can fail if $charK = 2$
+\textbf{Proof} $[\F_4 : \F_2] = 2$, but both of the elements of $\F_2$ have square roots, the quadratics are reducible
+
+\textbf{Group A}
+Let $F \subset K$ be a field extension and let $K_1, K_2 \subset K$ be subfields containing $F$, Let $K_1K_2 \subset K$ be the smallest subfield containing $K_1$ and $K_2$ Suppose $K_1$ and $K_2$ are algebraic over $F$
+
+(1) Show that $K_1K_2$ is algebraic over $F$
+
+\textbf{Proof}
+Michael was mid proof and Tevelev went "Looks like an orgy of greek letters and summation signs" so we will do it next time
+
+$Z$ and $k[X]$ where $k$ is a field are principle ideal domains. Both have long division. 
+
+\begin{defn}
+    An integral domain $D$ is a Euclidean domain if there exists a function (called norm) $v: D\setminus\{0\} \to \Z_{\geq 0}$, such that for every $a, b \in D$, either $a = bq$ or $a = bq + r$, where $v(r) < v(b)$, and $v(ab) \geq v(a)$
+\end{defn}
+
+\begin{exm*}
+    $\Z$, $v(a) = |a|$
+\end{exm*}
+
+\begin{exm*}
+    $k[X]$, $v(f)$ = degree
+\end{exm*}
+
+\begin{thm}
+    Every Eucliean domain is a PID [and therefore a UFD]
+\end{thm}
+Take $I \subset D$ ideal. If $I = \{0\} \implies I$ is principal. $I \neq \{0\} \implies$ pick $a \in I$ to be the element of smallest norm.
+
+Claim: $I = (a)$. Take $b \in I$. If $b = aq$, then great. If not, do $b = aq + r$, where $r$ has to have norm less than that norm of $r$, but $r = b - aq$, both of which are in the ideal, so we've found an element of norm smaller than $a$, contradiction.
+
+\begin{exm*}
+    Gaussian Integers $\Z[i] = \{a + bi: a, b \in \Z\}$
+\end{exm*}
+Forms a grid graphically. This is definitely a commutative ring with 1. $\Z[i] \subset \C$ subring, therefore it must be an integral domain.
+
+Norm: $a^2 + b^2$. Take $\alpha, \beta \in \Z[i]$. Draw $(\beta) = \gamma\beta$ where $\gamma \in \Z[i]$. $\beta(a + bi) = a\beta + i b \beta$. Plot for all $a, b$
+
+it could be the case that $\alpha$ is already onto the grid. If not, then $\alpha = \beta\gamma + \delta$ where $v(\delta) < v(\beta)$. So choose the square containing $\alpha$. Chose $\beta\gamma$ to be the vertex of the square that $\alpha$ is closest to. Then $|\delta| < |\beta|$ since $\beta$ is the side length. But quarter circles cover the square.
 \end{document}
