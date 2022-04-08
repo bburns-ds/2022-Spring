@@ -2,6 +2,7 @@ materials
 materials/*
 psets
 psets/*
+notes/m621
 *.aux
 *.bbl
 *.bcf
