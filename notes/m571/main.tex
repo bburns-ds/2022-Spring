@@ -31,7 +31,6 @@
 \maketitle\thispagestyle{firstpage}
 
 \tableofcontents
-
 \section{First Exam}
 \begin{rmk}
     I did not take notes for the first third of the course. This section serves as an index of what the reader is missing.
@@ -105,7 +104,9 @@ Proof:\\
 (2) right side of (1) is multplicative, so left side has to be as well
 
 \begin{defn}[Quadratic Reciprocity Law]
-    Let $p, q$ be distinct odd positive primes. Then $\left(\dfrac{p}{q}\right) = \dfrac{q}{p}(-1)^{\dfrac{p-1}{2}\dfrac{q-1}{2}}$.
+    Let $p, q$ be distinct odd positive primes. Then
+    $\left(\dfrac{p}{q}\right)$\\ 
+    = $\dfrac{q}{p}(-1)^{\dfrac{p-1}{2}\dfrac{q-1}{2}}$.
 \end{defn}
 Equivalently, if either $p$ or $q$ is congruent to 1 mod 4, then the reciprocity holds. Else, they are negations.
 \begin{defn}[Quadratic Sieve] 
@@ -190,7 +191,7 @@ $y_3 = t_1 + \lambda(x_3 - x_1)$
 
 2) $P = (x, y)$\\
 $-P = (x, -y)$ (reflection across $x$-axis)\\
-$P \oplus -P = \O$\\
+$P \oplus -P = \O$
 
 3) $P \oplus P$: The only difference from the general case is that, here, $\lambda$ is the slope of the tangent line of $E$ at $P$, which can be determined by implicit differentiation $\implies 2YY' = 3X^2 + a \implies Y'  = \dfrac{3X + a}{2Y} \implies \lambda = \dfrac{3x_1^2 + a}{2y_1}$. 
 
@@ -805,6 +806,170 @@ $g_{P, Q} = \begin{cases}
 \end{cases}$
 
 \textbf{Claim} $div(g_{P, Q}) = [P] + [Q] - [P + Q] - [\O]$
+
+\section*{Schedule for the rest}
+\begin{enumerate}
+    \item Lattices (1 class)
+    \item GGG cryptosystem (.5 class)
+    \item NTRU cryptosystem (1.5) class
+    \item LLL algorithm (2 classes)
+    \item Quantum Computing (2 classes)
+\end{enumerate}
+
+\textbf{Yesterday} OpenSSH incorporating NTRU Prime into security, invented by the authors of book.
+
+\section{Lattices}
+$\vec{v_1}, \ldots, \vec{v_n} \in \R^m$ (have $n$ vectors with $m$ real entries)
+
+Assume that they are linearly independent over $\R$: $a_1\vec{v_1} + \ldots a_n\vec{v_n} = 0$, for $a_i \in \R$, then $a_i = 0$ for all $i$ $(\implies n \leq m)$
+
+\begin{defn}
+    Define a lattice $L = <\vec{v_1}, \ldots, \vec{v_n}> = \{a_1\vec{v_1} + \ldots + a_n\vec{v_n} | a_i \in \Z\}$
+\end{defn}
+
+\begin{exm}
+    $m = n = 2$, $\vec{v_1} = (1, 0)$, $\vec{v_2} = (0, 1)$
+\end{exm}
+Gaussian lattice, is annoying. If you rotate it 90 degrees, you get the same thing back
+
+\begin{exm}
+    $\vec{v_1} = (1, 0)$ and $\vec{v_2} = (1, 1)$
+\end{exm}
+$a_1\vec{v_1} + a_2\vec{v_2} = (a_1 + a_2, a_2)$ is the same lattice. We choose $a_2$ arbitrarily, then chose $a_1$ off of it to make $x$ arbitrary. Same lattice, different basis.
+
+\subsection{Changing bases}
+Start with lattice $L = <\vec{v_1}, \ldots, \vec{v_n}>$
+
+Pick $a_{ij} \in \Z$ set \\
+$\vec{w_1} = a_{11}\vec{v_1} + a_{12}\vec{v_2} + \ldots + a_{1n}\vec{v_n}$
+$\vec{w_2} = a_{21}\vec{v_1} + a_{22}\vec{v_2} + \ldots + a_{2n}\vec{v_n}$\\
+$\ldots$\\
+$\vec{w_n} = a_{n1}\vec{v_1} + a_{n2}\vec{v_2} + \ldots + a_{nn}\vec{v_n}$
+
+Clearly, $\vec{w_1} \ldots \vec{w_n} \in L$. Are they a basis? Rewrite with matricies
+
+$A = (a_{ij}) = \begin{pmatrix}
+    a_{11} & a_{12} & \ldots & a_{1n}\\
+    a_{11} & \ddots & & \vdots\\
+    \vdots & & \ddots & \vdots \\
+    a_{n1} & \ldots && a_{nn}\\
+\end{pmatrix}$
+
+$V$ = vector of $\vec{v_i}$, $W = $ vector of $\vec{w_1}$. $W = A\cdot V$
+
+\begin{lem}
+    $\vec{w_1}, \ldots, \vec{w_n}$ form a basis $\iff$ det$A = \pm 1$
+\end{lem}
+\textbf{Proof} If $\vec{w_1}, \ldots, \vec{w_n}$ is a basis of $L$, then we can express $\vec{v_1}$ in terms of the $\vec{w_i}$: $V = BW$ for some $B$. Have $W = AV$, so $V = B(AV) = (BA)V$
+
+Since $\vec{v_1}, \ldots, \vec{v_n}$ are linealy independent. $V$ has rank $n$. It folloes that $A \cdot B = I_n$\\
+$\implies det A \cdot det B = 1.$\\
+$det A \cdot det B \in \Z \implies det A = \pm 1$
+
+\begin{exm}
+    $V = \begin{pmatrix}
+        1 & 0\\
+        0 & 1\\
+    \end{pmatrix}$ $A = \begin{pmatrix}
+        3 & 4\\
+        2 & 3\\
+    \end{pmatrix}$
+\end{exm}
+$\implies W = AV = A = \begin{pmatrix}
+    3 & 4\\
+    2 & 3\\
+\end{pmatrix}$, $(3, 4)$ and $(2, 3)$ also a basis. 
+
+$\vec{v_1}, \vec{v_2}$ are orthogonal, $\vec{v_1} \cdot \vec{v_2} = 0$.
+
+$\vec{w_1}, \vec{w_2}$ are \underline{not} orthogonal. $\vec{w_1} \cdot \vec{w_2} = 18$
+
+\subsection{Fundamental domain}
+\begin{defn}
+    $L = <\vec{v_1}, \ldots, \vec{v_n}>$, $? = \{t_1\vec{v_1} + \ldots + t_n \vec{v_n} | 0 \leq t < 1, t_i \in \R\}$. 
+\end{defn}
+Geometrically, the fundamental domain is a parallelogram in 2D lattices
+
+\begin{rmk}
+    Volume of ? is independent of the basis
+\end{rmk}
+\textbf{Proof} $W = A\cdot V$, vol(?) = $|detA| \cdot vol(?)$, det = 1.
+
+\begin{lem}
+    $\vec{v_1}, \ldots, \vec{v_n} \in \R^n$ linearly independent, let $L = <\vec{v_1}, \ldots, \vec{v_n}>$ lattice. Any vector $\vec{w} \in \R^n$ can be uniquely written $\vec{w} = \vec{t} + \vec{v}$ with $\vec{v} \in L$, $\vec{t} \in ?_v$
+\end{lem}
+Because $\vec{v}$ are a basis of the integer lattice, we just take the coordinate that closely overshoots it and round the coefficients down to $\vec{w}$ by the real parts of $\vec{t}$
+
+\subsection{Shortest Vector Problem (SVP)}
+Given a lattice $L$, find the shortest nonzero $\vec{v}\in L$
+
+$\vec{v} \in L$, $\vec{v} = (c_1, \ldots, c_m) \in \R^m$. $|| \vec{v}|| = \sqrt{c_1^2 + \ldots + c_m^2} = \vec{v}\cdot \vec{v}$
+
+\begin{rmk}
+    The shortest vector problem is often the way to break these cryptosystems
+\end{rmk}
+
+\begin{exm}
+    $L = <(1, 0), (0, 1)> = (3, 4), (2, 3)>$
+\end{exm}
+It's obvious that in terms of the first basis, that the shortest vectors are $\pm$ the basis vectors. Because the second basis is the same lattice, it's going to be the same vectors, just with a more complicated vector expression in terms of the new basis.
+
+The key difference is that the first basis is orthogonal, whereas the second is definitely not.
+
+As it turns out, in an orthogonal basis, the shortest vector has to be a basis vector.
+
+\subsection{Closest Vector Problem (CVP)} $L \subseteq \R^m$ given $\vec{w} \in \R^m$, find $\vec{v} \in L$ such that $||\vec{v} - \vec{m}||$ is minimized.
+
+We also have approx SVP and approx CVP. LLL can't guarantee to find the shortest vector, but it very quickly finds a very small vector for small dimensional Lattices
+
+To study SVP, first question: given a lattirce $L$, what short of length should you expect for the smallest nonzero vector $L$
+
+Expect to depend on $vol L = det L$
+
+\begin{thm}[Heimite's Thm]
+    There is a nonzero $\vec{v} \in L$ such that $||\vec{v}|| \leq \sqrt{n} \cdot (det L)^{1/n}$
+\end{thm}
+
+\begin{rmk}
+    Define constant $\gamma_n$ as the smallest constant such that every $n$ dimensional lattice has a vector $\vec{v}$ with $||\vec{v} || \leq \gamma_n \cdot (det L)^{2/n}$
+\end{rmk}
+Hermite's says $\gamma_n \leq n$. Can you find optimal $\gamma_n$? Known for $n = 1, \ldots, 8, 24$. Dimension 24 has the Leech lattice. 
+
+For large $n$, $\dfrac{n}{2\pi e} \leq \gamma_n \leq \dfrac{n}{\pi e}$
+
+To prove Hermite, we use 
+
+\begin{thm}[Minkowski's Thm]
+    $L \subseteq \R^n$ lattice of dimension $n$. $S \subseteq \R^n$ subset. Assume $S$ is \\
+    bounded:there is $R > 0$ s.t $||\vec{s}|| \leq R$ for all $s\in S$\\
+    symmetric: $\vec{s} \in S \implies -\vec{s} \in S$,\\
+    and convex $\vec{s_1}, \vec{s_2} \in S$, then the line segment $s_1s_2$ is in $S$
+\end{thm}
+here bounded is that there is $R > 0$ s.t $||\vec{s}|| \leq R$ for all $s\in S$
+
+If $Vol S > 2^n det L$ then $S$ contains a nonzero point of $L$
+
+\begin{rmk}
+    $S$ always contains origin by symmetry and convexity
+\end{rmk}
+
+\textbf{Proof} (of Minkowski) Basis $L = <\vec{v_1}, \ldots, \vec{v_r}>$, $\mathbb{F}$ = fundamental domain. For any $\vec{s} \in S$, write $\vec{s}  =\vec{w_s} + \vec{v_s}$ with $\vec{w_s} \in \mathbb{F}, \vec{v_s} \in L$
+
+Consider $\dfrac{1}{2}S \subseteq S$ by symmetry and convexity. Define $f: \dfrac{1}{2}S \to \mathbb{F}$
+
+The function $f$ preserves volume since $s$ is bounded, there are a finite set of vectors $\vec{x_N} \in L$ such that every $\vec{s} \in S$ has $\vec{v_s} = \vec{x_i}$ for some $i$. 
+
+For such an $s$, $f$ is just translation by $-\vec{x_i}$
+
+Note $vol(\dfrac{1}{2}S) = 2^{-n}vol S$, assumed $vol S > 2^n det L = vol \mathbb{F}$. So $vol(\dfrac{1}{2}S) > vol \mathbb{F}$. It follows that there are $\vec{s_1}, \vec{s_2} \in \dfrac{1}{2}S$ such that $\vec{w_{s_1}} = \vec{w_{s_2}}$
+
+So $\vec{s_1} = \vec{v_{s_1}} + \vec{w_{s_1}}$, same for $s_2$, the second sntries are equal, $\vec{s_1} - \vec{s_2} = \vec{v_1} - \vec{v_2} \in L$. Check $\vec{s_1} - \vec{s_2} \in S$. Both are in $\dfrac{1}{2}S$, then symmetry and convexity.
+
+\textbf{Proof} (of Hermite) $L \subseteq \R^n$ lattice, $S$ hypercube centered at origin, side length $2B$, vol$S = (2B)^n$. Need $volS > 2^n detL$, so take $B = (det L)^{1/n}$
+
+Minkowski implies that $S$ contains a nonzero point $\vec{v} \in L$. $|c_i| < (det L)^{1/n} \implies ||\vec{v}||^2 \leq n (det L)^{2/n}$.
+
+This gives a worst case for SVP of $\sqrt{n}(det L)^{1/n}$ Do we expect a smallest answer?
+
+No. Redo Hermite with hypersphere (what is the volume in higher dimensions? $n$-dim with radius $R$ is $\dfrac{\pi^{n/2} R^n}{\Gamma\left(1 + \dfrac{n}{2}\right)}$. Use the usual $\Gamma(s) = (s - 1)!$ for $s\in \Z, s \geq 1$, odd $n$, use that $\Gamma(s + 1) = s\Gamma(s), \Gamma\left(\dfrac{1}{2}\right) = \sqrt{\pi}$, use Stirling's formula $\approx (\sqrt{\dfrac{2\pi e}{n}}R)^n$
 \end{document}
-
-

@@ -20,7 +20,6 @@
 \newcommand{\Ker}{\text{Ker}}
 
 \pagestyle{pages}
-
 \title{Math 412: Rings and Modules}
 \author{Taught by Jenia Tevelev \\ Scribed by Ben Burns}
 \affil{UMass Amherst}
@@ -35,7 +34,8 @@
 \section{Rings and Fields}
 
 \begin{defn}
-        A Ring $R$ is a set with 2 binary operations $+$ and $\cdot$ that satisfy the following axioms
+A Ring $R$ is a set with 2 binary operations $+$ and $\cdot$ 
+that satisfy the following axioms
         \begin{enumerate}
             \item $(R, +)$ is an abelian group: associative, commutative, existence of identity and inverses
             \item Multiplication is associative 
@@ -55,7 +55,7 @@
     $(R, \cdot)$ is almost never a ring since 0 (the general additive identity) is almost never invertible with respect to $\cdot$
 \end{rmk}
 
-\begin{exm}[Non-commutative rings] 
+\begin{exm*}[Non-commutative rings] 
     $Mat_n(\R)$ with generic element, addition, and multiplcation defined as\\
     $A = \begin{pmatrix}
             a_{11} & \ldots & a_{1n}\\
@@ -72,14 +72,14 @@
     \end{pmatrix} = \begin{pmatrix}
         a_{i1}b_{1j} + \ldots + a{in}b_{nj}\\
     \end{pmatrix}$
-\end{exm}
+\end{exm*}
 %Todo: find counterexample
 
-\begin{exm}[Rings of functions]
+\begin{exm*}[Rings of functions]
     $F = \{f | f: \R \to \R\}$\\
     $(f + g)(x) = f(x) + g(x)$\\
     $(f\cdot g)(x) = f(x)g(x)$
-\end{exm}
+\end{exm*}
 
 \begin{defn}
     $R$ is a ring with unity 1 if $\forall a \in R: a\cdot 1 = 1\cdot a$
@@ -129,9 +129,9 @@ Equivalently, $x\in \Z, \gcd(x, p) = 1 \implies x^{p-1} \equiv 1 \pmod{p}$.
 Equivalently, $x\in \Z \implies x^p \equiv x\pmod{p}$.
 If $\gcd(p, x) = 1$, multiply both sides of the result of Fermat's Little Theorem by $p$. Otherwise, $\gcd(p, x) > 1$, $x \nmid p$ since $p$ prime, so $p | x \implies x \equiv 0 \pmod{p}$, therefore $x^p \equiv 0 \equiv x\pmod{p}$.
 
-\begin{exm}
+\begin{exm*}
     Show that $n^{33} - n$ always divisible by 15 for all $n$.
-\end{exm}
+\end{exm*}
 
 We want to show that $n^{33} - n$ is divisible by both 3 and 5 individually, which will then imply it is divisible by 15.
 
@@ -146,9 +146,9 @@ If $3 | n$, then $n^{33} - n$ is trivially divisible by $n$. Else, $\gcd(n, 3) =
 \end{align*}
 
 The proof is same for 5: if $5 | n$, then it is trivial, else we apply FLT to say that $n^4 \equiv 1 \pmod{5}$, raise both sides to the 8th power, multiply by $n$, and substract by $n$. 
-\begin{exm}
+\begin{exm*}
     For $R = \Z_n$, $x\in \Z_n$ is a unit $\iff \gcd(x, n) = 1$. 
-\end{exm}
+\end{exm*}
 %Todo: Justify me :D
 
 \begin{defn}
@@ -203,9 +203,9 @@ Recall that  $\phi(n)$ is the order of $\Z_n^*$. For $A = order(x)$, by Corollar
 The proof will come later. %Todo
 For now, we can use this to say $Z_p^*$ has a generator or that $Z_7^*$ has a generator
 
-\begin{exm}
+\begin{exm*}
     Determine existence of solutions for, and determine solutions of an equation (congruence) $ax = b \in \Z_n$.
-\end{exm}
+\end{exm*}
 MAGMA: Solution(a, b, n) returns sequence of solutions if they exist, and -1 if no solution.
 
 To determine $d := \gcd(a, n)$, $ax \equiv b\pmod{n} \implies d | b$. In other words, $ax + ny = b \implies ax + ny \equiv 0 \equiv b \pmod{d}$.
@@ -454,9 +454,9 @@ Because this is true for homomorphisms of abelian groups.
     $F[x]$, for $F$ field, is a principle ideal domain. Take $f(x)F[x] \subset F[x]$, where $f(x)$ is an irreducible polynomial $\implies f(x)F[x]$ is a maximal ideal
 \end{exm*}
 
-\begin{exm}
+\begin{exm*}
     Compute $\Z_2[x]/(x^2 + x + 1)F[x]$. 
-\end{exm}
+\end{exm*}
 What are the cosets? Take $g(x) \in \Z_2[x]$ and take its coset $g(x) + x^2 + x + 1$.
 
 Claim: there are only four cosets. The ideal itself $I$, $1 + I$, $x + I$, $(1 + x) + I$
@@ -923,7 +923,9 @@ $\cos(\alpha + \beta) = \cos(\alpha)\cos(\beta) -\sin(\alpha)\sin(beta)$. So $\c
 
 Claim: $\cos(60 \deg) = \dfrac{1}{2}$ is constructable, but $\cos(20\deg)$ is not. $\cos(20 \deg$) is a root of $8x^3 - 6x - 1$, which is irreducible. Therefore, the degree of $\cos(20\deg)$ is 3, which is not a power of 2.
 
-Why irreducible? Well, degree 3, so it has to have a root, and by rational roots theorem it has none in $\{\pm1, \pm 1/2, \pm 1/4, \pm 1/8\}$, therefore it is irreducible.
+Why irreducible? Well, degree 3, so it has to have a root, and by 
+rational roots theorem it has none in\\
+$\{\pm1, \pm 1/2, \pm 1/4, \pm 1/8\}$, therefore it is irreducible.
 
 \begin{cor}
     You cannot square a circle
@@ -1032,10 +1034,9 @@ Let $F \subset K$ be a field extension and let $K_1, K_2 \subset K$ be subfields
 
 (1) Show that $K_1K_2$ is algebraic over $F$
 
-\textbf{Proof}
-Michael was mid proof and Tevelev went "Looks like an orgy of greek letters and summation signs" so we will do it next time
-
-$Z$ and $k[X]$ where $k$ is a field are principle ideal domains. Both have long division. 
+\section{Euclidean Domains}
+$Z$ and $k[X]$ where $k$ is a field are principle ideal domains. 
+Both have long division. 
 
 \begin{defn}
     An integral domain $D$ is a Euclidean domain if there exists a function (called norm) $v: D\setminus\{0\} \to \Z_{\geq 0}$, such that for every $a, b \in D$, either $a = bq$ or $a = bq + r$, where $v(r) < v(b)$, and $v(ab) \geq v(a)$
@@ -1052,16 +1053,182 @@ $Z$ and $k[X]$ where $k$ is a field are principle ideal domains. Both have long 
 \begin{thm}
     Every Eucliean domain is a PID [and therefore a UFD]
 \end{thm}
-Take $I \subset D$ ideal. If $I = \{0\} \implies I$ is principal. $I \neq \{0\} \implies$ pick $a \in I$ to be the element of smallest norm.
+Take $I \subset D$ ideal. If $I = \{0\} \implies I$ is principal. 
+$I \neq \{0\} \implies$ pick $a \in I$ to be the element of smallest norm.
 
-Claim: $I = (a)$. Take $b \in I$. If $b = aq$, then great. If not, do $b = aq + r$, where $r$ has to have norm less than that norm of $r$, but $r = b - aq$, both of which are in the ideal, so we've found an element of norm smaller than $a$, contradiction.
+Claim: $I = (a)$. Take $b \in I$. If $b = aq$, then great. 
+If not, do $b = aq + r$, where $r$ has to have norm less than that 
+norm of $r$, but $r = b - aq$, both of which are in the ideal, 
+so we've found an element of norm smaller than $a$, contradiction.
 
 \begin{exm*}
     Gaussian Integers $\Z[i] = \{a + bi: a, b \in \Z\}$
 \end{exm*}
-Forms a grid graphically. This is definitely a commutative ring with 1. $\Z[i] \subset \C$ subring, therefore it must be an integral domain.
+Forms a grid graphically. This is definitely a commutative ring with 1.
+$\Z[i] \subset \C$ subring, therefore it must be an integral domain.
 
-Norm: $a^2 + b^2$. Take $\alpha, \beta \in \Z[i]$. Draw $(\beta) = \gamma\beta$ where $\gamma \in \Z[i]$. $\beta(a + bi) = a\beta + i b \beta$. Plot for all $a, b$
+Norm: $a^2 + b^2$. Take $\alpha, \beta \in \Z[i]$. Draw
+$(\beta) = \gamma\beta$ where $\gamma \in \Z[i]$. 
+$\beta(a + bi) = a\beta + i b \beta$. Plot for all $a, b$
 
-it could be the case that $\alpha$ is already onto the grid. If not, then $\alpha = \beta\gamma + \delta$ where $v(\delta) < v(\beta)$. So choose the square containing $\alpha$. Chose $\beta\gamma$ to be the vertex of the square that $\alpha$ is closest to. Then $|\delta| < |\beta|$ since $\beta$ is the side length. But quarter circles cover the square.
+it could be the case that $\alpha$ is already onto the grid. If not, 
+then $\alpha = \beta\gamma + \delta$ where $v(\delta) < v(\beta)$. So
+choose the square containing $\alpha$. Chose $\beta\gamma$ to be the
+vertex of the square that $\alpha$ is closest to. Then 
+$|\delta| < |\beta|$ since $\beta$ is the side length.
+But quarter circles cover the square.
+
+\begin{thm}
+    A PID is a UFD
+\end{thm}
+\textbf{Proof} we need to prove existence and uniqueness of factorization: $\alpha = u\beta_1 \cdots \beta_n$, with $u$ unit and $\beta_i$ irreducible.
+
+Existence: suppose that there is some $\alpha$ without factorization. Then it cannot be a unit, and it is not irreducible. Then $\alpha = \beta\gamma$ where neither $\beta$ nor $\gamma$ is a unit. If both are factorable, we win, and multiply their factorizations. If not, then say $\beta$ is not factorable. Then take this chain of $\alpha _i = \alpha_{i+1}\gamma_{i+1}$. $(\alpha_1) \subsetneq (\alpha_2)$. If they are equal, then $\gamma$ must be a unit, since $\alpha_1 = \alpha_2\gamma_2, \alpha_2 = \alpha_1 \gamma_1, \alpha_1 = \alpha_1 \gamma_1\gamma_2 \implies \gamma_1\gamma_2 = 1$ units.
+
+So now we have $(\alpha_1) \subsetneq (\alpha_2) \subsetneq (\alpha_3) \subsetneq \ldots$. Take the union $I = \cup_{i \geq 1} (\alpha_i)$. Usually not an ideal, but in this case it is. Take two elements in it $x, y \in I$. $x \in (\alpha_i), y \in (\alpha_j)$, but are both in one of the ideals. 
+
+$I$ ideal, generated by something since PID, $z$, then $(\alpha_i) \subsetneq I \subset(\alpha_i)$ contradiction
+
+Uniqueness of factorization $u\beta_1 \ldots \beta_r = u' \beta_1'\ldots\beta_r'$. $\beta_1$ divides the left hand side, so it divides the righthand side. Can't be $u'$ since it's a unit. $\beta_1' \in (\beta_1) \implies \beta_1' = \beta_1 t$, both $\beta$ are irreducible so $t$ must be a unit, and are associate. We induct over the irreducibles, and get all of our associate pairs.
+
+\begin{lem}
+    $\beta \in R$ $\beta$ irreducible, $R$ PID, then $(\beta)$ is prime
+\end{lem}
+$\beta \in R$ is prime $\iff R/(\beta)$ is an integral domain. Not only that, but in our case, it is a field $\iff (\beta)$ is a maximal ideal, since $(\beta) \subset I \subset R \implies (\beta) \subset (\gamma) \subset R$, but then $\beta = \gamma\delta$, so $(\gamma)$ is either $(\beta)$ or $R$
+
+Back to $\Z[i]$. Units are $\pm 1, \pm i$. Otherwise, $\alpha\beta = 1$, so the norms multiply to one, so norm of $\alpha$ must be 1 since it must be an integer. Then $\alpha = a + bi$, norm($\alpha$) = $a^2 + b^2$, so $\alpha = \pm 1, \pm i$
+
+Irreducible elements in $\Z[i]$? \\
+\textbf{Claim}: $\alpha \in \Z[i], N(\alpha) = p$ prime $\implies \alpha$ is irreducible.
+
+Indeed, suppose that $\alpha = \beta\gamma$. Then $N(\alpha) = N(\beta)N(\gamma) = p$, so by Euclid's lemma one must be 1, so therefore must be a unit.
+
+\begin{thm}[Fermat]
+    Odd prime $p \in \Z$ can be written as the sum of two squares $\iff p \equiv 1 \pmod{4}$
+\end{thm}
+Left to right is easy, since $a^2 + b^2$ each term is either 0, 1, so the sum can only be 0, 1, 2, but $p$ is odd, so must be one.
+
+Take $p \equiv 1\pmod{4}$. $\Z_p^*$ is a cyclic group of order $p - 1 = 4k$. Therefore, there must be an element of order 4, call it $x$. Then $x^2$ has order 2. But then $x^2$ must be congruent to -1 mod $p$. Then there is $x \in \Z$ such that $p | x^2 + 1$. 
+
+Over $\Z[i]$, we have $x^2 + 1 = (x + i)(x - i)$, so $p | (x + i)(x - i)$. Can it happen that $p$ is irreducible over $\Z[i]$
+
+Suppose that $p$ is irreducible. Then $p$ divides the product in a UFD, so it must divide one of the divisors. $p | (x + i)$ or $p | (x - i)$. Then $x = pa$ and $1 = pb$, contradiction. Therefore, $p$ is not an irreducible Gaussian integer, so $p = \alpha\beta$ not units. $\implies N(p) = N(\alpha)N(\beta) \implies p^2 \implies N(\alpha) = p$, so $a^2 + b^2 = p$
+
+\section{Galois Theory}
+Relationship between algebraic equations, groups, and fields. 
+
+Fix $F \subset \overline{F}$, field with algebraic closure. We want to study all possible extensions between $F$ and $\overline{F}$
+
+%Todo: make tikz picture of fig 1
+
+It can happen that $K \neq L$, but $K \cong L$. It can happen that $\exists f: E \to E$ where $f \neq Id$
+
+Main tool: $K = F(\alpha), \alpha \in \overline{F}$. Take $p(x) = irr(\alpha, F) \in F[x]$, then $F[x]/(p) \xrightarrow{isom.} F(\alpha)$, $x + (p) \mapsto \alpha$. In particular, every $\gamma \in F(\alpha)$ can be written uniquely as $a_0 + a_1 \alpha + a_2 \alpha^2 + \ldots a_{n-1}\alpha^{n-1}$, $a)i \in F$, $n = deg p(x) = [F(\alpha) : F]$
+
+\begin{defn}
+    $\alpha, \beta$ are called conjugate if $irr(\alpha, F) = irr(\beta, F)$. Equivalently $\alpha$ and $\beta$ are roots of the same irreducible polynomial in $F[x]$
+\end{defn}
+\begin{cor}
+    If $\alpha$ and $\beta$ are conjugate, then $F(\alpha) \cong F(\beta)$ with $a_0 + a_1 \alpha + \ldots a_{n-1}\alpha^{n-1} \mapsto a_0 + a_1\beta + \ldots + a^{n-1}\beta^{n-1}$
+\end{cor}
+\textbf{Proof} Both are isomorphic to $F[x]/(p)$, so 
+%Todo fig 2
+
+\begin{exm*}
+    $\Q \subset \overline{\Q}$
+\end{exm*}
+$p(x) = x^2 - 2 \in \Q[x]$ irr. $\implies \sqrt[]{2}$ is conjugate to $-\sqrt[]{2}$ over $\Q$. Therefore there is an isomorphism from $\Q(\sqrt[]{2}) \to \Q(-\sqrt{2})$ where $a + b\sqrt{2} \mapsto a - b\sqrt{2}$
+
+$K = \Q(\sqrt{2}) = \Q(-\sqrt{2})$, therefore $K$ has a nontrivial automorphism.
+
+\begin{exm*}
+    $p(x) = x^3 - 2$ irreducible over $\Q$, $\alpha = \sqrt[3]{2}$, $\beta = \sqrt[3]{2}e^{2\pi/3}$
+\end{exm*}
+Therefore, $\Q(\alpha) \xrightarrow{\sim} \Q(\beta)$ sends $a_0 + a_1 \alpha + a_2 \alpha^2 \mapsto a_0 + a_1\beta + a_2\beta^2$. However, they cannot possibly be the same field, since one has only real numbers, whereas the second obviously contains $\beta$, but $\beta \not\in \R, \beta \in \C$
+
+\begin{exm*}
+    $F = \R \subset \overline{\R} = \C$
+\end{exm*}
+$[\C: \R] = 2$, so there cannot be any intermediate fields. If we take $i$, which is a root of $x^2 + 1 \in \R[x]$ irreducible/$\R$, as is $-i$. Then we have two conjugate elements, so we have an isomorphism from $\R(i) \xrightarrow{\sim} \R(-i)$ sending $a + bi \mapsto a - bi$\\
+$\implies$ we get an automorphism of $\C$, $a + bi \mapsto a - bi$ called complex conjugation
+
+\begin{exm*}
+    Take $F = \F_2 \subset \F_4 \subset \overline{\F}_2$. Choose $\alpha \in \F_4 \setminus \F_2$
+\end{exm*}
+$irr(\alpha, \F_2) = x^2 + x + 1$, the unique irreducible polynomial of degree 2 in $\F_2[x]$
+
+Another element in $\F_4 \setminus \F_2$: $\alpha + 1$ (if $\alpha + 1 \in \F_2 \implies \alpha = \alpha + 1 + 1 \in \F_2$)
+
+$irr(\alpha + 1, \F_2) = x^2 + x + 1 \implies \exists$ an isomorphism $\F_2(\alpha) \xrightarrow{\sim} \F_2(\alpha + 1)$ $a + b \alpha \mapsto a + b(1 + \alpha) = a + b\alpha^2$, since $\alpha + 1 = \alpha^2$, so $a + b\alpha \mapsto a + b\alpha^2 = (a + b\alpha)^2$, the Frobenius homomorphism $\F_4 \to \F_4$, $x\mapsto x^2$.
+
+\begin{exm*}
+    $F = \Q(\sqrt[]{2})$, $\sqrt{4} \not\in \Q(\sqrt{2})$ since $x^2 - 3$ is irreducible over $\Q(\sqrt{2}) \implies \sqrt{3}$ and $-\sqrt{3}$ are conjugate over both $\Q$ and $\Q(\sqrt{2})$.
+\end{exm*}
+$\implies \Q(\sqrt{2})(\sqrt{3}) \to \Q(\sqrt{2})(-\sqrt{3}) = \Q(\sqrt{2})(\sqrt{3})$, sends $a + b\sqrt{3} \mapsto a - b\sqrt{3}$ for $a, b \in \Q(\sqrt{2})$
+
+Then we can write $a = c + d\sqrt{2}$, $c, d, \in \Q$, and $b = e + f\sqrt{2}$, $e, f \in \Q$, so $c + d\sqrt{2} + e\sqrt{3} + f\sqrt{6} \mapsto c + d\sqrt{2} - e\sqrt{3} - f\sqrt{6}$
+
+So $\Q(\sqrt2, \sqrt3)$ has a basis $1, \sqrt{2}, \sqrt3, \sqrt6$ over $\Q$ and an automorphism \\
+$\begin{matrix}
+    \sigma: & 1 \mapsto 1\\
+    & \sqrt{2} \mapsto \sqrt{2}\\
+    & \sqrt{3} \mapsto -\sqrt{3}\\
+    & \sqrt{6} \mapsto -\sqrt{6}\\
+\end{matrix}$. 
+
+Analogusly, it has an automorphism\\
+$\begin{matrix}
+    \tau : & 1 \mapsto 1\\
+    & \sqrt{2} \mapsto -\sqrt{2}\\
+    & \sqrt{3} \mapsto \sqrt{3}\\
+    & \sqrt{6} \mapsto -\sqrt{6}\\
+\end{matrix}$
+
+$\sigma^2 = \tau^2 = Id$, but \\
+$\begin{matrix}
+    \tau \circ \sigma : & 1 \mapsto 1\\
+    & \sqrt{2} \mapsto -\sqrt{2}\\
+    & \sqrt{3} \mapsto -\sqrt{3}\\ 
+    & \sqrt{6} \mapsto \sqrt{6}\\
+\end{matrix}$
+
+$\implies \{1, \sigma, \tau, \sigma\tau\}$ is a group of automorphisms of $\Q(\sqrt{2}, \sqrt{3})$, $K_4$
+
+\begin{rmk}
+    $Aut(K)$ is a group with respect to composition. 
+\end{rmk}
+
+\begin{defn}
+    $\sigma_1, \ldots, \sigma_r \in \Aut K$. $K^{\{\sigma_1,\ldots,  \sigma_r\}} = \{x \in K: \sigma_i(x) = x \forall \sigma_i\}$
+\end{defn}
+
+\begin{exm*}
+    $\Q(\sqrt2, \sqrt3)^\sigma = \{a + b\sqrt{2}\} = \Q(\sqrt{2})$.
+    $\Q(\sqrt{2}, \sqrt{3})^\tau = \Q(\sqrt{3})$, 
+    $\Q(\sqrt{2}, \sqrt{3})^{\sigma\tau} = \Q(\sqrt{6})$, 
+    and \\$\Q(\sqrt2, \sqrt3)^{\{\sigma, \tau\}} = \Q$
+\end{exm*}
+
+\begin{lem}
+    $K^{\sigma_1, \ldots, \sigma_r}$ is a subfield of $K$
+\end{lem}
+\textbf{Proof} just the regular field tests for all elements
+
+Given a subgroup $H \subset \Aut K$, field $K^H \subset K$ is the field of all elements fixed by $H$, $\{ x\in K | \sigma(x) = x \forall \sigma \in H\}$
+
+\begin{defn}
+    Take fields $L \subset K$. Then $G(K/L) = \{\sigma \in \Aut K : \sigma(x) = x \forall x \in L\}$ 
+\end{defn}
+
+\begin{lem}
+    $G(K/L)$ is a subgroup of $\Aut(K)$
+\end{lem}
+\textbf{Proof} $\sigma$, $\tau \in G(K/L)$. Compute $\sigma\tau(x) = \sigma(x) = x$ for $x \in L$. Also, $\sigma(x) = x \implies x = \sigma^{-1}(x) \implies \sigma^{-1} \in G(K/L) \implies G(K/L)$ is a subgroup by the subgroup test
+
+%Todo fig 3
+How do we understand isomorphisms $\sigma: K \to L$?
+
+\underline{Fact} If $\sigma$ is an isomorphism $K \to L$ that fixes every element of $F \implies \alpha$ and $\sigma(\alpha)$ are conjugate.
+
+\textbf{Proof} $p(x) = irr(\alpha, F)$. Then $p(\alpha) = 0$. Now just apply $\sigma(p(\alpha)) = 0$. Use automorphism $\implies$ homomorphism $\implies \sigma(p(x)) = \sigma(a_0) + \sigma(a_1\alpha) + \ldots + \sigma(a_{n-1}\alpha^{n-1}) = a_0 + a_1\sigma(\alpha) + \ldots + a_{n-1}\sigma(\alpha)^{n-1} = 0$. (Important that $\sigma(a_i)$ = $a_i$ since $\sigma$ fixes elements of $F$)
 \end{document}
