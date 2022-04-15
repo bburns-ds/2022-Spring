@@ -73,7 +73,6 @@ that satisfy the following axioms
         a_{i1}b_{1j} + \ldots + a{in}b_{nj}\\
     \end{pmatrix}$
 \end{exm*}
-%Todo: find counterexample
 
 \begin{exm*}[Rings of functions]
     $F = \{f | f: \R \to \R\}$\\
@@ -149,7 +148,6 @@ The proof is same for 5: if $5 | n$, then it is trivial, else we apply FLT to sa
 \begin{exm*}
     For $R = \Z_n$, $x\in \Z_n$ is a unit $\iff \gcd(x, n) = 1$. 
 \end{exm*}
-%Todo: Justify me :D
 
 \begin{defn}
     The order of $\Z_n^*$ is $\phi(n)$.
@@ -163,7 +161,6 @@ For $p$ prime, $\phi(p) = p - 1$, since no $d \in \{1, 2, \ldots p-1\}$ may divi
 \begin{thm}
     $n = rs$, $r, s$ coprime, $\mathbb{Z} \cong \Z_r \times \Z_s$ (as rings). Implies Chinese Remainder Theorem
 \end{thm}
-%Todo: argue me :D
 
 \begin{thm}
     $R$ and $S$ are rings with unity 1 $\implies (R\times S)^* \cong R^* \times S^*$
@@ -177,7 +174,6 @@ $\iff (a, b) \in R^* \times S^*$
 \begin{cor}
     $r, s$ coprime, $n = rs \implies \Z_n^* \cong \Z_r^* \times \Z_s^*$
 \end{cor}
-%Todo: argue me :D
 
 \begin{cor}
     $r, s$ coprime $\phi(n) = \phi(r)\phi(s)$ (multiplicative function)
@@ -200,7 +196,7 @@ Recall that  $\phi(n)$ is the order of $\Z_n^*$. For $A = order(x)$, by Corollar
     $\Z_p^*$ is a cyclic group
 \end{thm}
 
-The proof will come later. %Todo
+The proof will come later. 
 For now, we can use this to say $Z_p^*$ has a generator or that $Z_7^*$ has a generator
 
 \begin{exm*}
@@ -251,10 +247,8 @@ Check conditions of equivalence relation $\sim$: \\
 $(r, s) \sim (r, s)$ since $rs = rs$\\
 $(r, s) \sim (r' s') \iff (r', s') \sim (r, s)$ givens $rs' = r's$ and $r's = rs'$, which are obviously the same\\
 $(r, s) \sim (r', s')$ and $(r', s') \sim (r'', s'') \stackrel{?}{\implies} (r, s) \sim (r'', s'')$
-%todo: multiplications (commutativity from integral domain?)
 
 $R$ integral domain $\implies$ cancelation law
-%todo: why?
 
 Define $L$ as the set of equivalence classes of pairs $(r, s)$
 
@@ -266,7 +260,6 @@ Define binary operations on $K$
     \item $\dfrac{r}{s}\cdot \dfrac{r'}{s'} = \dfrac{rr'}{ss'}$
 \end{itemize}
 Need to check that these operations do not depend on which element of the equivalence classes that we select. 
-%todo
 
 Need to check that $K$ satsifies ring axioms\\
 check field axioms
@@ -493,7 +486,7 @@ Uniqueness of factorization $\implies p_i = \alpha p$ or $q_i = \alpha p$ for fo
 
 In the first case, then $a = up_1 \ldots p_{i-1}(\alpha p)p_{i + 1}\ldots p_r \implies p | a$
 
-\begin{rmk} %Todo: is this a Euclidean domain
+\begin{rmk} 
     Suppose $R$ is an an integral domain where factorization exists. $\implies$ one can conclude that, if every irreducible unit is prime, then $R$ is a UFD
 \end{rmk}
 Suppose $up_1\cdots p_r = vq_1 \cdots q_s$, with $u, v$ unit. Then $p_1 | vq_1\ldots q_s$. $p_1 \nmid u \implies p_1 | q_i$ for some $i$. (Because $p_1$ is irreducible, and here all irreducibles are prime). By rearranging, $p_1 | q_1$, so $p_1 \beta = q_1$. $q_1$ irreducible implies $\beta$ must be a unit. Cancel $p_1$ using integral domain cancelation law: $up_2\ldots p_r = (v\beta)q_2\ldots q_s$. By induction, we are done.
