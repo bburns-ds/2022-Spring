@@ -1,5 +1,5 @@
 # s2022
-My (somewhat presentable) notes for Spring 2022 at UMass Amherst
+My (somewhat presentable) notes for Spring 2022 at UMass Amherst. All notes are taken in lecture.
 
 Math 412 - Rings and Modules
 
